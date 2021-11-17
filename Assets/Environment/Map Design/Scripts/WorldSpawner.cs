@@ -234,7 +234,7 @@ public class WorldSpawner : MonoBehaviour
                 Debug.Log("Finished Critical Path Generation");
                 lastRoomCreated.name = "Exit";
 
-                // generateNonCriticalRooms();
+                generateNonCriticalRooms();
             }
             else
             {

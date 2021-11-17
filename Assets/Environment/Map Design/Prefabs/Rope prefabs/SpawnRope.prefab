@@ -72,4 +72,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ropeObjects:
   - {fileID: 7369153113945796096, guid: 1fcb32f1f7978aa4ca7c210bcc4cf14c, type: 3}
+  - {fileID: 187272152729861988, guid: 82e6508ffaf25254dbdd26eb66a673f1, type: 3}
   ropeLength: 5
