@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6941340614080581267
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6941340614080581265}
+  - component: {fileID: 13415519813275695}
+  m_Layer: 6
+  m_Name: LR Template
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6941340614080581265
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6941340614080581267}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 15.280994, y: 10.762008, z: -11.823964}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &13415519813275695
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6941340614080581267}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8c9b2d410cb0c64b80eb0b0ca7beaf9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  roomTemplates:
+  - {fileID: 7456802817130224541, guid: 4360688ac479e7841b677ca1040e9721, type: 3}
+  - {fileID: 7969485357020782852, guid: 78a8c50780a4ac84ea7649cab46425b7, type: 3}
+  - {fileID: 5173845786317484187, guid: 9cadc1c068359b840a741141d8da3fb7, type: 3}
+  - {fileID: 2902719875515462801, guid: 55d6629cf0561034c865f9b56bc57c1a, type: 3}
+  - {fileID: 8290455399346503437, guid: 25994ce591dfcc14c95561f9a14d5bd2, type: 3}
+  - {fileID: 1519099824179907139, guid: de321ebef50a6f54a88793c12b645cf1, type: 3}
+  - {fileID: 1853696281678014929, guid: 02f9c2c4400ebb14c960949cb2f4eda0, type: 3}
