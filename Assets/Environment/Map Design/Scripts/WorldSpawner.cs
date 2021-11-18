@@ -40,13 +40,19 @@ public class WorldSpawner : MonoBehaviour
     GameObject lastRoomCreated;
     public GameObject door;
 
+    private GameObject entranceRoom;
+    private GameObject exitRoom;
+    private bool spawnedEntranceDoor;
+    private bool spawnedExitDoor;
+
+    public bool spawnedDoor;
+
 
     // Start is called before the first frame update
     void Start()
     {
         GenerateBorders();
         SpawnEntranceRoom();
-
     }
     /// <summary>
     /// Generates the one tile border around the map
@@ -112,59 +118,62 @@ public class WorldSpawner : MonoBehaviour
         Vector2 firstRoomSpawnPosition = new Vector2(transform.position.x + (firstRoomPosition * roomWidth), roomHeight * (numRoomsVer - 1));
 
         //spawn starting room at random location on first row
-        GameObject entranceRoom = Instantiate(rooms[roomType], firstRoomSpawnPosition, Quaternion.identity);
+        GameObject entranceRoomObj = Instantiate(rooms[roomType], firstRoomSpawnPosition, Quaternion.identity);
         //sets name in object inspector
-        entranceRoom.name = "Entrance";
+        entranceRoomObj.name = "Entrance";
+        entranceRoom = entranceRoomObj;
         nextRoomPosition = firstRoomSpawnPosition;
-        SpawnDoor(nextRoomPosition, "Entrance");
+
+       
 
     }
 
+   
     /// <summary>
-    /// Spawns a door randomly in the given room and sets its name in the object inspector
+    /// Spawns Door in room at a given position and changes its name in inspector
     /// </summary>
     /// <param name="roomPosition"></param>
     /// <param name="objectName"></param>
     private void SpawnDoor(Vector3 roomPosition, string objectName)
     {
-        StartCoroutine(ExecuteAfterTime(1));
-        IEnumerator ExecuteAfterTime(float time)
+
+
+        if (GameObject.Find("Entrance"))
         {
-            yield return new WaitForSeconds(time);
+            Debug.Log("found entrance.");
+        }
+        roomPosition += new Vector3(0.5f, 0.5f, 0);
+        List<Vector3> potentialDoorSpawnLocations = new List<Vector3>();
 
-            roomPosition += new Vector3(0.5f, 0.5f, 0);
-            List<Vector3> potentialDoorSpawnLocations = new List<Vector3>();
-
-            for (int x = 0; x < roomWidth; x++)
+        for (int x = 0; x < roomWidth; x++)
+        {
+            for (int y = 0; y < roomHeight - 2; y++)
             {
-                for (int y = 0; y < roomHeight - 2; y++)
+                Vector3 rayCastOrigin = roomPosition + new Vector3(x, y, 0);
+                RaycastHit2D checkForAirHit = Physics2D.Raycast(rayCastOrigin, transform.TransformDirection(Vector2.up), 1f);
+                RaycastHit2D checkForSolidBlock = Physics2D.Raycast(rayCastOrigin, transform.TransformDirection(-Vector2.up), 0.6f, GroundTileLayer);
+
+                if (checkForAirHit == false && checkForSolidBlock)
                 {
-                    Vector3 rayCastOrigin = roomPosition + new Vector3(x, y, 0);
-                    RaycastHit2D checkForAirHit = Physics2D.Raycast(rayCastOrigin, transform.TransformDirection(Vector2.up), 1f);
-                    RaycastHit2D checkForSolidBlock = Physics2D.Raycast(rayCastOrigin, transform.TransformDirection(-Vector2.up), 0.6f, GroundTileLayer);
-                    
-                    if (checkForAirHit == false && checkForSolidBlock)
-                    {
-                        potentialDoorSpawnLocations.Add(rayCastOrigin);
-                    }
+                    potentialDoorSpawnLocations.Add(rayCastOrigin);
                 }
             }
-
-            int randDoor = Random.Range(0, potentialDoorSpawnLocations.Count);
-            GameObject doorObj = Instantiate(door, (potentialDoorSpawnLocations[randDoor] + new Vector3(0, 0, 0)), Quaternion.identity);
-          
-            doorObj.name = objectName;
-
-           
         }
+
+        int randDoor = Random.Range(0, potentialDoorSpawnLocations.Count);
+        GameObject doorObj = Instantiate(door, (potentialDoorSpawnLocations[randDoor] + new Vector3(0, 0, 0)), Quaternion.identity);
+
+        doorObj.name = objectName;
 
 
     }
 
-    /// <summary>
-    /// Generates Critical path for room spawning and spawns the rooms along the path.
-    /// </summary>
-    private void GenerateNextMove()
+
+
+        /// <summary>
+        /// Generates Critical path for room spawning and spawns the rooms along the path.
+        /// </summary>
+        private void GenerateNextMove()
     {
         //random chance to move in a direction
         int directionToMove = Random.Range(0, 100);
@@ -278,7 +287,7 @@ public class WorldSpawner : MonoBehaviour
                 reachedExit = true;
                 Debug.Log("Finished Critical Path Generation");
                 lastRoomCreated.name = "Exit";
-                SpawnDoor(nextRoomPosition + new Vector2(0f,roomHeight), "Exit");
+                exitRoom = lastRoomCreated;
                 generateNonCriticalRooms();
             
             }
@@ -330,6 +339,20 @@ public class WorldSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        if (spawnedEntranceDoor == false && reachedExit == true)
+        {
+            SpawnDoor(entranceRoom.transform.position, "Entrance Door");
+            spawnedEntranceDoor = true;
+        }
+
+        if (spawnedExitDoor == false && reachedExit == true)
+        {
+            SpawnDoor(exitRoom.transform.position, "Exit Door");
+            spawnedExitDoor = true;
+
+        }
+
         if (timeElapsedSinceLastRoom <= 0 && reachedExit == false)
         {
             GenerateNextMove();
