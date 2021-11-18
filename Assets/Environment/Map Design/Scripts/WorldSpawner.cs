@@ -120,6 +120,11 @@ public class WorldSpawner : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Spawns a door randomly in the given room and sets its name in the object inspector
+    /// </summary>
+    /// <param name="roomPosition"></param>
+    /// <param name="objectName"></param>
     private void SpawnDoor(Vector3 roomPosition, string objectName)
     {
         StartCoroutine(ExecuteAfterTime(1));
