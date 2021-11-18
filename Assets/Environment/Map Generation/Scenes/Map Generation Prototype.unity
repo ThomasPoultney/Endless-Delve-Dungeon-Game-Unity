@@ -246,10 +246,15 @@ MonoBehaviour:
   - {fileID: 5369455839420057082, guid: 4d0254131b40a8341beb729a165061f1, type: 3}
   - {fileID: 6941340614080581267, guid: 1f8098e5fb4de224e80ead63508eb21e, type: 3}
   - {fileID: 8401614840167101244, guid: b581146879fc5734898d5968c64dd588, type: 3}
-  borderBlock: {fileID: 7616520146850272001, guid: a85829c250bf24c409007386de321973, type: 3}
+  borderBlock: {fileID: 7369572780800330991, guid: 7656b4dc361d5ba4e85af7d4eb0d905e, type: 3}
   Room:
     serializedVersion: 2
     m_Bits: 64
+  GroundTileLayer:
+    serializedVersion: 2
+    m_Bits: 1664
+  doorBottom: {fileID: 9010763207230755496, guid: 8321605b869dc3b4784a25e7a3cece12, type: 3}
+  doorTop: {fileID: 5685897851944754432, guid: d20d6896aa1a9f64c831c858b2bf4361, type: 3}
 --- !u!4 &549429644
 Transform:
   m_ObjectHideFlags: 0
@@ -262,7 +267,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1367081593
 GameObject:
@@ -363,12 +368,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1367081593}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.08, y: 1.18, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 20, y: 30, z: 0}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_Children:
   - {fileID: 519420032}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &1367081597
 BoxCollider2D:

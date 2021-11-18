@@ -22,6 +22,7 @@ public class SpawnTile : MonoBehaviour
             Destroy(gameObject);
             instance.layer = 9;
             instance.AddComponent<BoxCollider2D>();
+            instance.AddComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
         }
         else
         {
@@ -31,6 +32,8 @@ public class SpawnTile : MonoBehaviour
             Destroy(gameObject);
             instance.layer = 9;
             instance.AddComponent<BoxCollider2D>();
+            instance.AddComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
+
 
 
 

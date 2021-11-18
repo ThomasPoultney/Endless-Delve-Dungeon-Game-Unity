@@ -123,28 +123,26 @@ public class WorldSpawner : MonoBehaviour
 
     private void SpawnDoor(Vector3 roomPosition)
     {
-        //roomPosition += new Vector3(0.5f, 0.5f, 0);
+        roomPosition += new Vector3(0.5f, 0.5f, 0);
         List<Vector3> potentialDoorSpawnLocations = new List<Vector3>();
 
         for (int x = 0; x < roomWidth; x++)
         {
             for (int y = 0; y < roomHeight - 2; y++)
             {
-                Vector3 rayCastOrigin = roomPosition + new Vector3(x, (y + 2), 0);
-                RaycastHit2D hit = Physics2D.Raycast(rayCastOrigin, Vector2.down, 2.1f, GroundTileLayer);
+                Vector3 rayCastOrigin = roomPosition + new Vector3(x, y, 0);
+                RaycastHit2D hit = Physics2D.Raycast(rayCastOrigin, transform.TransformDirection(Vector2.up), 2f);
+                //Debug.DrawRay(rayCastOrigin, Vector2.up * 2, Color.red, 100);
 
-
-
-                if (hit.collider != null)
+                if (hit)
                 {
                     Debug.Log(hit.collider.name);
                     potentialDoorSpawnLocations.Add(roomPosition + new Vector3(x, y, 0));
                 }
-
-
             }
         }
 
+        Debug.Log(potentialDoorSpawnLocations.Count);
         int randDoor = Random.Range(0, potentialDoorSpawnLocations.Count);
         Instantiate(doorBottom, (potentialDoorSpawnLocations[randDoor] + new Vector3(0, 0, 0)), Quaternion.identity).name = "Door Bottom";
         Instantiate(doorTop, (potentialDoorSpawnLocations[randDoor] + new Vector3(0, 1, 0)), Quaternion.identity).name = "Door Top";
