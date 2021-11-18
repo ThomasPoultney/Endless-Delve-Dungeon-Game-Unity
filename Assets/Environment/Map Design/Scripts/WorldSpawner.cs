@@ -35,20 +35,24 @@ public class WorldSpawner : MonoBehaviour
     private bool lastRoomWasBottom = false;
     private enum Direction { Down, Left, Right, ImpossibleMove };
     public LayerMask Room;
+    public LayerMask GroundTileLayer;
+
     GameObject lastRoomCreated;
+    public GameObject doorBottom;
+    public GameObject doorTop;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        generateBorders();
-        spawnEntrance();
+        GenerateBorders();
+        SpawnEntranceRoom();
 
     }
     /// <summary>
     /// Generates the one tile border around the map
     /// </summary>
-    private void generateBorders()
+    private void GenerateBorders()
     {
         float mapWidth = roomWidth * numRoomsHor;
         float mapHeight = roomHeight * numRoomsVer;
@@ -100,7 +104,7 @@ public class WorldSpawner : MonoBehaviour
     /// <summary>
     /// Function responsible for spawing entrace room on first row.
     /// </summary>
-    private void spawnEntrance()
+    private void SpawnEntranceRoom()
     {
         //pick entrance room location
         firstRoomPosition = Random.Range(0, numRoomsHor);
@@ -113,7 +117,37 @@ public class WorldSpawner : MonoBehaviour
         //sets name in object inspector
         entranceRoom.name = "Entrance";
         nextRoomPosition = firstRoomSpawnPosition;
+        SpawnDoor(nextRoomPosition);
 
+    }
+
+    private void SpawnDoor(Vector3 roomPosition)
+    {
+        //roomPosition += new Vector3(0.5f, 0.5f, 0);
+        List<Vector3> potentialDoorSpawnLocations = new List<Vector3>();
+
+        for (int x = 0; x < roomWidth; x++)
+        {
+            for (int y = 0; y < roomHeight - 2; y++)
+            {
+                Vector3 rayCastOrigin = roomPosition + new Vector3(x, (y + 2), 0);
+                RaycastHit2D hit = Physics2D.Raycast(rayCastOrigin, Vector2.down, 2.1f, GroundTileLayer);
+
+
+
+                if (hit.collider != null)
+                {
+                    Debug.Log(hit.collider.name);
+                    potentialDoorSpawnLocations.Add(roomPosition + new Vector3(x, y, 0));
+                }
+
+
+            }
+        }
+
+        int randDoor = Random.Range(0, potentialDoorSpawnLocations.Count);
+        Instantiate(doorBottom, (potentialDoorSpawnLocations[randDoor] + new Vector3(0, 0, 0)), Quaternion.identity).name = "Door Bottom";
+        Instantiate(doorTop, (potentialDoorSpawnLocations[randDoor] + new Vector3(0, 1, 0)), Quaternion.identity).name = "Door Top";
     }
 
     /// <summary>
@@ -294,4 +328,6 @@ public class WorldSpawner : MonoBehaviour
             timeElapsedSinceLastRoom -= Time.deltaTime;
         }
     }
+
+
 }

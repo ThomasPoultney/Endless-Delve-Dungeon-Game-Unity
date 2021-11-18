@@ -18,15 +18,20 @@ public class SpawnTile : MonoBehaviour
         {
             int rand = Random.Range(0, tileObjects.Length);
             GameObject instance = Instantiate(tileObjects[rand], transform.position, Quaternion.identity);
-            instance.transform.parent = transform;
+            instance.transform.parent = transform.parent;
+            Destroy(gameObject);
             instance.layer = 9;
+            instance.AddComponent<BoxCollider2D>();
         }
         else
         {
             int rand = Random.Range(0, oreObjects.Length);
             GameObject instance = Instantiate(oreObjects[rand], transform.position, Quaternion.identity);
-            instance.transform.parent = transform;
+            instance.transform.parent = transform.parent;
+            Destroy(gameObject);
             instance.layer = 9;
+            instance.AddComponent<BoxCollider2D>();
+
 
 
         }

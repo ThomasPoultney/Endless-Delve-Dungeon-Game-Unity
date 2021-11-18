@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6334753188573428225}
   - component: {fileID: 6334753188573428224}
-  - component: {fileID: 1369541856398849550}
+  - component: {fileID: -7560569761859734942}
   m_Layer: 0
   m_Name: SpawnSolidBlock
   m_TagString: Untagged
@@ -49,7 +49,7 @@ MonoBehaviour:
   oreObjects:
   - {fileID: 7616520146850272001, guid: a85829c250bf24c409007386de321973, type: 3}
   orePencentage: 15
---- !u!61 &1369541856398849550
+--- !u!61 &-7560569761859734942
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
