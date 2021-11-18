@@ -38,8 +38,7 @@ public class WorldSpawner : MonoBehaviour
     public LayerMask GroundTileLayer;
 
     GameObject lastRoomCreated;
-    public GameObject doorBottom;
-    public GameObject doorTop;
+    public GameObject door;
 
 
     // Start is called before the first frame update
@@ -117,35 +116,44 @@ public class WorldSpawner : MonoBehaviour
         //sets name in object inspector
         entranceRoom.name = "Entrance";
         nextRoomPosition = firstRoomSpawnPosition;
-        SpawnDoor(nextRoomPosition);
+        SpawnDoor(nextRoomPosition, "Entrance");
 
     }
 
-    private void SpawnDoor(Vector3 roomPosition)
+    private void SpawnDoor(Vector3 roomPosition, string objectName)
     {
-        roomPosition += new Vector3(0.5f, 0.5f, 0);
-        List<Vector3> potentialDoorSpawnLocations = new List<Vector3>();
-
-        for (int x = 0; x < roomWidth; x++)
+        StartCoroutine(ExecuteAfterTime(1));
+        IEnumerator ExecuteAfterTime(float time)
         {
-            for (int y = 0; y < roomHeight - 2; y++)
-            {
-                Vector3 rayCastOrigin = roomPosition + new Vector3(x, y, 0);
-                RaycastHit2D hit = Physics2D.Raycast(rayCastOrigin, transform.TransformDirection(Vector2.up), 2f);
-                //Debug.DrawRay(rayCastOrigin, Vector2.up * 2, Color.red, 100);
+            yield return new WaitForSeconds(time);
 
-                if (hit)
+            roomPosition += new Vector3(0.5f, 0.5f, 0);
+            List<Vector3> potentialDoorSpawnLocations = new List<Vector3>();
+
+            for (int x = 0; x < roomWidth; x++)
+            {
+                for (int y = 0; y < roomHeight - 2; y++)
                 {
-                    Debug.Log(hit.collider.name);
-                    potentialDoorSpawnLocations.Add(roomPosition + new Vector3(x, y, 0));
+                    Vector3 rayCastOrigin = roomPosition + new Vector3(x, y, 0);
+                    RaycastHit2D checkForAirHit = Physics2D.Raycast(rayCastOrigin, transform.TransformDirection(Vector2.up), 1f);
+                    RaycastHit2D checkForSolidBlock = Physics2D.Raycast(rayCastOrigin, transform.TransformDirection(-Vector2.up), 0.6f, GroundTileLayer);
+                    
+                    if (checkForAirHit == false && checkForSolidBlock)
+                    {
+                        potentialDoorSpawnLocations.Add(rayCastOrigin);
+                    }
                 }
             }
+
+            int randDoor = Random.Range(0, potentialDoorSpawnLocations.Count);
+            GameObject doorObj = Instantiate(door, (potentialDoorSpawnLocations[randDoor] + new Vector3(0, 0, 0)), Quaternion.identity);
+          
+            doorObj.name = objectName;
+
+           
         }
 
-        Debug.Log(potentialDoorSpawnLocations.Count);
-        int randDoor = Random.Range(0, potentialDoorSpawnLocations.Count);
-        Instantiate(doorBottom, (potentialDoorSpawnLocations[randDoor] + new Vector3(0, 0, 0)), Quaternion.identity).name = "Door Bottom";
-        Instantiate(doorTop, (potentialDoorSpawnLocations[randDoor] + new Vector3(0, 1, 0)), Quaternion.identity).name = "Door Top";
+
     }
 
     /// <summary>
@@ -265,8 +273,9 @@ public class WorldSpawner : MonoBehaviour
                 reachedExit = true;
                 Debug.Log("Finished Critical Path Generation");
                 lastRoomCreated.name = "Exit";
-
+                SpawnDoor(nextRoomPosition + new Vector2(0f,roomHeight), "Exit");
                 generateNonCriticalRooms();
+            
             }
             else
             {
