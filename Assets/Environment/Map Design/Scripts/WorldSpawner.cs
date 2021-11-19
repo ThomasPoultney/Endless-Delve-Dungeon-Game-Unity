@@ -384,6 +384,7 @@ public class WorldSpawner : MonoBehaviour
             Vector3 doorLocation =  SpawnDoor(entranceRoom.transform.position, "Entrance Door");
             spawnedEntranceDoor = true;
             player.transform.position = doorLocation;
+            player.transform.rotation = Quaternion.identity;
 
         }
 

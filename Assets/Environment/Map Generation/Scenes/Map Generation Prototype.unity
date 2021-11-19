@@ -295,6 +295,7 @@ MonoBehaviour:
   - {fileID: 1009486973707247786, guid: 81803abd5c9002c40910d60fc6eae2be, type: 3}
   - {fileID: 6154473719352987189, guid: d76f6d3d06ed1a0409d25079bb31227c, type: 3}
   - {fileID: 7216397876334614267, guid: 1a6eba725b962f44f95fe07324235544, type: 3}
+  player: {fileID: 1367081593}
   numTreasureToSpawn: 20
 --- !u!4 &549429644
 Transform:
@@ -393,7 +394,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1000
   m_Sprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
   m_Color: {r: 0.8962264, g: 0.04650232, b: 0.04650232, a: 1}
   m_FlipX: 0
@@ -459,17 +460,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0302c3f91613f044eb4f3c253e5259ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSpeed: 3.4
-  jumpHeight: 6.5
-  gravityScale: 1.5
-  mainCamera: {fileID: 519420031}
-  facingRight: 1
-  moveDirection: 0
-  isGrounded: 0
-  cameraPos: {x: 0, y: 0, z: 0}
-  r2d: {fileID: 0}
-  mainCollider: {fileID: 0}
-  t: {fileID: 0}
 --- !u!70 &1367081599
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
