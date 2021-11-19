@@ -27,6 +27,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -44,7 +45,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileObjects:
-  - {fileID: 7616520146850272001, guid: a85829c250bf24c409007386de321973, type: 3}
+  - {fileID: 9043749014202735877, guid: 082c64cc29b92d24aa69ac4507d7cbda, type: 3}
   oreObjects:
-  - {fileID: 7616520146850272001, guid: a85829c250bf24c409007386de321973, type: 3}
+  - {fileID: 3743681340424884753, guid: abd567025fe45d44fabd9a553766f6e8, type: 3}
+  - {fileID: 1030276055690919849, guid: 954321934049d8b4c898ae59fdb4da22, type: 3}
   orePencentage: 15
