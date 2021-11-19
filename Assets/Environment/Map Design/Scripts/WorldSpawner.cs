@@ -49,7 +49,7 @@ public class WorldSpawner : MonoBehaviour
 
     public GameObject[] treasurePrefabs;
     private bool spawnedTresure = false;
-
+    public GameObject player;
     public int numTreasureToSpawn = 0; 
 
 
@@ -140,7 +140,7 @@ public class WorldSpawner : MonoBehaviour
     /// </summary>
     /// <param name="roomPosition"></param>
     /// <param name="objectName"></param>
-    private void SpawnDoor(Vector3 roomPosition, string objectName)
+    private Vector3 SpawnDoor(Vector3 roomPosition, string objectName)
     {
         roomPosition += new Vector3(0.5f, 0.5f, 0);
         List<Vector3> potentialDoorSpawnLocations = new List<Vector3>();
@@ -164,6 +164,8 @@ public class WorldSpawner : MonoBehaviour
         GameObject doorObj = Instantiate(door, (potentialDoorSpawnLocations[randDoor] + new Vector3(0, 0, 0)), Quaternion.identity);
 
         doorObj.name = objectName;
+
+        return potentialDoorSpawnLocations[randDoor];
 
     }
 
@@ -379,13 +381,16 @@ public class WorldSpawner : MonoBehaviour
 
         if (spawnedEntranceDoor == false && reachedExit == true)
         {
-            SpawnDoor(entranceRoom.transform.position, "Entrance Door");
+            Vector3 doorLocation =  SpawnDoor(entranceRoom.transform.position, "Entrance Door");
             spawnedEntranceDoor = true;
+            player.transform.position = doorLocation;
+
         }
 
         if (spawnedExitDoor == false && reachedExit == true)
         {
-            SpawnDoor(exitRoom.transform.position, "Exit Door");
+
+            Vector3 doorLocation = SpawnDoor(exitRoom.transform.position, "Exit Door");
             spawnedExitDoor = true;
 
         }

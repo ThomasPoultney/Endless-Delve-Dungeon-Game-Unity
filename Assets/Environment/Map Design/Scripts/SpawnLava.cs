@@ -14,6 +14,9 @@ public class SpawnLava : MonoBehaviour
         GameObject instance = Instantiate(lavaObjects[rand], transform.position, Quaternion.identity);
 
         instance.transform.parent = transform.parent;
+        instance.layer = 13;
+        instance.AddComponent<BoxCollider2D>();
+        instance.GetComponent<BoxCollider2D>().isTrigger = true;
         Destroy(gameObject);
 
 
