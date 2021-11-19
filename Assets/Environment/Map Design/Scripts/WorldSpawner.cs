@@ -47,6 +47,12 @@ public class WorldSpawner : MonoBehaviour
 
     public bool spawnedDoor;
 
+    public GameObject[] treasurePrefabs;
+    private bool spawnedTresure = false;
+
+    public int numTreasureToSpawn = 0; 
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -136,12 +142,6 @@ public class WorldSpawner : MonoBehaviour
     /// <param name="objectName"></param>
     private void SpawnDoor(Vector3 roomPosition, string objectName)
     {
-
-
-        if (GameObject.Find("Entrance"))
-        {
-            Debug.Log("found entrance.");
-        }
         roomPosition += new Vector3(0.5f, 0.5f, 0);
         List<Vector3> potentialDoorSpawnLocations = new List<Vector3>();
 
@@ -165,15 +165,52 @@ public class WorldSpawner : MonoBehaviour
 
         doorObj.name = objectName;
 
+    }
+
+    private void SpawnTresure()
+    {
+        GameObject TreasureParent = new GameObject();
+        TreasureParent.name = "Treasure";
+        Vector3  startPosition = new Vector3(0.5f, 0.5f, 0);
+        List<Vector3> potentialTreasureSpawnLocations = new List<Vector3>();
+
+        for (int x = 0; x < roomWidth * numRoomsHor; x++)
+        {
+            for (int y = 0; y < (roomHeight*numRoomsVer) - 2; y++)
+            {
+                Vector3 rayCastOrigin = startPosition + new Vector3(x, y, 0);
+                RaycastHit2D checkForAirHit = Physics2D.Raycast(rayCastOrigin, transform.TransformDirection(Vector2.up),0.4f);
+                RaycastHit2D checkForSolidBlock = Physics2D.Raycast(rayCastOrigin, transform.TransformDirection(-Vector2.up), 0.6f, GroundTileLayer);
+
+                if (checkForAirHit == false && checkForSolidBlock)
+                {
+                    potentialTreasureSpawnLocations.Add(rayCastOrigin);
+                }
+            }
+        }
+
+        int numSpawns = Mathf.Min(numTreasureToSpawn, potentialTreasureSpawnLocations.Count);
+        for (int i = 0; i < numSpawns; i++)
+        
+        {
+            int randPrefab = Random.Range(0, treasurePrefabs.Length);
+            int randSpawnPoint = Random.Range(0, potentialTreasureSpawnLocations.Count);
+            GameObject treasure = Instantiate(treasurePrefabs[randPrefab], potentialTreasureSpawnLocations[randSpawnPoint], Quaternion.identity);
+            treasure.transform.parent = TreasureParent.transform;
+            treasure.layer = 11;
+            potentialTreasureSpawnLocations.RemoveAt(randSpawnPoint);
+        }
+       
 
     }
+
 
 
 
         /// <summary>
         /// Generates Critical path for room spawning and spawns the rooms along the path.
         /// </summary>
-        private void GenerateNextMove()
+    private void GenerateNextMove()
     {
         //random chance to move in a direction
         int directionToMove = Random.Range(0, 100);
@@ -351,6 +388,12 @@ public class WorldSpawner : MonoBehaviour
             SpawnDoor(exitRoom.transform.position, "Exit Door");
             spawnedExitDoor = true;
 
+        }
+
+        if(spawnedTresure == false && reachedExit == true)
+        {
+            SpawnTresure();
+            spawnedTresure = true;
         }
 
         if (timeElapsedSinceLastRoom <= 0 && reachedExit == false)
