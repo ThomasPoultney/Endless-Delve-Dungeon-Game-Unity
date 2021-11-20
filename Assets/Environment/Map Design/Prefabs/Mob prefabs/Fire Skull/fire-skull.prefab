@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1836443299584366479}
   - component: {fileID: 4684536574208443798}
   - component: {fileID: 3519976826669179645}
+  - component: {fileID: 1632556793}
   m_Layer: 0
   m_Name: fire-skull
   m_TagString: Untagged
@@ -154,3 +155,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.6, y: 0.6}
   m_EdgeRadius: 0
+--- !u!114 &1632556793
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6567776595511405882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68cafbff1bd96434890ebd5cfb8ea580, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 1
+  hunting: 0
+  pursuitDistance: 4
+  explodeAtDistance: 1
