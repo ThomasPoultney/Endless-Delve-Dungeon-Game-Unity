@@ -11,8 +11,12 @@ public class SkelentonMobController : MonoBehaviour
     private bool movingRight = true;
     private string currentAnimationState = "Skelenton_Idle";
     public LayerMask playerLayer;
+    public LayerMask layersThatCanBeWalkedOn;
+    public LayerMask layersThatCantBeWalkedThrough;
     private Vector2 playerCheckDirection;
     private BoxCollider2D boxCollider;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -23,6 +27,7 @@ public class SkelentonMobController : MonoBehaviour
     void FixedUpdate()
     {
         RaycastHit2D isOnPlatformEdge;
+        RaycastHit2D blockInFront;
         Vector3 movingRotation;
 
 
@@ -45,7 +50,8 @@ public class SkelentonMobController : MonoBehaviour
             {
                 transform.position += new Vector3(+walkSpeed, 0, 0);
                 movingRotation = new Vector3(0, -180, 0);
-                isOnPlatformEdge = Physics2D.Raycast(transform.position + new Vector3(1, 0, 0), Vector2.down, 2f);
+                isOnPlatformEdge = Physics2D.Raycast(transform.position + new Vector3(0.1f, 0, 0), Vector2.down, 1f,layersThatCanBeWalkedOn);
+                blockInFront = Physics2D.Raycast(transform.position + new Vector3(0.1f, 0, 0), playerCheckDirection, 0.2f, layersThatCantBeWalkedThrough);
                 ChangeAnimationState("Skelenton_Walk");
                 playerCheckDirection = Vector2.right;
 
@@ -54,12 +60,14 @@ public class SkelentonMobController : MonoBehaviour
             {
                 transform.position += new Vector3(-walkSpeed, 0, 0);
                 movingRotation = new Vector3(0, 0, 0);
-                isOnPlatformEdge = Physics2D.Raycast(transform.position + new Vector3(-1, 0, 0), Vector2.down, 2f);
+                isOnPlatformEdge = Physics2D.Raycast(transform.position + new Vector3(-0.1f, 0, 0), Vector2.down, 1f,layersThatCanBeWalkedOn) ;
+                blockInFront = Physics2D.Raycast(transform.position + new Vector3(0.1f, 0, 0), playerCheckDirection, 0.2f, layersThatCantBeWalkedThrough);
+
                 ChangeAnimationState("Skelenton_Walk");
                 playerCheckDirection = Vector2.left;
             }
 
-            if (isOnPlatformEdge.collider == false)
+            if (isOnPlatformEdge.collider == false || blockInFront.collider == true)
             {
                 movingRight = !movingRight;
                 transform.eulerAngles = movingRotation;

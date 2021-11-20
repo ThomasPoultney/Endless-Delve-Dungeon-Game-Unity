@@ -44,13 +44,19 @@ public class WorldSpawner : MonoBehaviour
     private GameObject exitRoom;
     private bool spawnedEntranceDoor;
     private bool spawnedExitDoor;
+    private bool spawnedMobs;
 
     public bool spawnedDoor;
 
+
     public GameObject[] treasurePrefabs;
+    public GameObject[] mobPrefabs;
+
+
     private bool spawnedTresure = false;
     public GameObject player;
-    public int numTreasureToSpawn = 0; 
+    public int numTreasureToSpawn = 0;
+    public int numMobsToSpawn = 0;
 
 
 
@@ -206,12 +212,50 @@ public class WorldSpawner : MonoBehaviour
 
     }
 
+    private void SpawnMobs()
+    {
+        GameObject mobParent = new GameObject();
+        mobParent.name = "Mob";
+        Vector3 startPosition = new Vector3(0.5f, 0.5f, 0);
+        List<Vector3> potentialMobSpawnLocations = new List<Vector3>();
+
+        for (int x = 0; x < roomWidth * numRoomsHor; x++)
+        {
+            for (int y = 0; y < (roomHeight * numRoomsVer) - 2; y++)
+            {
+                Vector3 rayCastOrigin = startPosition + new Vector3(x, y, 0);
+                RaycastHit2D checkForAirHit = Physics2D.Raycast(rayCastOrigin, transform.TransformDirection(Vector2.up), 0.4f);
+                RaycastHit2D checkForSolidBlock = Physics2D.Raycast(rayCastOrigin, transform.TransformDirection(-Vector2.up), 0.6f, GroundTileLayer);
+
+                if (checkForAirHit == false && checkForSolidBlock)
+                {
+                    potentialMobSpawnLocations.Add(rayCastOrigin);
+                }
+            }
+        }
+
+        int numSpawns = Mathf.Min(numMobsToSpawn, potentialMobSpawnLocations.Count);
+        for (int i = 0; i < numSpawns; i++)
+
+        {
+            int randPrefab = Random.Range(0, mobPrefabs.Length);
+            int randSpawnPoint = Random.Range(0, potentialMobSpawnLocations.Count);
+            GameObject mob = Instantiate(mobPrefabs[randPrefab], potentialMobSpawnLocations[randSpawnPoint], Quaternion.identity);
+            mob.transform.parent = mobParent.transform;
+            mob.layer = 15;
+            
+            potentialMobSpawnLocations.RemoveAt(randSpawnPoint);
+        }
+
+
+    }
 
 
 
-        /// <summary>
-        /// Generates Critical path for room spawning and spawns the rooms along the path.
-        /// </summary>
+
+    /// <summary>
+    /// Generates Critical path for room spawning and spawns the rooms along the path.
+    /// </summary>
     private void GenerateNextMove()
     {
         //random chance to move in a direction
@@ -400,6 +444,12 @@ public class WorldSpawner : MonoBehaviour
         {
             SpawnTresure();
             spawnedTresure = true;
+        }
+
+        if (spawnedMobs == false && reachedExit == true)
+        {
+            SpawnMobs();
+            spawnedMobs = true;
         }
 
         if (timeElapsedSinceLastRoom <= 0 && reachedExit == false)

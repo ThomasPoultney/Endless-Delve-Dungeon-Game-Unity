@@ -150,3 +150,9 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 16384
+  layersThatCanBeWalkedOn:
+    serializedVersion: 2
+    m_Bits: 512
+  layersThatCantBeWalkedThrough:
+    serializedVersion: 2
+    m_Bits: 656
