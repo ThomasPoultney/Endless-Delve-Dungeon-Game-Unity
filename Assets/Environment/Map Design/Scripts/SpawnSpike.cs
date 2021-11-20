@@ -10,7 +10,7 @@ public class SpawnSpike : MonoBehaviour
     void Start()
     {
         int rand = Random.Range(0, spikeObjects.Length);
-        GameObject instance = Instantiate(spikeObjects[rand], transform.position, Quaternion.identity);
+        GameObject instance = Instantiate(spikeObjects[rand], transform.position + new Vector3(0, 0, 100) , Quaternion.identity);
         instance.transform.parent = transform.parent;
         Destroy(gameObject);
 

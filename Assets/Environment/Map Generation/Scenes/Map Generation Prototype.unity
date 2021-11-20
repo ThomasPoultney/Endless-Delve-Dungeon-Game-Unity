@@ -295,12 +295,16 @@ MonoBehaviour:
   - {fileID: 1009486973707247786, guid: 81803abd5c9002c40910d60fc6eae2be, type: 3}
   - {fileID: 6154473719352987189, guid: d76f6d3d06ed1a0409d25079bb31227c, type: 3}
   - {fileID: 7216397876334614267, guid: 1a6eba725b962f44f95fe07324235544, type: 3}
-  mobPrefabs:
+  groundMobPrefabs:
   - {fileID: 6170493210970297549, guid: caef39d23da772b4ca4dfda98b641135, type: 3}
   - {fileID: 6700000161088399720, guid: a759831b1bd10d043885b71ff6907c58, type: 3}
+  flyingMobPrefabs:
+  - {fileID: 6567776595511405882, guid: ec5959a9b4150454484553f623831e35, type: 3}
+  - {fileID: 1306337226105307012, guid: aa1c2841897a968499784631d0f519aa, type: 3}
   player: {fileID: 1367081593}
   numTreasureToSpawn: 20
-  numMobsToSpawn: 10
+  numGroundMobsToSpawn: 10
+  numFlyingMobsToSpawn: 10
 --- !u!4 &549429644
 Transform:
   m_ObjectHideFlags: 0
@@ -442,7 +446,7 @@ GameObject:
   - component: {fileID: 1367081599}
   m_Layer: 14
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -18,7 +18,7 @@ public class SpawnTile : MonoBehaviour
         if (randBlockOrOre > orePencentage)
         {
             int rand = Random.Range(0, tileObjects.Length);
-            GameObject instance = Instantiate(tileObjects[rand], transform.position, Quaternion.identity);
+            GameObject instance = Instantiate(tileObjects[rand], transform.position + new Vector3(0,0,100), Quaternion.identity);
             instance.transform.parent = transform.parent;
             Destroy(gameObject);
             instance.layer = 9;
@@ -28,7 +28,7 @@ public class SpawnTile : MonoBehaviour
         else
         {
             int rand = Random.Range(0, oreObjects.Length);
-            GameObject instance = Instantiate(oreObjects[rand], transform.position, Quaternion.identity);
+            GameObject instance = Instantiate(oreObjects[rand], transform.position +new Vector3(0, 0, 100), Quaternion.identity);
 
             instance.transform.parent = transform.parent;
             Destroy(gameObject);

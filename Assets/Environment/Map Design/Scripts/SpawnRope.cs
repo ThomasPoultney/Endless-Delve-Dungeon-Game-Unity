@@ -19,7 +19,7 @@ public class SpawnRope : MonoBehaviour
         {
             Vector3 ropeSpawnPosition = transform.position;
             ropeSpawnPosition.y -= y;
-            GameObject instance = Instantiate(ropeObjects[rand], ropeSpawnPosition, Quaternion.identity);
+            GameObject instance = Instantiate(ropeObjects[rand], ropeSpawnPosition + new Vector3(0,0,100), Quaternion.identity);
             instance.transform.parent = transform.parent;
             Destroy(gameObject);
             instance.layer = 10;

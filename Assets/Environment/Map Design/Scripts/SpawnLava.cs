@@ -11,7 +11,7 @@ public class SpawnLava : MonoBehaviour
     {
 
         int rand = Random.Range(0, lavaObjects.Length);
-        GameObject instance = Instantiate(lavaObjects[rand], transform.position, Quaternion.identity);
+        GameObject instance = Instantiate(lavaObjects[rand], transform.position + new Vector3(0,0,100), Quaternion.identity);
 
         instance.transform.parent = transform.parent;
         instance.layer = 13;

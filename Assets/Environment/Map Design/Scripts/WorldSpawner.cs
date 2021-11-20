@@ -50,13 +50,15 @@ public class WorldSpawner : MonoBehaviour
 
 
     public GameObject[] treasurePrefabs;
-    public GameObject[] mobPrefabs;
-
+    public GameObject[] groundMobPrefabs;
+    public GameObject[] flyingMobPrefabs;
 
     private bool spawnedTresure = false;
     public GameObject player;
     public int numTreasureToSpawn = 0;
-    public int numMobsToSpawn = 0;
+    public int numGroundMobsToSpawn = 0;
+    public int numFlyingMobsToSpawn = 0;
+
 
 
 
@@ -212,10 +214,10 @@ public class WorldSpawner : MonoBehaviour
 
     }
 
-    private void SpawnMobs()
+    private void SpawnGroundMobs()
     {
-        GameObject mobParent = new GameObject();
-        mobParent.name = "Mob";
+        GameObject groundMobParent = new GameObject();
+        groundMobParent.name = "Ground Mobs";
         Vector3 startPosition = new Vector3(0.5f, 0.5f, 0);
         List<Vector3> potentialMobSpawnLocations = new List<Vector3>();
 
@@ -234,16 +236,53 @@ public class WorldSpawner : MonoBehaviour
             }
         }
 
-        int numSpawns = Mathf.Min(numMobsToSpawn, potentialMobSpawnLocations.Count);
+        int numSpawns = Mathf.Min(numGroundMobsToSpawn, potentialMobSpawnLocations.Count);
         for (int i = 0; i < numSpawns; i++)
 
         {
-            int randPrefab = Random.Range(0, mobPrefabs.Length);
+            int randPrefab = Random.Range(0, groundMobPrefabs.Length);
             int randSpawnPoint = Random.Range(0, potentialMobSpawnLocations.Count);
-            GameObject mob = Instantiate(mobPrefabs[randPrefab], potentialMobSpawnLocations[randSpawnPoint], Quaternion.identity);
-            mob.transform.parent = mobParent.transform;
+            GameObject mob = Instantiate(groundMobPrefabs[randPrefab], potentialMobSpawnLocations[randSpawnPoint], Quaternion.identity);
+            mob.transform.parent = groundMobParent.transform;
             mob.layer = 15;
             
+            potentialMobSpawnLocations.RemoveAt(randSpawnPoint);
+        }
+
+
+    }
+
+    private void SpawnFlyingMobs()
+    {
+        GameObject flyingMobParent = new GameObject();
+        flyingMobParent.name = "Flying Mobs";
+        Vector3 startPosition = new Vector3(0.5f, 0.5f, 0);
+        List<Vector3> potentialMobSpawnLocations = new List<Vector3>();
+
+        for (int x = 0; x < roomWidth * numRoomsHor; x++)
+        {
+            for (int y = 0; y < (roomHeight * numRoomsVer) - 2; y++)
+            {
+                Vector3 rayCastOrigin = startPosition + new Vector3(x, y, 0);
+                RaycastHit2D checkForAirHit = Physics2D.Raycast(rayCastOrigin, transform.TransformDirection(Vector2.up), 0.4f);
+               
+
+                if (checkForAirHit == false)
+                {
+                    potentialMobSpawnLocations.Add(rayCastOrigin);
+                }
+            }
+        }
+
+        int numSpawns = Mathf.Min(numFlyingMobsToSpawn, potentialMobSpawnLocations.Count);
+        for (int i = 0; i < numSpawns; i++)
+
+        {
+            int randPrefab = Random.Range(0, flyingMobPrefabs.Length);
+            int randSpawnPoint = Random.Range(0, potentialMobSpawnLocations.Count);
+            GameObject mob = Instantiate(flyingMobPrefabs[randPrefab], potentialMobSpawnLocations[randSpawnPoint], Quaternion.identity);
+            mob.transform.parent = flyingMobParent.transform;
+            mob.layer = 15;
             potentialMobSpawnLocations.RemoveAt(randSpawnPoint);
         }
 
@@ -448,7 +487,8 @@ public class WorldSpawner : MonoBehaviour
 
         if (spawnedMobs == false && reachedExit == true)
         {
-            SpawnMobs();
+            SpawnGroundMobs();
+            SpawnFlyingMobs();
             spawnedMobs = true;
         }
 
