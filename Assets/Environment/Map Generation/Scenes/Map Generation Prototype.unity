@@ -177,7 +177,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 7
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -289,7 +289,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   door: {fileID: 5699607093609984424, guid: 560f0162f12a51f46940aa674f4f6d03, type: 3}
-  spawnedDoor: 0
   treasurePrefabs:
   - {fileID: 9010035322334736946, guid: f86ab11fbb7cb694dba5f278c82ab4a7, type: 3}
   - {fileID: 1009486973707247786, guid: 81803abd5c9002c40910d60fc6eae2be, type: 3}
