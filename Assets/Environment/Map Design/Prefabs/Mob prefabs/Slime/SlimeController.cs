@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SkelentonMobController : MonoBehaviour
+public class SlimeController : MonoBehaviour
 {
     public float walkSpeed = 0.2f;
     public float attackDistance = 0.5f;
@@ -8,8 +8,8 @@ public class SkelentonMobController : MonoBehaviour
     private bool isAttacking = false;
 
     private Vector3 rayPosition;
-    private bool movingRight = true;
-    private string currentAnimationState = "Skelenton_Idle";
+    private bool movingRight = false;
+    private string currentAnimationState = "Slime_Idle";
     public LayerMask playerLayer;
     public LayerMask layersThatCanBeWalkedOn;
     public LayerMask layersThatCantBeWalkedThrough;
@@ -36,34 +36,32 @@ public class SkelentonMobController : MonoBehaviour
 
         if (playerInMeleeRange.collider)
         {
-            
-            ChangeAnimationState("Skelenton_Swing");
-            boxCollider.size = new Vector2(2, 1);
+
+            ChangeAnimationState("Slime_Attack");
             isAttacking = true;
 
         }
         else
         {
-            boxCollider.size = new Vector2(1, 1);
 
             if (movingRight)
             {
                 transform.position += new Vector3(+walkSpeed, 0, 0);
-                movingRotation = new Vector3(0, -180, 0);
-                isOnPlatformEdge = Physics2D.Raycast(transform.position + new Vector3(0.1f, 0, 0), Vector2.down, 1f,layersThatCanBeWalkedOn);
+                movingRotation = new Vector3(0, 0, 0);
+                isOnPlatformEdge = Physics2D.Raycast(transform.position + new Vector3(0.1f, 0, 0), Vector2.down, 1f, layersThatCanBeWalkedOn);
                 blockInFront = Physics2D.Raycast(transform.position + new Vector3(0.1f, 0, 0), playerCheckDirection, 0.2f, layersThatCantBeWalkedThrough);
-                ChangeAnimationState("Skelenton_Walk");
+                ChangeAnimationState("Slime_Move");
                 playerCheckDirection = Vector2.right;
 
             }
             else
             {
                 transform.position += new Vector3(-walkSpeed, 0, 0);
-                movingRotation = new Vector3(0, 0, 0);
-                isOnPlatformEdge = Physics2D.Raycast(transform.position + new Vector3(-0.1f, 0, 0), Vector2.down, 1f,layersThatCanBeWalkedOn) ;
+                movingRotation = new Vector3(0, -180, 0);
+                isOnPlatformEdge = Physics2D.Raycast(transform.position + new Vector3(-0.1f, 0, 0), Vector2.down, 1f, layersThatCanBeWalkedOn);
                 blockInFront = Physics2D.Raycast(transform.position + new Vector3(0.1f, 0, 0), playerCheckDirection, 0.2f, layersThatCantBeWalkedThrough);
 
-                ChangeAnimationState("Skelenton_Walk");
+                ChangeAnimationState("Slime_Move");
                 playerCheckDirection = Vector2.left;
             }
 
