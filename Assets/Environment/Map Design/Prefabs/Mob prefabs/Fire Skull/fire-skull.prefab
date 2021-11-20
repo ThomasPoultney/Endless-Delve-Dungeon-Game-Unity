@@ -168,6 +168,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 1
-  hunting: 0
   pursuitDistance: 4
   explodeAtDistance: 1
+  explosion: {fileID: 5621311102472054045, guid: fdb2bc0a7ae564e4da633633bde61d2f, type: 3}

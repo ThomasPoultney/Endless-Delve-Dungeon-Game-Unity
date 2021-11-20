@@ -8,9 +8,10 @@ public class SkullController : MonoBehaviour
 
     public float speed;
     private GameObject player;
-    public bool hunting = false;
+    private bool hunting = false;
     public float pursuitDistance = 4f;
     public float explodeAtDistance = 2f;
+    public GameObject explosion;
 
     void Start()
     {
@@ -30,9 +31,7 @@ public class SkullController : MonoBehaviour
             {
                 Hunt();
             }
-          
-            
-          
+
         } 
 
         
@@ -42,6 +41,9 @@ public class SkullController : MonoBehaviour
 
     private void explode()
     {
+        
+        GameObject Explosion = Instantiate(explosion, transform.position, Quaternion.identity);
+        explosion.transform.localScale = new Vector3(0.5f,0.5f,1);
         Destroy(gameObject);
     }
 
