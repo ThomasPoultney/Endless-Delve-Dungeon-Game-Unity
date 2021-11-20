@@ -145,7 +145,7 @@ public class WorldSpawner : MonoBehaviour
     private Vector3 SpawnDoor(Vector3 roomPosition, string objectName)
     {
         //offsets roomSpawnPosition to position of first block
-        roomPosition += new Vector3(0.5f, 0.5f, 0);
+        roomPosition += new Vector3(0.5f, 0.5f, 100);
 
         
         List<Vector3> potentialDoorSpawnLocations = new List<Vector3>();

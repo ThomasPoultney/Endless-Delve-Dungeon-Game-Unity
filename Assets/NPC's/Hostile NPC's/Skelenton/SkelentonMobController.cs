@@ -2,17 +2,22 @@ using UnityEngine;
 
 public class SkelentonMobController : MonoBehaviour
 {
-    public float walkSpeed = 0.2f;
-    public float attackDistance = 0.5f;
+    [SerializeField]
+    private float walkSpeed = 0.2f;
+    [SerializeField]
+    private float attackDistance = 0.5f;
     public Animator animator;
     private bool isAttacking = false;
 
     private Vector3 rayPosition;
     private bool movingRight = true;
     private string currentAnimationState = "Skelenton_Idle";
-    public LayerMask playerLayer;
-    public LayerMask layersThatCanBeWalkedOn;
-    public LayerMask layersThatCantBeWalkedThrough;
+    [SerializeField]
+    private LayerMask playerLayer;
+    [SerializeField]
+    private LayerMask layersThatCanBeWalkedOn;
+    [SerializeField]
+    private LayerMask layersThatCantBeWalkedThrough;
     private Vector2 playerCheckDirection;
     private BoxCollider2D boxCollider;
 
@@ -26,11 +31,12 @@ public class SkelentonMobController : MonoBehaviour
 
     void FixedUpdate()
     {
+        
         RaycastHit2D isOnPlatformEdge;
         RaycastHit2D blockInFront;
         Vector3 movingRotation;
 
-
+        //ray to check if player is withing attack range
         RaycastHit2D playerInMeleeRange = Physics2D.Raycast(transform.position, playerCheckDirection, attackDistance, playerLayer);
 
 
@@ -49,8 +55,11 @@ public class SkelentonMobController : MonoBehaviour
             if (movingRight)
             {
                 transform.position += new Vector3(+walkSpeed, 0, 0);
+                //sets the direction object is facing to right
                 movingRotation = new Vector3(0, -180, 0);
+                //checks if we are at platform end
                 isOnPlatformEdge = Physics2D.Raycast(transform.position + new Vector3(0.1f, 0, 0), Vector2.down, 1f,layersThatCanBeWalkedOn);
+                //checks if we can move forward
                 blockInFront = Physics2D.Raycast(transform.position + new Vector3(0.1f, 0, 0), playerCheckDirection, 0.2f, layersThatCantBeWalkedThrough);
                 ChangeAnimationState("Skelenton_Walk");
                 playerCheckDirection = Vector2.right;
@@ -59,8 +68,11 @@ public class SkelentonMobController : MonoBehaviour
             else
             {
                 transform.position += new Vector3(-walkSpeed, 0, 0);
+                //sets the direction the object is facing to left
                 movingRotation = new Vector3(0, 0, 0);
+                //checks if we are at platform end
                 isOnPlatformEdge = Physics2D.Raycast(transform.position + new Vector3(-0.1f, 0, 0), Vector2.down, 1f,layersThatCanBeWalkedOn) ;
+                //checks if we can move forward
                 blockInFront = Physics2D.Raycast(transform.position + new Vector3(0.1f, 0, 0), playerCheckDirection, 0.2f, layersThatCantBeWalkedThrough);
 
                 ChangeAnimationState("Skelenton_Walk");
@@ -77,6 +89,10 @@ public class SkelentonMobController : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// Changes the animation state of the animator attached to the object
+    /// </summary>
+    /// <param name="newState"></param>
     private void ChangeAnimationState(string newState)
     {
         if (newState == currentAnimationState) return;
