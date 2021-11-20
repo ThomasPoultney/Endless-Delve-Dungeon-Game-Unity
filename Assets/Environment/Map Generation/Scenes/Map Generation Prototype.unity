@@ -275,7 +275,7 @@ MonoBehaviour:
   numRoomsHor: 4
   numRoomsVer: 4
   chanceToMoveDown: 20
-  timeBetweenRoomSpawns: 0.1
+  timeBetweenRoomSpawns: 0
   rooms:
   - {fileID: 495642869254566747, guid: 67bc7d7ddb6f620428f3998a7fde11c8, type: 3}
   - {fileID: 5369455839420057082, guid: 4d0254131b40a8341beb729a165061f1, type: 3}
@@ -441,7 +441,6 @@ GameObject:
   - component: {fileID: 1367081595}
   - component: {fileID: 1367081594}
   - component: {fileID: 1367081597}
-  - component: {fileID: 1367081598}
   - component: {fileID: 1367081599}
   m_Layer: 14
   m_Name: Player
@@ -470,7 +469,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!212 &1367081595
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -566,18 +565,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &1367081598
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1367081593}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0302c3f91613f044eb4f3c253e5259ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!70 &1367081599
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
