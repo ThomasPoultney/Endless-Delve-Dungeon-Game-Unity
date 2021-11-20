@@ -19,6 +19,7 @@ public class SpawnRope : MonoBehaviour
         rope.layer = 10; 
         rope.transform.parent = transform;
         int rand = Random.Range(0, ropeObjects.Length);
+        //spawns length of rope
         for (int y = 0; y < ropeLength; y++)
         {
             Vector3 ropeSpawnPosition = transform.position;

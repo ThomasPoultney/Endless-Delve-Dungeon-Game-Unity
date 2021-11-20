@@ -1,20 +1,25 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ArcherController : MonoBehaviour
 {
-    public float walkSpeed = 0.2f;
-    public float maxShootDistance = 10f;
+    [SerializeField]
+    private float walkSpeed = 0.2f;
+    [SerializeField]
+    private float maxShootDistance = 10f;
     public Animator animator;
     private bool isAttacking = false;
-
     private Vector3 rayPosition;
     private bool movingRight = true;
     private string currentAnimationState;
-    public LayerMask playerLayer;
-    public LayerMask layersThatCanBeWalkedOn;
-    public LayerMask layersThatCantBeWalkedThrough;
+    [SerializeField]
+    private LayerMask playerLayer;
+    [SerializeField]
+    private LayerMask layersThatCanBeWalkedOn;
+    [SerializeField]
+    private LayerMask layersThatCantBeWalkedThrough;
     private Vector2 playerCheckDirection;
 
 
@@ -26,16 +31,14 @@ public class ArcherController : MonoBehaviour
 
     void FixedUpdate()
     {
-     
+        //checks if there is a player in range
         RaycastHit2D playerInShootingRange = Physics2D.Raycast(transform.position, playerCheckDirection, maxShootDistance, playerLayer);
 
 
+        //if there is a player in range we shoot
         if (playerInShootingRange.collider)
         {
-
-            ChangeAnimationState("AA_Shoot");
-           
-
+            shootArrow();
         } else
         {
             ChangeAnimationState("AA_Idle");
@@ -43,7 +46,19 @@ public class ArcherController : MonoBehaviour
         
     }
 
+    /// <summary>
+    /// Creates a arrow to be fired from the archer.
+    /// </summary>
+    private void shootArrow()
+    {
+        ChangeAnimationState("AA_Shoot");
+    }
 
+
+    /// <summary>
+    /// Changes the animation state of the animator attached to the object
+    /// </summary>
+    /// <param name="newState"></param>
     private void ChangeAnimationState(string newState)
     {
         if (newState == currentAnimationState) return;
