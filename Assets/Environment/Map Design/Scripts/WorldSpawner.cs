@@ -91,22 +91,22 @@ public class WorldSpawner : MonoBehaviour
         borders.name = "Borders of Map";
 
         //bottom Border
-        GameObject bottomBorder = Instantiate(borderBlock, new Vector2((roomWidth * numRoomsHor) / 2, transform.position.y - 0.5f), Quaternion.identity);
+        GameObject bottomBorder = Instantiate(borderBlock, new Vector3((roomWidth * numRoomsHor) / 2, transform.position.y - 0.5f, 100), Quaternion.identity);
         bottomBorder.GetComponent<SpriteRenderer>().size = new Vector2(mapWidth + 2, 1);
         bottomBorder.transform.parent = borders.transform;
 
         //top Border
-        GameObject topBorder = Instantiate(borderBlock, new Vector2((roomWidth * numRoomsHor) / 2, transform.position.y + roomHeight * numRoomsVer + 0.5f), Quaternion.identity);
+        GameObject topBorder = Instantiate(borderBlock, new Vector3((roomWidth * numRoomsHor) / 2, transform.position.y + roomHeight * numRoomsVer + 0.5f, 100), Quaternion.identity);
         topBorder.GetComponent<SpriteRenderer>().size = new Vector2(mapWidth + 2, 1);
         topBorder.transform.parent = borders.transform;
 
         //Right Border
-        GameObject rightBorder = Instantiate(borderBlock, new Vector2(transform.position.x - 0.5f, (roomHeight * numRoomsVer) / 2), Quaternion.identity);
+        GameObject rightBorder = Instantiate(borderBlock, new Vector3(transform.position.x - 0.5f, (roomHeight * numRoomsVer) / 2, 100), Quaternion.identity);
         rightBorder.GetComponent<SpriteRenderer>().size = new Vector2(1, mapHeight);
         rightBorder.transform.parent = borders.transform;
 
         //Left Border
-        GameObject leftBorder = Instantiate(borderBlock, new Vector2((roomWidth * numRoomsHor) + 0.5f, (roomHeight * numRoomsVer) / 2), Quaternion.identity);
+        GameObject leftBorder = Instantiate(borderBlock, new Vector3((roomWidth * numRoomsHor) + 0.5f, (roomHeight * numRoomsVer) / 2, 100), Quaternion.identity);
         leftBorder.GetComponent<SpriteRenderer>().size = new Vector2(1, mapHeight);
         leftBorder.transform.parent = borders.transform;
     }
@@ -479,7 +479,7 @@ public class WorldSpawner : MonoBehaviour
     }
 
    
-    // Update is called once per frame
+    //Update is called once per frame
     void Update()
     {
 
