@@ -4,17 +4,20 @@ using UnityEngine;
 
 public class SpawnLadder : MonoBehaviour
 {
-    // Start is called before the first frame update
+    //list of ladder prefabs to that can be spawned
     public GameObject[] ladderObjects;
     public int ladderLength;
 
+
+    // Start is called before the first frame update
     void Start()
     {
+
         GameObject ladder = new GameObject();
         ladder.name = "Ladder";
-        ladder.layer = 10; //sets layer to rope
-        ladder.transform.parent = transform;
-        int rand = Random.Range(0, ladderObjects.Length);
+        ladder.layer = 12; //sets layer to ladder
+        ladder.transform.parent = transform; 
+        int rand = Random.Range(0, ladderObjects.Length); //select a random ladder prefab.
         for (int y = 0; y < ladderLength; y++)
         {
             Vector3 ladderSpawnPosition = transform.position;
@@ -22,7 +25,7 @@ public class SpawnLadder : MonoBehaviour
             GameObject instance = Instantiate(ladderObjects[rand], ladderSpawnPosition, Quaternion.identity);
             instance.transform.parent = transform.parent;
             Destroy(gameObject);
-            instance.layer = 12;
+            instance.layer = 12; //sets layer to ladder
         }
 
 

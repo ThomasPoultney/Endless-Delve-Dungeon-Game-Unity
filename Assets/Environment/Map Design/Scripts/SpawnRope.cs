@@ -5,14 +5,18 @@ using UnityEngine;
 public class SpawnRope : MonoBehaviour
 {
     // Start is called before the first frame update
+
+    //list of rope prefabs to be spawned
     public GameObject[] ropeObjects;
+    //how many rope object to spawn
     public int ropeLength;
 
     void Start()
     {
         GameObject rope = new GameObject();
         rope.name = "Rope";
-        rope.layer = 10; //sets layer to rope
+        //sets layer to rope
+        rope.layer = 10; 
         rope.transform.parent = transform;
         int rand = Random.Range(0, ropeObjects.Length);
         for (int y = 0; y < ropeLength; y++)
