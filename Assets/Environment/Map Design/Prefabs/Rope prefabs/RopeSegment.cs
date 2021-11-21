@@ -5,8 +5,11 @@ using UnityEngine;
 public class RopeSegment : MonoBehaviour
 {
 
-    public GameObject connectedAbove;
-    public GameObject connectedBelow;
+    private GameObject connectedAbove;
+    private GameObject connectedBelow;
+
+    public bool isPlayerAttached = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -17,7 +20,7 @@ public class RopeSegment : MonoBehaviour
         {
             aboveSegment.connectedBelow = gameObject;
             float spriteBottom = connectedAbove.GetComponent<SpriteRenderer>().bounds.size.y;
-            GetComponent<HingeJoint2D>().connectedAnchor = new Vector2(0, spriteBottom * -1);
+            GetComponent<HingeJoint2D>().connectedAnchor = new Vector2(0, -1);
 
         } else
         {

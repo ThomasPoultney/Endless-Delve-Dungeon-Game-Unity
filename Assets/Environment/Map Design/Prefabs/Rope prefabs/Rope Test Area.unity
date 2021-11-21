@@ -1099,8 +1099,8 @@ HingeJoint2D:
     m_MaximumMotorForce: 10000
   m_UseLimits: 0
   m_AngleLimits:
-    m_LowerAngle: 0
-    m_UpperAngle: 359
+    m_LowerAngle: 60
+    m_UpperAngle: -60
 --- !u!1 &731333360
 GameObject:
   m_ObjectHideFlags: 0
@@ -1364,7 +1364,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hook: {fileID: 718962268}
   rope: {fileID: 4484792261136358788, guid: de8575227460fc849bea2e525e2efe27, type: 3}
-  numLinks: 8
+  numLinks: 6
+  topSegment: {fileID: 0}
 --- !u!1 &1043886519 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 9043749014202735877, guid: 082c64cc29b92d24aa69ac4507d7cbda, type: 3}

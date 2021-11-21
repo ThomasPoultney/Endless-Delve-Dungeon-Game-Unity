@@ -9,6 +9,7 @@ public class Rope : MonoBehaviour
     public GameObject rope;
     public int numLinks = 5;
 
+    public HingeJoint topSegment;
     // Start is called before the first frame update
     void Start()
     {
