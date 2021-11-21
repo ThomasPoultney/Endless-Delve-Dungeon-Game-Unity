@@ -101,30 +101,23 @@ public class PlayerRopeTest : MonoBehaviour
     private void Detach()
     {
         hj.connectedBody.gameObject.GetComponent<RopeSegment>().isPlayerAttached = true;
+        disregard = hj.connectedBody.gameObject.GetComponent<RopeSegment>().transform.parent.gameObject;
         attached = false;
         hj.enabled = false;
         hj.connectedBody = null;
-        disregard = hj.connectedBody.gameObject.GetComponent<RopeSegment>().transform.parent.gameObject;
-        Debug.Log(disregard.name);
 
-        StartCoroutine(Countdown());
+
+        StartCoroutine(setDisregard());
      
     }
 
-    private IEnumerator Countdown()
+    IEnumerator setDisregard()
     {
-        float duration = timeBeforePlayerCanAttachToSameRope; 
-                             
-        float totalTime = 0;
-        while (totalTime <= duration)
-        {
-            countdownImage.fillAmount = totalTime / duration;
-            totalTime += Time.deltaTime;
-            var integer = (int)totalTime;
-            Debug.Log(totalTime);
-            disregard = null;
-            yield return null;
-        }
+
+        yield return new WaitForSeconds(timeBeforePlayerCanAttachToSameRope);
+        ropeAttachedTo = null;
+
+
     }
 
     private void Slide(int amountToSlide)
