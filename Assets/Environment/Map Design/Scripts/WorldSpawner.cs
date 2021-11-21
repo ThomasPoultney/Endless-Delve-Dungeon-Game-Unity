@@ -77,8 +77,9 @@ public class WorldSpawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GenerateBorders();
+      
         SpawnEntranceRoom();
+        GenerateBorders();
     }
     /// <summary>
     /// Generates the one tile border around the map
@@ -93,21 +94,25 @@ public class WorldSpawner : MonoBehaviour
         //bottom Border
         GameObject bottomBorder = Instantiate(borderBlock, new Vector3((roomWidth * numRoomsHor) / 2, transform.position.y - 0.5f, 100), Quaternion.identity);
         bottomBorder.GetComponent<SpriteRenderer>().size = new Vector2(mapWidth + 2, 1);
+        bottomBorder.GetComponent<BoxCollider2D>().size = new Vector2(mapWidth + 2, 1);
         bottomBorder.transform.parent = borders.transform;
 
         //top Border
         GameObject topBorder = Instantiate(borderBlock, new Vector3((roomWidth * numRoomsHor) / 2, transform.position.y + roomHeight * numRoomsVer + 0.5f, 100), Quaternion.identity);
         topBorder.GetComponent<SpriteRenderer>().size = new Vector2(mapWidth + 2, 1);
+        topBorder.GetComponent<BoxCollider2D>().size = new Vector2(mapWidth + 2, 1);
         topBorder.transform.parent = borders.transform;
 
         //Right Border
         GameObject rightBorder = Instantiate(borderBlock, new Vector3(transform.position.x - 0.5f, (roomHeight * numRoomsVer) / 2, 100), Quaternion.identity);
         rightBorder.GetComponent<SpriteRenderer>().size = new Vector2(1, mapHeight);
+        rightBorder.GetComponent<BoxCollider2D>().size = new Vector2(1, mapHeight);
         rightBorder.transform.parent = borders.transform;
 
         //Left Border
         GameObject leftBorder = Instantiate(borderBlock, new Vector3((roomWidth * numRoomsHor) + 0.5f, (roomHeight * numRoomsVer) / 2, 100), Quaternion.identity);
         leftBorder.GetComponent<SpriteRenderer>().size = new Vector2(1, mapHeight);
+        leftBorder.GetComponent<BoxCollider2D>().size = new Vector2(1, mapHeight);
         leftBorder.transform.parent = borders.transform;
     }
 

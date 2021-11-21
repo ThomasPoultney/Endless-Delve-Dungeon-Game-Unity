@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Player_Controller : MonoBehaviour
 {
+    public string currentAnimationState;
+    public Animator animator;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -15,4 +18,19 @@ public class Player_Controller : MonoBehaviour
     {
         
     }
+
+
+    /// <summary>
+    /// Changes the animation state of the animator attached to the object
+    /// </summary>
+    /// <param name="newState"></param>
+    private void ChangeAnimationState(string newState)
+    {
+        if (newState == currentAnimationState) return;
+
+        animator.Play(newState);
+
+        currentAnimationState = newState;
+    }
+
 }
