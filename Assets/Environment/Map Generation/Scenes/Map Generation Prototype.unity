@@ -228,6 +228,11 @@ MonoBehaviour:
   speedConstant: 5
   numberOfRopesPlayerCanSpawn: 5
   ropeSpawner: {fileID: 303358299358692320, guid: 3bfb95113a50d7842a78e28331fc1fa3, type: 3}
+  maxRopeSpawnLength: 5
+  timeBetweenRopeSpawns: 2
+  ropesCanSpawnOn:
+    serializedVersion: 2
+    m_Bits: 512
   playerSizeConstant: 1.2
 --- !u!1001 &1644014477
 PrefabInstance:

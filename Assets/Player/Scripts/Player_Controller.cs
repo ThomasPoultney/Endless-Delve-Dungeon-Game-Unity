@@ -19,7 +19,9 @@ public class Player_Controller : MonoBehaviour
     [SerializeField] private GameObject ropeSpawner;
     private float lastSpawnTime;
     private bool canSpawnRope;
+    [SerializeField] private float maxRopeSpawnLength = 5;
     [SerializeField] private float timeBetweenRopeSpawns = 5;
+    [SerializeField] private LayerMask ropesCanSpawnOn;
 
 
     [SerializeField] private float playerSizeConstant;
@@ -66,7 +68,6 @@ public class Player_Controller : MonoBehaviour
 
         if (Input.GetKey(KeyCode.R) && !transform.GetComponent<PlayerRopeTest>().attached && canSpawnRope)
         {
-            Debug.Log("Firing Rope");
             fireRope();
         }
 
@@ -80,31 +81,39 @@ public class Player_Controller : MonoBehaviour
     private void fireRope()
     {
 
+        RaycastHit2D ropeSpawnCheck = Physics2D.Raycast(transform.position, Vector2.up, maxRopeSpawnLength,ropesCanSpawnOn);
+
+        int numLinksToSpawn = 0;
+        Vector3 ropeSpawnPosition = new Vector3(0,0,0);
+        if (ropeSpawnCheck.collider != null)
+        {
+            Vector3 blockPosition = ropeSpawnCheck.collider.transform.position;
+            ropeSpawnPosition = new Vector3(blockPosition.x, blockPosition.y - 1, 0);
+            numLinksToSpawn = (int)ropeSpawnCheck.distance;
+        }
+        
+
         lastSpawnTime = Time.time;
         canSpawnRope = false;
         ChangeAnimationState("Player_Item");
 
-        int numLinksToSpawn = 5;
-        if (ropesSpawned.Count >= numberOfRopesPlayerCanSpawn && ropesSpawned.Count > 0)
+        if (numLinksToSpawn > 0)
         {
-            GameObject ropeToDelete = ropesSpawned[0];
-            ropesSpawned.RemoveAt(0);
-            GameObject.Destroy(ropeToDelete); 
+            if (ropesSpawned.Count >= numberOfRopesPlayerCanSpawn && ropesSpawned.Count > 0)
+            {
+                GameObject ropeToDelete = ropesSpawned[0];
+                ropesSpawned.RemoveAt(0);
+                GameObject.Destroy(ropeToDelete);
+            }
+
+            ropeSpawner.GetComponent<spawnRope>().numLinks = numLinksToSpawn;
+            GameObject spawnedRope = Instantiate(ropeSpawner, ropeSpawnPosition, Quaternion.identity);
+            ropesSpawned.Add(spawnedRope);
         }
-
-        ropeSpawner.GetComponent<spawnRope>().numLinks = numLinksToSpawn;
-        GameObject spawnedRope = Instantiate(ropeSpawner, transform.position + new Vector3(0,numLinksToSpawn,0), Quaternion.identity);
-        ropesSpawned.Add(spawnedRope);
-        
-        StartCoroutine(timeDelay());
-                 
     }
 
-    IEnumerator timeDelay()
-    {
-        Debug.Log("Time Delay");
-        yield return new WaitForSeconds(3);
-    }
+
+
 
 
     private void Jump()
@@ -119,11 +128,11 @@ public class Player_Controller : MonoBehaviour
         if (collision.gameObject.layer == 9) playerGrounded = true;
     }
 
-/// <summary>
-/// Changes the animation state of the animator attached to the object
-/// </summary>
-/// <param name="newState"></param>
-private void ChangeAnimationState(string newState)
+    /// <summary>
+    /// Changes the animation state of the animator attached to the object
+    /// </summary>
+    /// <param name="newState"></param>
+    private void ChangeAnimationState(string newState)
     {
         if (newState == currentAnimationState) return;
 
