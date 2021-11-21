@@ -2,11 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerRopeTest : MonoBehaviour
 {
     public Rigidbody2D rb;
     private HingeJoint2D hj;
+
+    public Image countdownImage;
 
     public float pushForce = 10f;
 
@@ -14,6 +17,7 @@ public class PlayerRopeTest : MonoBehaviour
 
     public Transform ropeAttachedTo;
     private GameObject disregard; //stops player attaching to the same rope segment again
+    public float timeBeforePlayerCanAttachToSameRope = 1f;
 
 
 
@@ -100,11 +104,54 @@ public class PlayerRopeTest : MonoBehaviour
         attached = false;
         hj.enabled = false;
         hj.connectedBody = null;
+        disregard = hj.connectedBody.gameObject;
+        Countdown();
+    }
+
+    private IEnumerator Countdown()
+    {
+        float duration = timeBeforePlayerCanAttachToSameRope; 
+                             
+        float totalTime = 0;
+        while (totalTime <= duration)
+        {
+            countdownImage.fillAmount = totalTime / duration;
+            totalTime += Time.deltaTime;
+            var integer = (int)totalTime;
+            Debug.Log(totalTime);
+            disregard = null;
+            yield return null;
+        }
     }
 
     private void Slide(int amountToSlide)
     {
-        throw new NotImplementedException();
+        RopeSegment myConnection = hj.connectedBody.gameObject.GetComponent<RopeSegment>();
+        GameObject newSeg = null;
+
+        if(amountToSlide > 0)
+        {
+            //checks if there is a conneciton abouve
+            if(myConnection.connectedAbove != null)
+            {
+                //checks that the 
+                if(myConnection.connectedAbove.gameObject.GetComponent<RopeSegment>() != null)
+                {
+                    newSeg = myConnection.connectedAbove;
+                }
+            }
+        } else
+        {
+            if (myConnection.connectedBelow != null)
+            {
+                newSeg = myConnection.connectedBelow;
+            }
+        }
+
+        if(newSeg != null)
+        {
+          
+        }
     }
 }
 

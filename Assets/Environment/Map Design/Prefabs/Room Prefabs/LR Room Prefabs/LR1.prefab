@@ -28,6 +28,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4139050788146538555}
   - {fileID: 4139050787705725314}
@@ -767,6 +768,10 @@ PrefabInstance:
       propertyPath: ropeLength
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 2169029013718358286, guid: 3bfb95113a50d7842a78e28331fc1fa3, type: 3}
+      propertyPath: m_ConnectedAnchor.y
+      value: 5.5
+      objectReference: {fileID: 0}
     - target: {fileID: 2756410883073164530, guid: 3bfb95113a50d7842a78e28331fc1fa3, type: 3}
       propertyPath: m_RootOrder
       value: 61
@@ -811,6 +816,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5211872807773028264, guid: 3bfb95113a50d7842a78e28331fc1fa3, type: 3}
+      propertyPath: m_ConnectedAnchor.y
+      value: 5.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8550281725304628496, guid: 3bfb95113a50d7842a78e28331fc1fa3, type: 3}
+      propertyPath: ropeSegments.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8550281725304628496, guid: 3bfb95113a50d7842a78e28331fc1fa3, type: 3}
+      propertyPath: ropeSegments.Array.data[2]
+      value: 
+      objectReference: {fileID: 4484792261136358788, guid: c40f905494e57da41bc2b8a92ccff55a, type: 3}
+    - target: {fileID: 8550281725304628496, guid: 3bfb95113a50d7842a78e28331fc1fa3, type: 3}
+      propertyPath: ropeSegments.Array.data[3]
+      value: 
+      objectReference: {fileID: 4484792261136358788, guid: c40f905494e57da41bc2b8a92ccff55a, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3bfb95113a50d7842a78e28331fc1fa3, type: 3}
 --- !u!4 &3634372749948377992 stripped

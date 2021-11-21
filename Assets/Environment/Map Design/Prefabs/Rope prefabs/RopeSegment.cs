@@ -5,8 +5,8 @@ using UnityEngine;
 public class RopeSegment : MonoBehaviour
 {
 
-    private GameObject connectedAbove;
-    private GameObject connectedBelow;
+    public GameObject connectedAbove;
+    public GameObject connectedBelow;
 
     public bool isPlayerAttached = false;
 

@@ -28,6 +28,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4262187458961642832}
   - {fileID: 4262187458865585385}
@@ -2654,6 +2655,14 @@ PrefabInstance:
       propertyPath: ropeLength
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 2169029013718358286, guid: 3bfb95113a50d7842a78e28331fc1fa3, type: 3}
+      propertyPath: m_ConnectedAnchor.x
+      value: 8.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2169029013718358286, guid: 3bfb95113a50d7842a78e28331fc1fa3, type: 3}
+      propertyPath: m_ConnectedAnchor.y
+      value: 8.5
+      objectReference: {fileID: 0}
     - target: {fileID: 2756410883073164530, guid: 3bfb95113a50d7842a78e28331fc1fa3, type: 3}
       propertyPath: m_RootOrder
       value: 65
@@ -2697,6 +2706,18 @@ PrefabInstance:
     - target: {fileID: 2756410883073164530, guid: 3bfb95113a50d7842a78e28331fc1fa3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5211872807773028264, guid: 3bfb95113a50d7842a78e28331fc1fa3, type: 3}
+      propertyPath: m_ConnectedAnchor.x
+      value: 8.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5211872807773028264, guid: 3bfb95113a50d7842a78e28331fc1fa3, type: 3}
+      propertyPath: m_ConnectedAnchor.y
+      value: 8.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8550281725304628496, guid: 3bfb95113a50d7842a78e28331fc1fa3, type: 3}
+      propertyPath: numLinks
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3bfb95113a50d7842a78e28331fc1fa3, type: 3}

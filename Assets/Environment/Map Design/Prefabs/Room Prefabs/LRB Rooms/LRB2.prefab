@@ -28,6 +28,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5603447803887289356}
   - {fileID: 5603447804048354806}
@@ -192,7 +193,7 @@ PrefabInstance:
     - target: {fileID: 303358299358692320, guid: 3bfb95113a50d7842a78e28331fc1fa3, type: 3}
       propertyPath: m_Icon
       value: 
-      objectReference: {fileID: -5487077368411116049, guid: 0000000000000000d000000000000000, type: 0}
+      objectReference: {fileID: 7148428337604731935, guid: 0000000000000000d000000000000000, type: 0}
     - target: {fileID: 303358299358692320, guid: 3bfb95113a50d7842a78e28331fc1fa3, type: 3}
       propertyPath: m_Name
       value: SpawnRope (4)
@@ -200,6 +201,10 @@ PrefabInstance:
     - target: {fileID: 1010972023128218580, guid: 3bfb95113a50d7842a78e28331fc1fa3, type: 3}
       propertyPath: ropeLength
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2169029013718358286, guid: 3bfb95113a50d7842a78e28331fc1fa3, type: 3}
+      propertyPath: m_ConnectedAnchor.y
+      value: 6.5
       objectReference: {fileID: 0}
     - target: {fileID: 2756410883073164530, guid: 3bfb95113a50d7842a78e28331fc1fa3, type: 3}
       propertyPath: m_RootOrder
@@ -244,6 +249,10 @@ PrefabInstance:
     - target: {fileID: 2756410883073164530, guid: 3bfb95113a50d7842a78e28331fc1fa3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5211872807773028264, guid: 3bfb95113a50d7842a78e28331fc1fa3, type: 3}
+      propertyPath: m_ConnectedAnchor.y
+      value: 6.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3bfb95113a50d7842a78e28331fc1fa3, type: 3}
@@ -2330,10 +2339,18 @@ PrefabInstance:
     - target: {fileID: 303358299358692320, guid: 3bfb95113a50d7842a78e28331fc1fa3, type: 3}
       propertyPath: m_Icon
       value: 
-      objectReference: {fileID: -5487077368411116049, guid: 0000000000000000d000000000000000, type: 0}
+      objectReference: {fileID: 7148428337604731935, guid: 0000000000000000d000000000000000, type: 0}
     - target: {fileID: 303358299358692320, guid: 3bfb95113a50d7842a78e28331fc1fa3, type: 3}
       propertyPath: m_Name
       value: SpawnRope
+      objectReference: {fileID: 0}
+    - target: {fileID: 2169029013718358286, guid: 3bfb95113a50d7842a78e28331fc1fa3, type: 3}
+      propertyPath: m_ConnectedAnchor.x
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2169029013718358286, guid: 3bfb95113a50d7842a78e28331fc1fa3, type: 3}
+      propertyPath: m_ConnectedAnchor.y
+      value: 6.5
       objectReference: {fileID: 0}
     - target: {fileID: 2756410883073164530, guid: 3bfb95113a50d7842a78e28331fc1fa3, type: 3}
       propertyPath: m_RootOrder
@@ -2378,6 +2395,18 @@ PrefabInstance:
     - target: {fileID: 2756410883073164530, guid: 3bfb95113a50d7842a78e28331fc1fa3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5211872807773028264, guid: 3bfb95113a50d7842a78e28331fc1fa3, type: 3}
+      propertyPath: m_ConnectedAnchor.x
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5211872807773028264, guid: 3bfb95113a50d7842a78e28331fc1fa3, type: 3}
+      propertyPath: m_ConnectedAnchor.y
+      value: 6.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8550281725304628496, guid: 3bfb95113a50d7842a78e28331fc1fa3, type: 3}
+      propertyPath: numLinks
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3bfb95113a50d7842a78e28331fc1fa3, type: 3}
@@ -2800,10 +2829,18 @@ PrefabInstance:
     - target: {fileID: 303358299358692320, guid: 3bfb95113a50d7842a78e28331fc1fa3, type: 3}
       propertyPath: m_Icon
       value: 
-      objectReference: {fileID: -5487077368411116049, guid: 0000000000000000d000000000000000, type: 0}
+      objectReference: {fileID: 7148428337604731935, guid: 0000000000000000d000000000000000, type: 0}
     - target: {fileID: 303358299358692320, guid: 3bfb95113a50d7842a78e28331fc1fa3, type: 3}
       propertyPath: m_Name
       value: SpawnRope (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2169029013718358286, guid: 3bfb95113a50d7842a78e28331fc1fa3, type: 3}
+      propertyPath: m_ConnectedAnchor.x
+      value: 7.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2169029013718358286, guid: 3bfb95113a50d7842a78e28331fc1fa3, type: 3}
+      propertyPath: m_ConnectedAnchor.y
+      value: 6.5
       objectReference: {fileID: 0}
     - target: {fileID: 2756410883073164530, guid: 3bfb95113a50d7842a78e28331fc1fa3, type: 3}
       propertyPath: m_RootOrder
@@ -2848,6 +2885,18 @@ PrefabInstance:
     - target: {fileID: 2756410883073164530, guid: 3bfb95113a50d7842a78e28331fc1fa3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5211872807773028264, guid: 3bfb95113a50d7842a78e28331fc1fa3, type: 3}
+      propertyPath: m_ConnectedAnchor.x
+      value: 7.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5211872807773028264, guid: 3bfb95113a50d7842a78e28331fc1fa3, type: 3}
+      propertyPath: m_ConnectedAnchor.y
+      value: 6.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8550281725304628496, guid: 3bfb95113a50d7842a78e28331fc1fa3, type: 3}
+      propertyPath: numLinks
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3bfb95113a50d7842a78e28331fc1fa3, type: 3}

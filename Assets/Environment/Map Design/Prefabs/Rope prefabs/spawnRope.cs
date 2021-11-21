@@ -1,13 +1,14 @@
-using System;
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Rope : MonoBehaviour
+public class spawnRope : MonoBehaviour
 {
     public Rigidbody2D hook;
-    public GameObject rope;
+    public GameObject[] ropeSegments;
     public int numLinks = 5;
+
 
     public HingeJoint topSegment;
     // Start is called before the first frame update
@@ -18,13 +19,17 @@ public class Rope : MonoBehaviour
 
     private void GenerateRope()
     {
+        Vector3 ropeSpawnPosition = transform.position + new Vector3(0, 0.5f,0) ;
+        hook.transform.position = ropeSpawnPosition;
+        Instantiate(hook, ropeSpawnPosition, Quaternion.identity);
         Rigidbody2D prevBod = hook;
 
+        int rand = Random.Range(0, ropeSegments.Length);
         for (int i = 0; i < numLinks; i++)
         {
-            GameObject newSeg = Instantiate(rope);
+            GameObject newSeg = Instantiate(ropeSegments[rand] , ropeSpawnPosition, Quaternion.identity);
             newSeg.transform.parent = transform;
-            newSeg.transform.position = transform.position;
+            newSeg.transform.position = ropeSpawnPosition;
             HingeJoint2D hj = newSeg.GetComponent<HingeJoint2D>();
             hj.connectedBody = prevBod;
 
