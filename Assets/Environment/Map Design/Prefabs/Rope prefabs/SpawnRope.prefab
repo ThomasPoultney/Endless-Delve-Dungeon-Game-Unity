@@ -28,6 +28,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -71,6 +72,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ropeObjects:
-  - {fileID: 7369153113945796096, guid: 1fcb32f1f7978aa4ca7c210bcc4cf14c, type: 3}
+  - {fileID: 4131849263388415892, guid: 1fcb32f1f7978aa4ca7c210bcc4cf14c, type: 3}
   - {fileID: 187272152729861988, guid: 82e6508ffaf25254dbdd26eb66a673f1, type: 3}
   ropeLength: 5

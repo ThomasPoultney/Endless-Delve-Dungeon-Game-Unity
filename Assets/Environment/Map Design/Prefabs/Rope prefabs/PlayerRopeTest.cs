@@ -71,7 +71,6 @@ public class PlayerRopeTest : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("Collision Detected" + collision.name);
         if(!attached) {
             //
             if(collision.gameObject.tag == "Rope")

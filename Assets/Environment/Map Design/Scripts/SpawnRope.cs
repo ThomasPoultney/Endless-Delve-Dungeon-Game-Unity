@@ -8,29 +8,32 @@ public class SpawnRope : MonoBehaviour
 
     //list of rope prefabs to be spawned
     public GameObject[] ropeObjects;
-    //how many rope object to spawn
-    public int ropeLength;
+    public Rigidbody2D hook;
+    public GameObject rope;
+    public int numLinks = 5;
+
+    public HingeJoint topSegment;
 
     void Start()
     {
+        Rigidbody2D prevBod = hook;
         GameObject rope = new GameObject();
         rope.name = "Rope";
         //sets layer to rope
         rope.layer = 10; 
         rope.transform.parent = transform;
         int rand = Random.Range(0, ropeObjects.Length);
-        //spawns length of rope
-        for (int y = 0; y < ropeLength; y++)
+        for (int i = 0; i < numLinks; i++)
         {
-            Vector3 ropeSpawnPosition = transform.position;
-            ropeSpawnPosition.y -= y;
-            GameObject instance = Instantiate(ropeObjects[rand], ropeSpawnPosition + new Vector3(0,0,100), Quaternion.identity);
-            instance.transform.parent = transform.parent;
-            Destroy(gameObject);
-            instance.layer = 10;
+            GameObject newSeg = Instantiate(ropeObjects[rand]);
+            newSeg.transform.parent = transform;
+            newSeg.transform.position = transform.position;
+            HingeJoint2D hj = newSeg.GetComponent<HingeJoint2D>();
+            hj.connectedBody = prevBod;
+
+            prevBod = newSeg.GetComponent<Rigidbody2D>();
+
         }
-
-
     }
 
     // Update is called once per frame

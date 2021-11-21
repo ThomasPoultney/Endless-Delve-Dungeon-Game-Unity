@@ -19,6 +19,7 @@ public class Rope : MonoBehaviour
     private void GenerateRope()
     {
         Rigidbody2D prevBod = hook;
+
         for (int i = 0; i < numLinks; i++)
         {
             GameObject newSeg = Instantiate(rope);
