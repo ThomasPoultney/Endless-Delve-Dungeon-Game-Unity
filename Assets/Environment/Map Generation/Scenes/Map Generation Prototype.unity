@@ -598,7 +598,7 @@ MonoBehaviour:
   rb: {fileID: 1367081594}
   pushForce: 10
   attached: 0
-  timeBeforePlayerCanAttachToSameRope: 1
+  timeBeforePlayerCanAttachToSameRope: 2
 --- !u!233 &1367081601
 HingeJoint2D:
   m_ObjectHideFlags: 0
