@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class WorldSpawner : MonoBehaviour
 {
-
     [SerializeField]
     private float roomHeight;
     [SerializeField]
@@ -79,6 +78,7 @@ public class WorldSpawner : MonoBehaviour
     {
         GenerateBorders();
         SpawnEntranceRoom();
+        InitPlayer();
     }
     /// <summary>
     /// Generates the one tile border around the map
@@ -141,7 +141,6 @@ public class WorldSpawner : MonoBehaviour
     /// <param name="roomPosition">The bottom left position of the room to spawn door</param>
     /// <param name="objectName"> Name to set object in inspector</param>
     /// <returns> The spawn location of the door</returns>
-
     private Vector3 SpawnDoor(Vector3 roomPosition, string objectName)
     {
         //offsets roomSpawnPosition to position of first block
@@ -179,6 +178,7 @@ public class WorldSpawner : MonoBehaviour
         return potentialDoorSpawnLocations[randDoor];
 
     }
+    
     /// <summary>
     /// Spawns treasure at random positions around the map where there is space
     /// </summary>
@@ -478,6 +478,13 @@ public class WorldSpawner : MonoBehaviour
         Instantiate(rooms[roomType], roomSpawnPoint.transform.position, Quaternion.identity);
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    private void InitPlayer()
+    {
+
+    }
    
     // Update is called once per frame
     void Update()
