@@ -9,13 +9,13 @@ public class PlayerRopeTest : MonoBehaviour
     public Rigidbody2D rb;
     private HingeJoint2D hj;
 
-    public Image countdownImage;
+    private Image countdownImage;
 
     public float pushForce = 10f;
 
     public bool attached = false;
 
-    public Transform ropeAttachedTo;
+    private Transform ropeAttachedTo;
     private GameObject disregard; //stops player attaching to the same rope segment again
     public float timeBeforePlayerCanAttachToSameRope = 1f;
 
@@ -104,8 +104,11 @@ public class PlayerRopeTest : MonoBehaviour
         attached = false;
         hj.enabled = false;
         hj.connectedBody = null;
-        disregard = hj.connectedBody.gameObject;
-        Countdown();
+        disregard = hj.connectedBody.gameObject.GetComponent<RopeSegment>().transform.parent.gameObject;
+        Debug.Log(disregard.name);
+
+        StartCoroutine(Countdown());
+     
     }
 
     private IEnumerator Countdown()

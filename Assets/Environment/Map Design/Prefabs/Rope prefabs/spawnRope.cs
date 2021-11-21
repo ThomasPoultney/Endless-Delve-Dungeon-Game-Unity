@@ -21,7 +21,6 @@ public class spawnRope : MonoBehaviour
     {
         Vector3 ropeSpawnPosition = transform.position + new Vector3(0, 0.5f,0) ;
         hook.transform.position = ropeSpawnPosition;
-        Instantiate(hook, ropeSpawnPosition, Quaternion.identity);
         Rigidbody2D prevBod = hook;
 
         int rand = Random.Range(0, ropeSegments.Length);
