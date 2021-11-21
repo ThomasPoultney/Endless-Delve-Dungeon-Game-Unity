@@ -194,7 +194,7 @@ public class WorldSpawner : MonoBehaviour
         TreasureParent.name = "Treasure";
 
         //offsets startPosition to the position of first block
-        Vector3 startPosition = new Vector3(0.5f, 0.5f, 0);
+        Vector3 startPosition = new Vector3(0.5f, 0.5f, 5f);
        
         List<Vector3> potentialTreasureSpawnLocations = new List<Vector3>();
 

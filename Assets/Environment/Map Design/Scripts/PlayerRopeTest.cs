@@ -41,7 +41,13 @@ public class PlayerRopeTest : MonoBehaviour
 
     private void CheckKeyBoardInputs()
     {
-        if(Input.GetKey("a") || Input.GetKey("left"))
+
+        if (Input.GetKeyDown(KeyCode.Space) && attached)
+        {
+            Detach();
+        }
+
+        if (Input.GetKey("a") || Input.GetKey("left"))
         {
             if(attached)
             {
@@ -67,10 +73,7 @@ public class PlayerRopeTest : MonoBehaviour
             Slide(-1);
         }
 
-        if(Input.GetKeyDown(KeyCode.Space) && attached)
-        {
-            Detach();
-        }
+      
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -113,41 +116,14 @@ public class PlayerRopeTest : MonoBehaviour
 
     IEnumerator setDisregard()
     {
-
         yield return new WaitForSeconds(timeBeforePlayerCanAttachToSameRope);
         ropeAttachedTo = null;
-
-
-    }
+        disregard = null;
+     }
 
     private void Slide(int amountToSlide)
     {
-        RopeSegment myConnection = hj.connectedBody.gameObject.GetComponent<RopeSegment>();
-        GameObject newSeg = null;
-
-        if(amountToSlide > 0)
-        {
-            //checks if there is a conneciton abouve
-            if(myConnection.connectedAbove != null)
-            {
-                //checks that the 
-                if(myConnection.connectedAbove.gameObject.GetComponent<RopeSegment>() != null)
-                {
-                    newSeg = myConnection.connectedAbove;
-                }
-            }
-        } else
-        {
-            if (myConnection.connectedBelow != null)
-            {
-                newSeg = myConnection.connectedBelow;
-            }
-        }
-
-        if(newSeg != null)
-        {
-          
-        }
+        
     }
 }
 
