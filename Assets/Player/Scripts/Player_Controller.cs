@@ -174,7 +174,7 @@ public class Player_Controller : MonoBehaviour
 
 
 
-    private void Jump()
+    public void Jump()
     {
         playerBody.velocity = new Vector2(playerBody.velocity.x, playerBody.velocity.y + speedConstant);
         ChangeAnimationState("Player_Jump");

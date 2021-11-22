@@ -153,9 +153,9 @@ public class PlayerRopeTest : MonoBehaviour
         ropeAttachedTo = null;
         attached = false;
         hj.connectedBody = null;
-        hj.enabled = false;
-        
+        hj.enabled = false;      
         lastDetachTime = Time.time;
+        transform.GetComponent<Player_Controller>().Jump();
     }
 
    
