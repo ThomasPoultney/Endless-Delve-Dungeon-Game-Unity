@@ -23,7 +23,7 @@ public class Player_Controller : MonoBehaviour
     [SerializeField] private float timeBetweenRopeSpawns = 5;
     [SerializeField] private LayerMask ropesCanSpawnOn;
     private bool weaponOut = false;
-    private bool ClimbingLadder = false;
+    private bool climbingLadder = false;
 
 
     [SerializeField] private float playerSizeConstant;
