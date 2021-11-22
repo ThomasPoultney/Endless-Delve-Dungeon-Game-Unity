@@ -186,7 +186,7 @@ public class Player_Controller : MonoBehaviour
     {
         climbingLadder = false;
         playerGrounded = false;
-        if (collision.gameObject.layer == 9) playerGrounded = true;
+        if (collision.gameObject.layer == 9 || collision.gameObject.layer == 16) playerGrounded = true; //9 - basic bloc, 16 - Bedrock
 
         if (collision.gameObject.layer == 12) climbingLadder = true; //ladder 
 
