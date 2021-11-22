@@ -16,7 +16,8 @@ public class PlayerRopeTest : MonoBehaviour
     public bool attached = false;
 
     private Transform ropeAttachedTo;
-    private GameObject disregard; //stops player attaching to the same rope segment again
+    private Transform ropeSegmentAttachedTo;
+    private GameObject disregard; //stops player attaching to the same rope again
     public float timeBeforePlayerCanAttachToSameRope = 1f;
 
     private float lastDetachTime;
@@ -37,6 +38,17 @@ public class PlayerRopeTest : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        if (ropeAttachedTo !=null)
+        {
+          
+            HingeJoint2D joint = transform.GetComponent<HingeJoint2D>();
+            float offsetX = 0;
+            float offsetY = joint.connectedAnchor.y;
+            joint.connectedAnchor.Set(offsetX, offsetY);
+        }
+     
+
         if (Time.time - lastDetachTime > timeBeforePlayerCanAttachToSameRope)
         {
             disregard = null;
@@ -99,8 +111,9 @@ public class PlayerRopeTest : MonoBehaviour
     }
 
     private void Attach(Rigidbody2D ropeSegment)
-    {
+    {    
         ropeSegment.gameObject.GetComponent<RopeSegment>().isPlayerAttached = true;
+        ropeSegmentAttachedTo = ropeSegment.transform.parent;
         hj.connectedBody = ropeSegment;
         hj.enabled = true;
         attached = true;
