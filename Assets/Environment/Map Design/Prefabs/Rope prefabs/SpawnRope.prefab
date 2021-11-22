@@ -50,6 +50,8 @@ MonoBehaviour:
   - {fileID: 4484792261136358788, guid: de8575227460fc849bea2e525e2efe27, type: 3}
   - {fileID: 4484792261136358788, guid: c40f905494e57da41bc2b8a92ccff55a, type: 3}
   numLinks: 6
+  startLimit: 10
+  increasingLimitAmount: 2
   topSegment: {fileID: 0}
 --- !u!1001 &5064021042512499969
 PrefabInstance:

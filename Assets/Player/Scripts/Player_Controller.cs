@@ -57,6 +57,11 @@ public class Player_Controller : MonoBehaviour
         {
             Jump();
         }
+        else if (climbingLadder == true) //climbing Ladder
+        {
+            ChangeAnimationState("Player_Climb");
+            currentAnimationState = "Player_Climb";
+        }
         else if (!playerGrounded && playerBody.velocity.y >= 0 )//and we are gaining momentum up we set animation to jump
         {
             ChangeAnimationState("Player_Jump");
@@ -179,9 +184,13 @@ public class Player_Controller : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        climbingLadder = false;
+        playerGrounded = false;
         if (collision.gameObject.layer == 9) playerGrounded = true;
 
-        if (collision.gameObject.layer == 12) climbingLadder = true;//ladder 
+        if (collision.gameObject.layer == 12) climbingLadder = true; //ladder 
+
+
     }
 
     /// <summary>

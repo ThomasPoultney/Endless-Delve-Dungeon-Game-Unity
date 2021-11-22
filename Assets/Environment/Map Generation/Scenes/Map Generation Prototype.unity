@@ -206,34 +206,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 236308664087019659, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
   m_PrefabInstance: {fileID: 1644014477}
   m_PrefabAsset: {fileID: 0}
---- !u!95 &1320483090 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 236308664087019648, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
-  m_PrefabInstance: {fileID: 1644014477}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1320483095
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1320483087}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a37dd6baf7fc4e2488c743f236e2e9ab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentAnimationState: Player_Idle_Sheathed
-  animator: {fileID: 1320483090}
-  speedConstant: 5
-  numberOfRopesPlayerCanSpawn: 5
-  ropeSpawner: {fileID: 303358299358692320, guid: 3bfb95113a50d7842a78e28331fc1fa3, type: 3}
-  maxRopeSpawnLength: 5
-  timeBetweenRopeSpawns: 2
-  ropesCanSpawnOn:
-    serializedVersion: 2
-    m_Bits: 512
-  playerSizeConstant: 1.2
 --- !u!1001 &1644014477
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -244,14 +216,6 @@ PrefabInstance:
     - target: {fileID: 236308664087019653, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
       propertyPath: m_RootOrder
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 236308664087019653, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 236308664087019653, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1.2
       objectReference: {fileID: 0}
     - target: {fileID: 236308664087019653, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
       propertyPath: m_LocalPosition.x
@@ -293,17 +257,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 236308664087019655, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
-      propertyPath: m_Material
-      value: 
-      objectReference: {fileID: 6200000, guid: ca2167a4932ea8a4ab2063a9440cdfda, type: 2}
     - target: {fileID: 236308664087019659, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 6722890377543510114, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
-      propertyPath: pushForce
-      value: 2
+      propertyPath: timeBeforePlayerCanAttachToSameRope
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}

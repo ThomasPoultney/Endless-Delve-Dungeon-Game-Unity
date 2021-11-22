@@ -8,7 +8,10 @@ public class spawnRope : MonoBehaviour
     public Rigidbody2D hook;
     public GameObject[] ropeSegments;
     public int numLinks = 5;
-
+    [SerializeField]
+    private int startLimit = 15;
+    [SerializeField]
+    private int increasingLimitAmount = 5;
 
     public HingeJoint topSegment;
     // Start is called before the first frame update
@@ -31,7 +34,10 @@ public class spawnRope : MonoBehaviour
             newSeg.transform.position = ropeSpawnPosition;
             HingeJoint2D hj = newSeg.GetComponent<HingeJoint2D>();
             hj.connectedBody = prevBod;
-
+            JointAngleLimits2D joints =  new JointAngleLimits2D();
+            joints.min = -(startLimit + (increasingLimitAmount * i));
+            joints.max = startLimit + (increasingLimitAmount * i);
+            hj.limits = joints;
             prevBod = newSeg.GetComponent<Rigidbody2D>();
 
         }
