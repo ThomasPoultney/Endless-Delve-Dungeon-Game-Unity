@@ -22,14 +22,14 @@ public class spawnRope : MonoBehaviour
 
     private void GenerateRope()
     {
-        Vector3 ropeSpawnPosition = transform.position + new Vector3(0, 0.5f,0) ;
+        Vector3 ropeSpawnPosition = transform.position + new Vector3(0, 0.45f,0) ;
         hook.transform.position = ropeSpawnPosition;
         Rigidbody2D prevBod = hook;
 
         int rand = Random.Range(0, ropeSegments.Length);
         for (int i = 0; i < numLinks; i++)
         {
-            GameObject newSeg = Instantiate(ropeSegments[rand] , ropeSpawnPosition, Quaternion.identity);
+            GameObject newSeg = Instantiate(ropeSegments[rand] , ropeSpawnPosition + new Vector3(0,i,0), Quaternion.identity);
             newSeg.transform.parent = transform;
             newSeg.transform.position = ropeSpawnPosition;
             HingeJoint2D hj = newSeg.GetComponent<HingeJoint2D>();

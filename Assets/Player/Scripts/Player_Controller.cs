@@ -49,7 +49,7 @@ public class Player_Controller : MonoBehaviour
         //creates a priority list of animations based on certain conditions being met
         if (attached)
         {
-            ChangeAnimationState("Player_Climb");
+            ChangeAnimationState("Player_Wall_Slide");
             currentAnimationState = "Player_Climb";
             // Flips player when moving left and right to direction of movement.
         }

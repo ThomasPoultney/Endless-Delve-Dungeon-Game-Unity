@@ -14,6 +14,7 @@ public class PlayerRopeTest : MonoBehaviour
     public float pushForce = 10f;
 
     public bool attached = false;
+    public float playerMass = 1;
 
     private Transform ropeAttachedTo;
     private Transform ropeSegmentAttachedTo;
@@ -35,26 +36,39 @@ public class PlayerRopeTest : MonoBehaviour
         
     }
 
-    // Update is called once per frame
+   
     void Update()
     {
 
+        CheckKeyBoardInputs();
+
         if (ropeAttachedTo !=null)
-        {
-          
+        {        
             HingeJoint2D joint = transform.GetComponent<HingeJoint2D>();
+            transform.rotation = ropeSegmentAttachedTo.transform.rotation;
             float offsetX = 0;
             float offsetY = joint.connectedAnchor.y;
             joint.connectedAnchor.Set(offsetX, offsetY);
         }
      
-
-        if (Time.time - lastDetachTime > timeBeforePlayerCanAttachToSameRope)
+        if(disregard != null)
         {
-            disregard = null;
+            if (Time.time - lastDetachTime > timeBeforePlayerCanAttachToSameRope)
+            {
+                foreach (Transform child in disregard.transform)
+                {
+                    if (child.GetComponent<RopeSegment>() != null)
+                    {
+                        child.GetComponent<BoxCollider2D>().isTrigger = false;
+                    }
+                }
+                disregard = null;
+            }
+
         }
-        CheckKeyBoardInputs();
-      
+
+
+
     }
 
     private void CheckKeyBoardInputs()
@@ -111,7 +125,8 @@ public class PlayerRopeTest : MonoBehaviour
     }
 
     private void Attach(Rigidbody2D ropeSegment)
-    {    
+    {
+        transform.GetComponent<Rigidbody2D>().mass = 0;
         ropeSegment.gameObject.GetComponent<RopeSegment>().isPlayerAttached = true;
         ropeSegmentAttachedTo = ropeSegment.transform.parent;
         hj.connectedBody = ropeSegment;
@@ -122,12 +137,24 @@ public class PlayerRopeTest : MonoBehaviour
 
     private void Detach()
     {
+
+        transform.GetComponent<Rigidbody2D>().mass = playerMass;
         hj.connectedBody.gameObject.GetComponent<RopeSegment>().isPlayerAttached = true;
         disregard = hj.connectedBody.gameObject.GetComponent<RopeSegment>().transform.parent.gameObject;
+
+        foreach (Transform child in ropeAttachedTo)
+        {
+            if (child.GetComponent<RopeSegment>() != null)
+            {
+                child.GetComponent<BoxCollider2D>().isTrigger = true;
+            }
+            
+        }
         ropeAttachedTo = null;
         attached = false;
-        hj.enabled = false;
         hj.connectedBody = null;
+        hj.enabled = false;
+        
         lastDetachTime = Time.time;
     }
 
