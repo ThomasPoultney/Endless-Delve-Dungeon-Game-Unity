@@ -290,6 +290,26 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1320483095, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
+      propertyPath: attackDuration
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1320483095, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
+      propertyPath: slideThreshold
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1320483095, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
+      propertyPath: jumpingConstant
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1320483095, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
+      propertyPath: runningSpeedConstant
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1320483095, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
+      propertyPath: crouchingSpeedConstant
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1320483095, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
       propertyPath: ropesCanSpawnOn.m_Bits
       value: 66048
       objectReference: {fileID: 0}

@@ -32,6 +32,8 @@ public class Player_Controller : MonoBehaviour
     private float lastAttackTime = 0;
     private float lastRopeFireTime = 0;
     [SerializeField] private float attackDuration = 1f;
+
+    
     
 
     private int meleeAttackCombo = 0;
@@ -49,8 +51,9 @@ public class Player_Controller : MonoBehaviour
 
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
+
         Debug.Log(animator.GetCurrentAnimatorStateInfo(0).length);
 
         if (charecterAttacking && Time.time - lastAttackTime > animator.GetCurrentAnimatorStateInfo(0).length) 
@@ -66,7 +69,7 @@ public class Player_Controller : MonoBehaviour
         {
             charecterFiringRope = false;
         }
-        else if (charecterAttacking)
+        else if (charecterFiringRope)
         {
             return;
         }
@@ -132,6 +135,7 @@ public class Player_Controller : MonoBehaviour
         }
         else if (horizontalInput > 0.01 && Input.GetKeyDown(KeyCode.LeftShift))
         {
+            Debug.Log("crouch Walking");
             ChangeAnimationState("Player_Crouch_Walk");
             currentAnimationState = "Player_Crouch_Walk";
             transform.localScale = new Vector3(playerSizeConstant, playerSizeConstant, 1);
@@ -139,12 +143,13 @@ public class Player_Controller : MonoBehaviour
         }
         else if (horizontalInput < -0.01 && Input.GetKeyDown(KeyCode.LeftShift))
         {
+            Debug.Log("crouch Walking");
             ChangeAnimationState("Player_Crouch_Walk");
             currentAnimationState = "Player_Crouch_Walk";
             transform.localScale = new Vector3(-playerSizeConstant, playerSizeConstant, 1);
             crouching = true;
         }
-        else if (horizontalInput == 0 && Input.GetKeyDown(KeyCode.LeftShift))
+        else if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             ChangeAnimationState("Player_Crouch");
             currentAnimationState = "Player_Crouch";
@@ -165,7 +170,6 @@ public class Player_Controller : MonoBehaviour
             transform.localScale = new Vector3(-playerSizeConstant, playerSizeConstant, 1);
             crouching = true;
         }
-       
         else if (horizontalInput > 0.01f)
         {
             ChangeAnimationState("Player_Run");
