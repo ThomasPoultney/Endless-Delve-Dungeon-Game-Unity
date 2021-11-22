@@ -11,6 +11,7 @@ public class Player_Controller : MonoBehaviour
     [SerializeField] private float runningSpeedConstant = 4;
     [SerializeField] private float crouchingSpeedConstant = 2;
     [SerializeField] private float jumpingConstant = 2;
+    [SerializeField] private float slideThreshold = 4;
     private Rigidbody2D playerBody;
     private Animator anim;
     private bool playerGrounded = true;
@@ -27,8 +28,13 @@ public class Player_Controller : MonoBehaviour
     private bool weaponOut = false;
     private bool climbingLadder = false;
     private bool charecterAttacking = false;
+    private bool charecterFiringRope = false;
     private float lastAttackTime = 0;
+    private float lastRopeFireTime = 0;
     [SerializeField] private float attackDuration = 1f;
+    
+
+    private int meleeAttackCombo = 0;
 
 
     [SerializeField] private float playerSizeConstant;
@@ -45,15 +51,29 @@ public class Player_Controller : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (charecterAttacking && Time.time - lastAttackTime > attackDuration)
+        Debug.Log(animator.GetCurrentAnimatorStateInfo(0).length);
+
+        if (charecterAttacking && Time.time - lastAttackTime > animator.GetCurrentAnimatorStateInfo(0).length) 
         {
             charecterAttacking = false;
-
         }
         else if (charecterAttacking)
         {
             return;
         }
+
+        if (charecterFiringRope && Time.time - lastRopeFireTime > animator.GetCurrentAnimatorStateInfo(0).length)
+        {
+            charecterFiringRope = false;
+        }
+        else if (charecterAttacking)
+        {
+            return;
+        }
+
+
+
+
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
 
@@ -110,27 +130,42 @@ public class Player_Controller : MonoBehaviour
             ChangeAnimationState("Player_Fall");
             currentAnimationState = "Player_Fall";
         }
-        else if (verticalInput <= -0.01f && horizontalInput > 0.01)
+        else if (horizontalInput > 0.01 && Input.GetKeyDown(KeyCode.LeftShift))
         {
             ChangeAnimationState("Player_Crouch_Walk");
             currentAnimationState = "Player_Crouch_Walk";
             transform.localScale = new Vector3(playerSizeConstant, playerSizeConstant, 1);
             crouching = true;
         }
-        else if (verticalInput <= -0.01f && horizontalInput < -0.01)
+        else if (horizontalInput < -0.01 && Input.GetKeyDown(KeyCode.LeftShift))
         {
             ChangeAnimationState("Player_Crouch_Walk");
             currentAnimationState = "Player_Crouch_Walk";
             transform.localScale = new Vector3(-playerSizeConstant, playerSizeConstant, 1);
             crouching = true;
         }
-        else if (verticalInput <= -0.01f && horizontalInput == 0)
+        else if (horizontalInput == 0 && Input.GetKeyDown(KeyCode.LeftShift))
         {
             ChangeAnimationState("Player_Crouch");
             currentAnimationState = "Player_Crouch";
             transform.localScale = new Vector3(playerSizeConstant, playerSizeConstant, 1);
             crouching = true;
         }
+        else if (verticalInput <= -0.01f && playerBody.velocity.x > slideThreshold) //SLIDING should check for momentum not input
+        {
+            ChangeAnimationState("Player_Ground_Slide");
+            currentAnimationState = "Player_Ground_Slide";
+            transform.localScale = new Vector3(playerSizeConstant, playerSizeConstant, 1);
+            crouching = true;
+        }
+        else if (verticalInput <= -0.01f && playerBody.velocity.x < -slideThreshold) //SLIDING should check for momentum not input
+        {
+            ChangeAnimationState("Player_Ground_Slide");
+            currentAnimationState = "Player_Ground_Slide";
+            transform.localScale = new Vector3(-playerSizeConstant, playerSizeConstant, 1);
+            crouching = true;
+        }
+       
         else if (horizontalInput > 0.01f)
         {
             ChangeAnimationState("Player_Run");
@@ -185,14 +220,46 @@ public class Player_Controller : MonoBehaviour
 
     private void attack()
     {
-        if (playerGrounded)
+        //increment attack animation to play
+        meleeAttackCombo++;
+
+        //resets combo
+        if(meleeAttackCombo == 3)
         {
-            ChangeAnimationState("Player_Attack_0");
-        } else if (!playerGrounded)
-        {
-            ChangeAnimationState("Player_Air_Attack_0");
+            meleeAttackCombo = 0;
         }
 
+
+        if (playerGrounded)
+        {
+            if(meleeAttackCombo == 0)
+            {
+              ChangeAnimationState("Player_Attack_0");
+            } else if (meleeAttackCombo == 1)
+            {
+                ChangeAnimationState("Player_Attack_1");
+            } else if (meleeAttackCombo == 2)
+            {
+                ChangeAnimationState("Player_Attack_2");
+            } 
+          
+        } else if (!playerGrounded)
+        {
+            if (meleeAttackCombo == 0)
+            {
+                ChangeAnimationState("Player_Air_Attack_0");
+            }
+            else if (meleeAttackCombo == 1)
+            {
+                ChangeAnimationState("Player_Air_Attack_1");
+            }
+            else if (meleeAttackCombo == 2)
+            {
+                ChangeAnimationState("Player_Air_Attack_2");
+            }
+        }
+
+        
         charecterAttacking = true;
         lastAttackTime = Time.time;
     }
@@ -216,7 +283,11 @@ public class Player_Controller : MonoBehaviour
         
 
         lastSpawnTime = Time.time;
+        lastRopeFireTime = Time.time;
         canSpawnRope = false;
+        charecterFiringRope = true;
+
+        ChangeAnimationState("Player_Item");
 
         if (numLinksToSpawn > 0)
         {
