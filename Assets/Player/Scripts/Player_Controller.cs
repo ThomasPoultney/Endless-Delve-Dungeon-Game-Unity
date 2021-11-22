@@ -148,7 +148,7 @@ public class Player_Controller : MonoBehaviour
         {
             Vector3 blockPosition = ropeSpawnCheck.collider.transform.position;
             ropeSpawnPosition = new Vector3(blockPosition.x, blockPosition.y - 1, 0);
-            numLinksToSpawn = (int)ropeSpawnCheck.distance;
+            numLinksToSpawn = (int)Math.Floor(ropeSpawnCheck.distance);
         }
         
 
