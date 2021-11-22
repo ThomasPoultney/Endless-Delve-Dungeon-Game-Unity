@@ -19,6 +19,7 @@ public class PlayerRopeTest : MonoBehaviour
     private GameObject disregard; //stops player attaching to the same rope segment again
     public float timeBeforePlayerCanAttachToSameRope = 1f;
 
+    private float lastDetachTime;
 
 
     private void Awake()
@@ -36,11 +37,18 @@ public class PlayerRopeTest : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Time.time - lastDetachTime > timeBeforePlayerCanAttachToSameRope)
+        {
+            Debug.Log("Resetting Disregard");
+            disregard = null;
+        }
         CheckKeyBoardInputs();
+      
     }
 
     private void CheckKeyBoardInputs()
     {
+     
 
         if (Input.GetKeyDown(KeyCode.Space) && attached)
         {
@@ -77,14 +85,15 @@ public class PlayerRopeTest : MonoBehaviour
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
-    {
+    {  
         if(!attached) {
-            //
             if(collision.gameObject.tag == "Rope")
             {
-                if(ropeAttachedTo != collision.gameObject.transform.parent) {
-                    if (disregard == null || collision.gameObject.transform.parent != disregard)
+                if(ropeAttachedTo != collision.gameObject.transform.parent.gameObject) {
+                    if (disregard == null || collision.gameObject.transform.parent.gameObject != disregard)
                     {
+                        Debug.Log("Rope to Disregard: " + disregard);
+                        Debug.Log(collision.gameObject.transform.parent);
                         Attach(collision.gameObject.GetComponent<Rigidbody2D>());
                     }
                 }
@@ -105,21 +114,14 @@ public class PlayerRopeTest : MonoBehaviour
     {
         hj.connectedBody.gameObject.GetComponent<RopeSegment>().isPlayerAttached = true;
         disregard = hj.connectedBody.gameObject.GetComponent<RopeSegment>().transform.parent.gameObject;
+        ropeAttachedTo = null;
         attached = false;
         hj.enabled = false;
         hj.connectedBody = null;
-
-
-        StartCoroutine(setDisregard());
-     
+        lastDetachTime = Time.time;
     }
 
-    IEnumerator setDisregard()
-    {
-        yield return new WaitForSeconds(timeBeforePlayerCanAttachToSameRope);
-        ropeAttachedTo = null;
-        disregard = null;
-     }
+   
 
     private void Slide(int amountToSlide)
     {
