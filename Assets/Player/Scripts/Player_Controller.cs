@@ -23,6 +23,7 @@ public class Player_Controller : MonoBehaviour
     [SerializeField] private float timeBetweenRopeSpawns = 5;
     [SerializeField] private LayerMask ropesCanSpawnOn;
     private bool weaponOut = false;
+    private bool ClimbingLadder = false;
 
 
     [SerializeField] private float playerSizeConstant;
@@ -37,13 +38,15 @@ public class Player_Controller : MonoBehaviour
 
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
 
         playerBody.velocity = new Vector2(speedConstant * horizontalInput, playerBody.velocity.y);
         bool attached = transform.GetComponent<PlayerRopeTest>().attached;
+
+        //creates a priority list of animations based on certain conditions being met
         if (attached)
         {
             ChangeAnimationState("Player_Climb");
@@ -177,6 +180,8 @@ public class Player_Controller : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.layer == 9) playerGrounded = true;
+
+        if (collision.gameObject.layer == 12) climbingLadder = true;//ladder 
     }
 
     /// <summary>
