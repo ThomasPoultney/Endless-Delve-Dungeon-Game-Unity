@@ -213,6 +213,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1205080225, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
+      propertyPath: m_AngleLimits.m_LowerAngle
+      value: -360
+      objectReference: {fileID: 0}
+    - target: {fileID: 1205080225, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
+      propertyPath: m_AngleLimits.m_UpperAngle
+      value: 360
+      objectReference: {fileID: 0}
+    - target: {fileID: 1205080225, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
+      propertyPath: m_AutoConfigureConnectedAnchor
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1779924106, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 236308664087019652, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
       propertyPath: m_Color.b
       value: 1
@@ -231,11 +247,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 236308664087019653, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4.5
+      value: 4.451
       objectReference: {fileID: 0}
     - target: {fileID: 236308664087019653, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.623
+      value: 1.643
       objectReference: {fileID: 0}
     - target: {fileID: 236308664087019653, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
       propertyPath: m_LocalPosition.z
@@ -275,7 +291,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6722890377543510114, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
       propertyPath: timeBeforePlayerCanAttachToSameRope
-      value: 3
+      value: 1.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
