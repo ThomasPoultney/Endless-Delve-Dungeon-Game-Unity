@@ -39,7 +39,6 @@ public class PlayerRopeTest : MonoBehaviour
     {
         if (Time.time - lastDetachTime > timeBeforePlayerCanAttachToSameRope)
         {
-            Debug.Log("Resetting Disregard");
             disregard = null;
         }
         CheckKeyBoardInputs();
@@ -91,9 +90,7 @@ public class PlayerRopeTest : MonoBehaviour
             {
                 if(ropeAttachedTo != collision.gameObject.transform.parent.gameObject) {
                     if (disregard == null || collision.gameObject.transform.parent.gameObject != disregard)
-                    {
-                        Debug.Log("Rope to Disregard: " + disregard);
-                        Debug.Log(collision.gameObject.transform.parent);
+                    {                    
                         Attach(collision.gameObject.GetComponent<Rigidbody2D>());
                     }
                 }
