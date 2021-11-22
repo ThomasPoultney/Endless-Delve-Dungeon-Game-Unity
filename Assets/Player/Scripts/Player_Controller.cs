@@ -15,7 +15,7 @@ public class Player_Controller : MonoBehaviour
     private Rigidbody2D playerBody;
     private Animator anim;
     private bool playerGrounded = true;
-    private bool crouching = false;
+  
     //limits how many ropes players can spawn
     [SerializeField] private int numberOfRopesPlayerCanSpawn = 3;
     private List<GameObject> ropesSpawned = new List<GameObject>();
@@ -27,16 +27,38 @@ public class Player_Controller : MonoBehaviour
     [SerializeField] private LayerMask ropesCanSpawnOn;
     private bool weaponOut = false;
     private bool climbingLadder = false;
+    private bool weaponDrawing = false;
     private bool charecterAttacking = false;
     private bool charecterFiringRope = false;
     private float lastAttackTime = 0;
     private float lastRopeFireTime = 0;
+    private float timeSinceWeaponDraw;
     [SerializeField] private float attackDuration = 1f;
 
-    
-    
+    private bool running;
+    private bool walking;
+    private bool crouching;
 
+    private float horizontalInput;
+    private float verticalInput;
+    private float jumpInput;
+    private bool attackInput;
+    private bool crouchingInput;
+    private bool weaponDrawInput;
+    private bool fireRopeInput;
+
+
+
+    private float timeSinceLastMeleeAttack = 0;
+    private float timeSinceLastAirMeleeAttack = 0;
+    private float timeSinceLastPunchAttack = 0;
+    private float comboResetTime = 1;
+
+
+    private int punchMeleeAttackCombo = 0;
     private int meleeAttackCombo = 0;
+    private int airMeleeAttackCombo = 0;
+    
 
 
     [SerializeField] private float playerSizeConstant;
@@ -53,10 +75,22 @@ public class Player_Controller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        horizontalInput = Input.GetAxis("Horizontal");
+        verticalInput = Input.GetAxis("Vertical");
 
-        Debug.Log(animator.GetCurrentAnimatorStateInfo(0).length);
+        attackInput = Input.GetMouseButton(0);
+        jumpInput = Input.GetAxis("Jump");
+        crouchingInput = Input.GetKey(KeyCode.LeftShift);
+        weaponDrawInput = Input.GetKey(KeyCode.Z);
+        fireRopeInput = Input.GetKey(KeyCode.R);
 
-        if (charecterAttacking && Time.time - lastAttackTime > animator.GetCurrentAnimatorStateInfo(0).length) 
+
+    }
+
+    public void FixedUpdate()
+    {
+
+        if (charecterAttacking && Time.time - lastAttackTime > animator.GetCurrentAnimatorStateInfo(0).length)
         {
             charecterAttacking = false;
         }
@@ -75,15 +109,35 @@ public class Player_Controller : MonoBehaviour
         }
 
 
+        if (weaponDrawing && Time.time - timeSinceWeaponDraw > animator.GetCurrentAnimatorStateInfo(0).length)
+        {
+            weaponDrawing = false;
+        }
+        else if (weaponDrawing)
+        {
+            return;
+        }
 
+        if(Time.time - timeSinceLastMeleeAttack >  comboResetTime)
+        {
+            meleeAttackCombo = 0;
+        }
 
-        float horizontalInput = Input.GetAxis("Horizontal");
-        float verticalInput = Input.GetAxis("Vertical");
+        if (Time.time - timeSinceLastAirMeleeAttack > comboResetTime)
+        {
+            airMeleeAttackCombo = 0;
+        }
+
+        if (Time.time - timeSinceLastPunchAttack > comboResetTime)
+        {
+            punchMeleeAttackCombo = 0;
+        }
+
 
         if (crouching)
         {
             playerBody.velocity = new Vector2(crouchingSpeedConstant * horizontalInput, playerBody.velocity.y);
-            
+
         }
         else
         {
@@ -91,7 +145,7 @@ public class Player_Controller : MonoBehaviour
 
         }
 
-     
+
 
         if (!canSpawnRope && Time.time - lastSpawnTime > timeBetweenRopeSpawns)
         {
@@ -108,11 +162,11 @@ public class Player_Controller : MonoBehaviour
             currentAnimationState = "Player_Climb";
             // Flips player when moving left and right to direction of movement.
         }
-        else if (Input.GetMouseButtonDown(0) && !charecterAttacking) //attacking
+        else if (attackInput && !charecterAttacking) //attacking
         {
             attack();
         }
-        else if (Input.GetKey(KeyCode.Space) && playerGrounded)
+        else if (jumpInput > 0 && playerGrounded)
         {
             Jump();
         }
@@ -121,11 +175,10 @@ public class Player_Controller : MonoBehaviour
             ChangeAnimationState("Player_Climb");
             currentAnimationState = "Player_Climb";
         }
-        else if (!playerGrounded && playerBody.velocity.y >= 0 )//and we are gaining momentum up we set animation to jump
+        else if (!playerGrounded && playerBody.velocity.y >= 0)//and we are gaining momentum up we set animation to jump
         {
             ChangeAnimationState("Player_Jump");
             currentAnimationState = "Player_Jump";
-
         }
         else if (!playerGrounded && playerBody.velocity.y <= 0)//and we are losing momentum up we set animation to jump
         {
@@ -133,7 +186,7 @@ public class Player_Controller : MonoBehaviour
             ChangeAnimationState("Player_Fall");
             currentAnimationState = "Player_Fall";
         }
-        else if (horizontalInput > 0.01 && Input.GetKeyDown(KeyCode.LeftShift))
+        else if (horizontalInput > 0.01 && crouchingInput)
         {
             Debug.Log("crouch Walking");
             ChangeAnimationState("Player_Crouch_Walk");
@@ -141,7 +194,7 @@ public class Player_Controller : MonoBehaviour
             transform.localScale = new Vector3(playerSizeConstant, playerSizeConstant, 1);
             crouching = true;
         }
-        else if (horizontalInput < -0.01 && Input.GetKeyDown(KeyCode.LeftShift))
+        else if (horizontalInput < -0.01 && crouchingInput)
         {
             Debug.Log("crouch Walking");
             ChangeAnimationState("Player_Crouch_Walk");
@@ -149,7 +202,7 @@ public class Player_Controller : MonoBehaviour
             transform.localScale = new Vector3(-playerSizeConstant, playerSizeConstant, 1);
             crouching = true;
         }
-        else if (Input.GetKeyDown(KeyCode.LeftShift))
+        else if (crouchingInput)
         {
             ChangeAnimationState("Player_Crouch");
             currentAnimationState = "Player_Crouch";
@@ -182,22 +235,25 @@ public class Player_Controller : MonoBehaviour
             currentAnimationState = "Player_Run";
             transform.localScale = new Vector3(-playerSizeConstant, playerSizeConstant, 1);
         }
-        else if (Input.GetKey(KeyCode.Z) && weaponOut == false)
+        else if (weaponDrawInput && weaponOut == false)
         {
             ChangeAnimationState("Player_Sword_Draw");
             currentAnimationState = "Player_Sword_Draw";
-
             weaponOut = true;
+            weaponDrawing = true;
+            timeSinceWeaponDraw = Time.time;
         }
-        else if ((Input.GetKey(KeyCode.Z) && weaponOut == true))
+        else if (weaponDrawInput && weaponOut == true)
         {
             ChangeAnimationState("Player_Sword_Sheath");
             currentAnimationState = "Player_Sword_Sheath";
             weaponOut = false;
+            weaponDrawing = true;
+            timeSinceWeaponDraw = Time.time;
         }
         else if (weaponOut)
         {
-          
+
             ChangeAnimationState("Player_Idle");
             currentAnimationState = "Player_Idle";
         }
@@ -208,65 +264,98 @@ public class Player_Controller : MonoBehaviour
         }
 
         //if you are not already attached to a rope you can fire a new rope
-
-       
-
-
-
-        if (Input.GetKey(KeyCode.R) && !attached && canSpawnRope)
+        if (fireRopeInput && !attached && canSpawnRope)
         {
             fireRope();
         }
-
-        
-
     }
 
     private void attack()
     {
-        //increment attack animation to play
-        meleeAttackCombo++;
-
+       
+        
         //resets combo
         if(meleeAttackCombo == 3)
         {
             meleeAttackCombo = 0;
         }
 
-
-        if (playerGrounded)
+        if (punchMeleeAttackCombo == 4)
         {
-            if(meleeAttackCombo == 0)
-            {
-              ChangeAnimationState("Player_Attack_0");
-            } else if (meleeAttackCombo == 1)
-            {
-                ChangeAnimationState("Player_Attack_1");
-            } else if (meleeAttackCombo == 2)
-            {
-                ChangeAnimationState("Player_Attack_2");
-            } 
-          
-        } else if (!playerGrounded)
-        {
-            if (meleeAttackCombo == 0)
-            {
-                ChangeAnimationState("Player_Air_Attack_0");
-            }
-            else if (meleeAttackCombo == 1)
-            {
-                ChangeAnimationState("Player_Air_Attack_1");
-            }
-            else if (meleeAttackCombo == 2)
-            {
-                ChangeAnimationState("Player_Air_Attack_2");
-            }
+            punchMeleeAttackCombo = 0;
         }
 
+        if (airMeleeAttackCombo == 3)
+        {
+            airMeleeAttackCombo = 0;
+        }
+
+        if (weaponOut == true)
+        {
+            if (playerGrounded)
+            {
+                if (meleeAttackCombo == 0)
+                {
+                    ChangeAnimationState("Player_Attack_0");
+                }
+                else if (meleeAttackCombo == 1)
+                {
+                    ChangeAnimationState("Player_Attack_1");
+                }
+                else if (meleeAttackCombo == 2)
+                {
+                    ChangeAnimationState("Player_Attack_2");
+                }
+
+                meleeAttackCombo++;
+                timeSinceLastMeleeAttack = Time.time;
+            }
+            else if (!playerGrounded)
+            {
+                if (airMeleeAttackCombo == 0)
+                {
+                    ChangeAnimationState("Player_Air_Attack_0");
+                }
+                else if (airMeleeAttackCombo == 1)
+                {
+                    ChangeAnimationState("Player_Air_Attack_1");
+                }
+                else if (airMeleeAttackCombo == 2)
+                {
+                    ChangeAnimationState("Player_Air_Attack_2");
+                }
+
+                airMeleeAttackCombo++;
+                timeSinceLastAirMeleeAttack = Time.time;
+            }
+
+            
+        }
+        else
+        {
+            if (punchMeleeAttackCombo == 0)
+            {
+                ChangeAnimationState("Player_Punch");
+            }
+            else if (punchMeleeAttackCombo == 1)
+            {
+                ChangeAnimationState("Player_Punch_1");
+            }
+            else if (punchMeleeAttackCombo == 2)
+            {
+                ChangeAnimationState("Player_Punch_2");
+            }else if (punchMeleeAttackCombo == 3)
+            {
+                ChangeAnimationState("Player_Punch_3");
+            }
+            punchMeleeAttackCombo++;
+            timeSinceLastPunchAttack = Time.time;
+        }
         
         charecterAttacking = true;
         lastAttackTime = Time.time;
     }
+
 
     /// <summary>
     /// Spawns a rope into the world, removes existing ropes if they exceed the limit.
@@ -327,8 +416,6 @@ public class Player_Controller : MonoBehaviour
         if (collision.gameObject.layer == 9 || collision.gameObject.layer == 16) playerGrounded = true; //9 - basic bloc, 16 - Bedrock
 
         if (collision.gameObject.layer == 12) climbingLadder = true; //ladder 
-
-
     }
 
     /// <summary>
@@ -338,10 +425,8 @@ public class Player_Controller : MonoBehaviour
     private void ChangeAnimationState(string newState)
     {
         if (newState == currentAnimationState) return;
-
         
         animator.Play(newState);
-
 
         currentAnimationState = newState;
     }

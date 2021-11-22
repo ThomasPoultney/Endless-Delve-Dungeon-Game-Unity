@@ -248,6 +248,7 @@ public class WorldSpawner : MonoBehaviour
         {
             for (int y = 0; y < (roomHeight * numRoomsVer) - 2; y++)
             {
+                
                 Vector3 rayCastOrigin = startPosition + new Vector3(x, y, 0);
                 RaycastHit2D checkForAirHit = Physics2D.Raycast(rayCastOrigin, transform.TransformDirection(Vector2.up), 0.4f);
                 RaycastHit2D checkForSolidBlock = Physics2D.Raycast(rayCastOrigin, transform.TransformDirection(-Vector2.up), 0.6f, GroundTileLayer);
