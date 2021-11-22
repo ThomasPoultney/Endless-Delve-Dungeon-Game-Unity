@@ -8,11 +8,13 @@ public class Player_Controller : MonoBehaviour
     public string currentAnimationState;
     public Animator animator;
 
-    [SerializeField] private float speedConstant;
+    [SerializeField] private float runningSpeedConstant = 4;
+    [SerializeField] private float crouchingSpeedConstant = 2;
+    [SerializeField] private float jumpingConstant = 2;
     private Rigidbody2D playerBody;
     private Animator anim;
     private bool playerGrounded = true;
-
+    private bool crouching = false;
     //limits how many ropes players can spawn
     [SerializeField] private int numberOfRopesPlayerCanSpawn = 3;
     private List<GameObject> ropesSpawned = new List<GameObject>();
@@ -24,6 +26,9 @@ public class Player_Controller : MonoBehaviour
     [SerializeField] private LayerMask ropesCanSpawnOn;
     private bool weaponOut = false;
     private bool climbingLadder = false;
+    private bool charecterAttacking = false;
+    private float lastAttackTime = 0;
+    [SerializeField] private float attackDuration = 1f;
 
 
     [SerializeField] private float playerSizeConstant;
@@ -40,10 +45,37 @@ public class Player_Controller : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        if (charecterAttacking && Time.time - lastAttackTime > attackDuration)
+        {
+            charecterAttacking = false;
+
+        }
+        else if (charecterAttacking)
+        {
+            return;
+        }
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
 
-        playerBody.velocity = new Vector2(speedConstant * horizontalInput, playerBody.velocity.y);
+        if (crouching)
+        {
+            playerBody.velocity = new Vector2(crouchingSpeedConstant * horizontalInput, playerBody.velocity.y);
+            
+        }
+        else
+        {
+            playerBody.velocity = new Vector2(runningSpeedConstant * horizontalInput, playerBody.velocity.y);
+
+        }
+
+     
+
+        if (!canSpawnRope && Time.time - lastSpawnTime > timeBetweenRopeSpawns)
+        {
+            canSpawnRope = true;
+        }
+
+
         bool attached = transform.GetComponent<PlayerRopeTest>().attached;
 
         //creates a priority list of animations based on certain conditions being met
@@ -52,6 +84,10 @@ public class Player_Controller : MonoBehaviour
             ChangeAnimationState("Player_Wall_Slide");
             currentAnimationState = "Player_Climb";
             // Flips player when moving left and right to direction of movement.
+        }
+        else if (Input.GetMouseButtonDown(0) && !charecterAttacking) //attacking
+        {
+            attack();
         }
         else if (Input.GetKey(KeyCode.Space) && playerGrounded)
         {
@@ -74,6 +110,27 @@ public class Player_Controller : MonoBehaviour
             ChangeAnimationState("Player_Fall");
             currentAnimationState = "Player_Fall";
         }
+        else if (verticalInput <= -0.01f && horizontalInput > 0.01)
+        {
+            ChangeAnimationState("Player_Crouch_Walk");
+            currentAnimationState = "Player_Crouch_Walk";
+            transform.localScale = new Vector3(playerSizeConstant, playerSizeConstant, 1);
+            crouching = true;
+        }
+        else if (verticalInput <= -0.01f && horizontalInput < -0.01)
+        {
+            ChangeAnimationState("Player_Crouch_Walk");
+            currentAnimationState = "Player_Crouch_Walk";
+            transform.localScale = new Vector3(-playerSizeConstant, playerSizeConstant, 1);
+            crouching = true;
+        }
+        else if (verticalInput <= -0.01f && horizontalInput == 0)
+        {
+            ChangeAnimationState("Player_Crouch");
+            currentAnimationState = "Player_Crouch";
+            transform.localScale = new Vector3(playerSizeConstant, playerSizeConstant, 1);
+            crouching = true;
+        }
         else if (horizontalInput > 0.01f)
         {
             ChangeAnimationState("Player_Run");
@@ -85,11 +142,6 @@ public class Player_Controller : MonoBehaviour
             ChangeAnimationState("Player_Run");
             currentAnimationState = "Player_Run";
             transform.localScale = new Vector3(-playerSizeConstant, playerSizeConstant, 1);
-        }
-        else if (verticalInput <= -0.01f)
-        {
-            ChangeAnimationState("Player_Crouch");
-            currentAnimationState = "Player_Crouch";
         }
         else if (Input.GetKey(KeyCode.Z) && weaponOut == false)
         {
@@ -118,10 +170,7 @@ public class Player_Controller : MonoBehaviour
 
         //if you are not already attached to a rope you can fire a new rope
 
-        if (!canSpawnRope && Time.time - lastSpawnTime > timeBetweenRopeSpawns)
-        {
-            canSpawnRope = true;
-        }
+       
 
 
 
@@ -132,6 +181,20 @@ public class Player_Controller : MonoBehaviour
 
         
 
+    }
+
+    private void attack()
+    {
+        if (playerGrounded)
+        {
+            ChangeAnimationState("Player_Attack_0");
+        } else if (!playerGrounded)
+        {
+            ChangeAnimationState("Player_Air_Attack_0");
+        }
+
+        charecterAttacking = true;
+        lastAttackTime = Time.time;
     }
 
     /// <summary>
@@ -176,7 +239,7 @@ public class Player_Controller : MonoBehaviour
 
     public void Jump()
     {
-        playerBody.velocity = new Vector2(playerBody.velocity.x, playerBody.velocity.y + speedConstant);
+        playerBody.velocity = new Vector2(playerBody.velocity.x, playerBody.velocity.y + jumpingConstant);
         ChangeAnimationState("Player_Jump");
         currentAnimationState = "Player_Jump";
         playerGrounded = false;
