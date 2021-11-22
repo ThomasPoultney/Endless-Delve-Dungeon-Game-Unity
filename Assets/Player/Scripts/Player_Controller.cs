@@ -22,6 +22,7 @@ public class Player_Controller : MonoBehaviour
     [SerializeField] private float maxRopeSpawnLength = 5;
     [SerializeField] private float timeBetweenRopeSpawns = 5;
     [SerializeField] private LayerMask ropesCanSpawnOn;
+    private bool weaponOut = false;
 
 
     [SerializeField] private float playerSizeConstant;
@@ -39,22 +40,72 @@ public class Player_Controller : MonoBehaviour
     void Update()
     {
         float horizontalInput = Input.GetAxis("Horizontal");
+        float verticalInput = Input.GetAxis("Vertical");
+
         playerBody.velocity = new Vector2(speedConstant * horizontalInput, playerBody.velocity.y);
-
-
-        // Flips player when moving left and right to direction of movement.
-        if (horizontalInput > 0.01f)
+        bool attached = transform.GetComponent<PlayerRopeTest>().attached;
+        if (attached)
         {
+            ChangeAnimationState("Player_Climb");
+            currentAnimationState = "Player_Climb";
+            // Flips player when moving left and right to direction of movement.
+        }
+        else if (Input.GetKey(KeyCode.Space) && playerGrounded)
+        {
+            Jump();
+        }
+        else if (!playerGrounded && playerBody.velocity.y >= 0 )//and we are gaining momentum up we set animation to jump
+        {
+            ChangeAnimationState("Player_Jump");
+            currentAnimationState = "Player_Jump";
+
+        }
+        else if (!playerGrounded && playerBody.velocity.y <= 0)//and we are losing momentum up we set animation to jump
+        {
+
+            ChangeAnimationState("Player_Fall");
+            currentAnimationState = "Player_Fall";
+        }
+        else if (horizontalInput > 0.01f)
+        {
+            ChangeAnimationState("Player_Run");
+            currentAnimationState = "Player_Run";
             transform.localScale = new Vector3(playerSizeConstant, playerSizeConstant, 1);
         }
         else if (horizontalInput < -0.01f)
         {
+            ChangeAnimationState("Player_Run");
+            currentAnimationState = "Player_Run";
             transform.localScale = new Vector3(-playerSizeConstant, playerSizeConstant, 1);
-
         }
-        if (Input.GetKey(KeyCode.Space) && playerGrounded)
+        else if (verticalInput <= -0.01f)
         {
-            Jump();
+            ChangeAnimationState("Player_Crouch");
+            currentAnimationState = "Player_Crouch";
+        }
+        else if (Input.GetKey(KeyCode.Z) && weaponOut == false)
+        {
+            ChangeAnimationState("Player_Sword_Draw");
+            currentAnimationState = "Player_Sword_Draw";
+
+            weaponOut = true;
+        }
+        else if ((Input.GetKey(KeyCode.Z) && weaponOut == true))
+        {
+            ChangeAnimationState("Player_Sword_Sheath");
+            currentAnimationState = "Player_Sword_Sheath";
+            weaponOut = false;
+        }
+        else if (weaponOut)
+        {
+          
+            ChangeAnimationState("Player_Idle");
+            currentAnimationState = "Player_Idle";
+        }
+        else
+        {
+            ChangeAnimationState("Player_Idle_Sheathed");
+            currentAnimationState = "Player_Idle_Sheathed";
         }
 
         //if you are not already attached to a rope you can fire a new rope
@@ -66,13 +117,13 @@ public class Player_Controller : MonoBehaviour
 
 
 
-        if (Input.GetKey(KeyCode.R) && !transform.GetComponent<PlayerRopeTest>().attached && canSpawnRope)
+        if (Input.GetKey(KeyCode.R) && !attached && canSpawnRope)
         {
             fireRope();
         }
 
-        // Set animator parameters
-        ChangeAnimationState("Player_Run");
+        
+
     }
 
     /// <summary>
@@ -80,7 +131,7 @@ public class Player_Controller : MonoBehaviour
     /// </summary>
     private void fireRope()
     {
-
+        //checks for a solid block above player
         RaycastHit2D ropeSpawnCheck = Physics2D.Raycast(transform.position, Vector2.up, maxRopeSpawnLength,ropesCanSpawnOn);
 
         int numLinksToSpawn = 0;
@@ -95,7 +146,6 @@ public class Player_Controller : MonoBehaviour
 
         lastSpawnTime = Time.time;
         canSpawnRope = false;
-        ChangeAnimationState("Player_Item");
 
         if (numLinksToSpawn > 0)
         {
@@ -120,6 +170,7 @@ public class Player_Controller : MonoBehaviour
     {
         playerBody.velocity = new Vector2(playerBody.velocity.x, playerBody.velocity.y + speedConstant);
         ChangeAnimationState("Player_Jump");
+        currentAnimationState = "Player_Jump";
         playerGrounded = false;
     }
 

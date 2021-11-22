@@ -123,7 +123,13 @@ public class PlayerRopeTest : MonoBehaviour
 
     private void Slide(int amountToSlide)
     {
-        
+        if (amountToSlide > 0)
+        {
+
+        } else if(amountToSlide < 0)
+        {
+
+        }
     }
 }
 

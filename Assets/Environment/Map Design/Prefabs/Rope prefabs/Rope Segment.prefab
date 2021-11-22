@@ -100,7 +100,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 2
+  m_Mass: 4
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
@@ -131,8 +131,8 @@ HingeJoint2D:
     m_MaximumMotorForce: 10000
   m_UseLimits: 1
   m_AngleLimits:
-    m_LowerAngle: 60
-    m_UpperAngle: -60
+    m_LowerAngle: 120
+    m_UpperAngle: -120
 --- !u!61 &6666620893822975925
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -171,4 +171,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1c9e1eeda26d0347bdd708990fb6be2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  connectedAbove: {fileID: 0}
+  connectedBelow: {fileID: 0}
   isPlayerAttached: 0
