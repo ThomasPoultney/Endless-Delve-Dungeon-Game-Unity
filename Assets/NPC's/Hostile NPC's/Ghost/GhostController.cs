@@ -14,6 +14,8 @@ public class GhostController : MonoBehaviour
     public Animator animator; 
     private String currentAnimationState;
     private bool ghostFacingLeft = false;
+    [SerializeField] private GameObject lightToSpawn;
+    private GameObject spawn;
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
@@ -33,17 +35,20 @@ public class GhostController : MonoBehaviour
                 {
                     Hunt();
                     hunting = true;
-                    transform.GetCompnent(Script).enabled = false;
+                    if (spawn == null)
+                    {
+                        spawn = Instantiate(lightToSpawn, transform);
+                        spawn.transform.parent = transform;
 
-
+                    }
+                   
                 }
 
             }
             else
             {
                 ChangeAnimationState("Ghost_Idle");
-                transform.GetChild(0).GetComponent<Light>().enabled = false;
-
+                GameObject.Destroy(spawn);
                 hunting = false;
             }
         }
