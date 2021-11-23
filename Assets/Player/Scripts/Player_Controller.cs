@@ -180,14 +180,7 @@ public class Player_Controller : MonoBehaviour
             return;
         }
 
-        if (isJumping && Time.time - timeSinceLastJump > animator.GetCurrentAnimatorStateInfo(0).length)
-        {
-            canJumpAgain = false;
-
-        } else if(canJumpAgain)
-        {
-            return;
-        }
+     
 
 
         if (weaponDrawing && Time.time - timeSinceWeaponDraw > animator.GetCurrentAnimatorStateInfo(0).length)
@@ -349,7 +342,6 @@ public class Player_Controller : MonoBehaviour
             currentAnimationState = "Player_Idle_Sheathed";
         }
 
-        
         if (crouching && !charecterAttacking)
         {
             playerBody.velocity = new Vector2(crouchingSpeedConstant * horizontalInput, playerBody.velocity.y);
@@ -367,6 +359,9 @@ public class Player_Controller : MonoBehaviour
         {
             playerBody.velocity = new Vector2(runningSpeedConstant * horizontalInput, playerBody.velocity.y);
         }
+
+        Debug.Log(playerBody.velocity);
+
 
         //if you are not already attached to a rope you can fire a new rope
         if (fireRopeInput && !attached && canSpawnRope)
