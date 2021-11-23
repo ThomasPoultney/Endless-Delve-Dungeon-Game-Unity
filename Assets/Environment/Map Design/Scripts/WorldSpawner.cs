@@ -15,17 +15,17 @@ public class WorldSpawner : MonoBehaviour
     private int numRoomsVer;
 
     [SerializeField]
-    private int chanceToMoveDown = 10;
+    private int chanceToMoveDown = 10; //percentage chance for critical path to move down
     [SerializeField]
     private float timeBetweenRoomSpawns = 2.0f;
 
+    [SerializeField]
+    private GameObject[] rooms; //room templates for each room type
+    [SerializeField]
+    private GameObject borderBlock;
 
-    public GameObject[] rooms;
-    public GameObject borderBlock;
 
-
-    private float timeElapsedSinceLastRoom;
-    private GameObject[] roomSpawnPointsArray;
+    private float timeElapsedSinceLastRoom; 
     private int firstRoomPosition;
     private bool reachedExit = false;
     private Vector2 nextRoomPosition;
@@ -34,30 +34,42 @@ public class WorldSpawner : MonoBehaviour
     private bool canMoveLeft = true;
     private bool lastRoomWasBottom = false;
     private enum Direction { Down, Left, Right, ImpossibleMove };
-    public LayerMask Room;
-    public LayerMask GroundTileLayer;
 
-    GameObject lastRoomCreated;
-    public GameObject door;
+    [SerializeField]
+    private LayerMask Room;
+    [SerializeField]
+    private LayerMask GroundTileLayer;
+
+    private GameObject lastRoomCreated;
+    [SerializeField]
+    private GameObject door; //the door prefab
 
     private GameObject entranceRoom;
     private GameObject exitRoom;
-    private bool spawnedEntranceDoor;
-    private bool spawnedExitDoor;
-    private bool spawnedMobs;
 
-    public bool spawnedDoor;
-
-
-    public GameObject[] treasurePrefabs;
-    public GameObject[] groundMobPrefabs;
-    public GameObject[] flyingMobPrefabs;
-
+    //variables to check what has been spawned
+    private bool spawnedEntranceDoor = false;
+    private bool spawnedExitDoor = false;
+    private bool spawnedMobs = false;
+    private bool spawnedDoor;
     private bool spawnedTresure = false;
+
+
+    [SerializeField]
+    private GameObject[] treasurePrefabs;
+    [SerializeField]
+    private GameObject[] groundMobPrefabs;
+    [SerializeField]
+    private GameObject[] flyingMobPrefabs;
+
     public GameObject player;
-    public int numTreasureToSpawn = 0;
-    public int numGroundMobsToSpawn = 0;
-    public int numFlyingMobsToSpawn = 0;
+
+    [SerializeField]
+    private int numTreasureToSpawn = 0;
+    [SerializeField]
+    private int numGroundMobsToSpawn = 0;
+    [SerializeField]
+    private int numFlyingMobsToSpawn = 0;
 
 
 
@@ -65,8 +77,9 @@ public class WorldSpawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GenerateBorders();
+      
         SpawnEntranceRoom();
+        GenerateBorders();
     }
     /// <summary>
     /// Generates the one tile border around the map
@@ -79,46 +92,33 @@ public class WorldSpawner : MonoBehaviour
         borders.name = "Borders of Map";
 
         //bottom Border
-        GameObject bottomBorder = Instantiate(borderBlock, new Vector2((roomWidth * numRoomsHor) / 2, transform.position.y - 0.5f), Quaternion.identity);
+        GameObject bottomBorder = Instantiate(borderBlock, new Vector3((roomWidth * numRoomsHor) / 2, transform.position.y - 0.5f, 100), Quaternion.identity);
         bottomBorder.GetComponent<SpriteRenderer>().size = new Vector2(mapWidth + 2, 1);
+        bottomBorder.GetComponent<BoxCollider2D>().size = new Vector2(mapWidth + 2, 1);
         bottomBorder.transform.parent = borders.transform;
+        bottomBorder.layer = 9;
 
         //top Border
-        GameObject topBorder = Instantiate(borderBlock, new Vector2((roomWidth * numRoomsHor) / 2, transform.position.y + roomHeight * numRoomsVer + 0.5f), Quaternion.identity);
+        GameObject topBorder = Instantiate(borderBlock, new Vector3((roomWidth * numRoomsHor) / 2, transform.position.y + roomHeight * numRoomsVer + 0.5f, 100), Quaternion.identity);
         topBorder.GetComponent<SpriteRenderer>().size = new Vector2(mapWidth + 2, 1);
+        topBorder.GetComponent<BoxCollider2D>().size = new Vector2(mapWidth + 2, 1);
         topBorder.transform.parent = borders.transform;
-
+        topBorder.layer = 9;
         //Right Border
-        GameObject rightBorder = Instantiate(borderBlock, new Vector2(transform.position.x - 0.5f, (roomHeight * numRoomsVer) / 2), Quaternion.identity);
+        GameObject rightBorder = Instantiate(borderBlock, new Vector3(transform.position.x - 0.5f, (roomHeight * numRoomsVer) / 2, 100), Quaternion.identity);
         rightBorder.GetComponent<SpriteRenderer>().size = new Vector2(1, mapHeight);
+        rightBorder.GetComponent<BoxCollider2D>().size = new Vector2(1, mapHeight);
         rightBorder.transform.parent = borders.transform;
+        rightBorder.layer = 9;
 
         //Left Border
-        GameObject leftBorder = Instantiate(borderBlock, new Vector2((roomWidth * numRoomsHor) + 0.5f, (roomHeight * numRoomsVer) / 2), Quaternion.identity);
+        GameObject leftBorder = Instantiate(borderBlock, new Vector3((roomWidth * numRoomsHor) + 0.5f, (roomHeight * numRoomsVer) / 2, 100), Quaternion.identity);
         leftBorder.GetComponent<SpriteRenderer>().size = new Vector2(1, mapHeight);
+        leftBorder.GetComponent<BoxCollider2D>().size = new Vector2(1, mapHeight);
         leftBorder.transform.parent = borders.transform;
+        leftBorder.layer = 9;
     }
 
-    /// <summary>
-    /// Function No Longer used, Keeping it here incase we need it in for future 
-    /// </summary>
-    private void GenerateRoomSpawnPoints()
-    {
-
-        roomSpawnPointsArray = new GameObject[numRoomsVer * numRoomsHor];
-        for (int x = 0; x < numRoomsHor; x++)
-        {
-            for (int y = 0; y < numRoomsVer; y++)
-            {
-                Vector2 roomSpawnPosition = new Vector2(transform.position.x + (x * roomWidth), transform.position.y - (y * roomHeight));
-                GameObject roomSpawnPoint = new GameObject("Room Spawn Point X:" + x + " Y:" + y);
-                roomSpawnPoint.transform.position = roomSpawnPosition;
-                roomSpawnPointsArray[x + (y * numRoomsVer)] = roomSpawnPoint;
-            }
-        }
-
-
-    }
 
     /// <summary>
     /// Function responsible for spawing entrace room on first row.
@@ -142,15 +142,20 @@ public class WorldSpawner : MonoBehaviour
 
     }
 
-   
+
     /// <summary>
-    /// Spawns Door in room at a given position and changes its name in inspector
+    /// Spawns Door in room at the given position and changes its name in inspector
     /// </summary>
-    /// <param name="roomPosition"></param>
-    /// <param name="objectName"></param>
+    /// <param name="roomPosition">The bottom left position of the room to spawn door</param>
+    /// <param name="objectName"> Name to set object in inspector</param>
+    /// <returns> The spawn location of the door</returns>
+
     private Vector3 SpawnDoor(Vector3 roomPosition, string objectName)
     {
-        roomPosition += new Vector3(0.5f, 0.5f, 0);
+        //offsets roomSpawnPosition to position of first block
+        roomPosition += new Vector3(0.5f, 0.5f, 100);
+
+        
         List<Vector3> potentialDoorSpawnLocations = new List<Vector3>();
 
         for (int x = 0; x < roomWidth; x++)
@@ -158,7 +163,9 @@ public class WorldSpawner : MonoBehaviour
             for (int y = 0; y < roomHeight - 2; y++)
             {
                 Vector3 rayCastOrigin = roomPosition + new Vector3(x, y, 0);
+                //checks if there is a solid block below tile
                 RaycastHit2D checkForAirHit = Physics2D.Raycast(rayCastOrigin, transform.TransformDirection(Vector2.up), 1f);
+                //checks if there is a empty block above tile
                 RaycastHit2D checkForSolidBlock = Physics2D.Raycast(rayCastOrigin, transform.TransformDirection(-Vector2.up), 0.6f, GroundTileLayer);
 
                 if (checkForAirHit == false && checkForSolidBlock)
@@ -168,20 +175,30 @@ public class WorldSpawner : MonoBehaviour
             }
         }
 
+        //select a random spawn location from all possible spawn Points
         int randDoor = Random.Range(0, potentialDoorSpawnLocations.Count);
-        GameObject doorObj = Instantiate(door, (potentialDoorSpawnLocations[randDoor] + new Vector3(0, 0, 0)), Quaternion.identity);
 
+        //spawns the door
+        GameObject doorObj = Instantiate(door, (potentialDoorSpawnLocations[randDoor]), Quaternion.identity);
+
+        //sets name to name given to function
         doorObj.name = objectName;
 
         return potentialDoorSpawnLocations[randDoor];
 
     }
-
+    /// <summary>
+    /// Spawns treasure at random positions around the map where there is space
+    /// </summary>
     private void SpawnTresure()
     {
+        //creates a parent object to group all the treasure spawns
         GameObject TreasureParent = new GameObject();
         TreasureParent.name = "Treasure";
-        Vector3  startPosition = new Vector3(0.5f, 0.5f, 0);
+
+        //offsets startPosition to the position of first block
+        Vector3 startPosition = new Vector3(0.5f, 0.5f, 5f);
+       
         List<Vector3> potentialTreasureSpawnLocations = new List<Vector3>();
 
         for (int x = 0; x < roomWidth * numRoomsHor; x++)
@@ -189,7 +206,9 @@ public class WorldSpawner : MonoBehaviour
             for (int y = 0; y < (roomHeight*numRoomsVer) - 2; y++)
             {
                 Vector3 rayCastOrigin = startPosition + new Vector3(x, y, 0);
+                //checks if there is a solid block below the spawn position
                 RaycastHit2D checkForAirHit = Physics2D.Raycast(rayCastOrigin, transform.TransformDirection(Vector2.up),0.4f);
+                //checks if there is no block above the spawn position
                 RaycastHit2D checkForSolidBlock = Physics2D.Raycast(rayCastOrigin, transform.TransformDirection(-Vector2.up), 0.6f, GroundTileLayer);
 
                 if (checkForAirHit == false && checkForSolidBlock)
@@ -199,21 +218,28 @@ public class WorldSpawner : MonoBehaviour
             }
         }
 
+        
         int numSpawns = Mathf.Min(numTreasureToSpawn, potentialTreasureSpawnLocations.Count);
         for (int i = 0; i < numSpawns; i++)
         
         {
+ 
             int randPrefab = Random.Range(0, treasurePrefabs.Length);
             int randSpawnPoint = Random.Range(0, potentialTreasureSpawnLocations.Count);
             GameObject treasure = Instantiate(treasurePrefabs[randPrefab], potentialTreasureSpawnLocations[randSpawnPoint], Quaternion.identity);
             treasure.transform.parent = TreasureParent.transform;
-            treasure.layer = 11;
+            treasure.layer = 11; //sets layer to Loot
+            //remove this spawn location so we dont get multiple treasure in same spot
             potentialTreasureSpawnLocations.RemoveAt(randSpawnPoint);
         }
        
 
     }
 
+
+    /// <summary>
+    /// Spawns ground mobs at random positions around the map where there is space
+    /// </summary>
     private void SpawnGroundMobs()
     {
         GameObject groundMobParent = new GameObject();
@@ -225,6 +251,7 @@ public class WorldSpawner : MonoBehaviour
         {
             for (int y = 0; y < (roomHeight * numRoomsVer) - 2; y++)
             {
+                
                 Vector3 rayCastOrigin = startPosition + new Vector3(x, y, 0);
                 RaycastHit2D checkForAirHit = Physics2D.Raycast(rayCastOrigin, transform.TransformDirection(Vector2.up), 0.4f);
                 RaycastHit2D checkForSolidBlock = Physics2D.Raycast(rayCastOrigin, transform.TransformDirection(-Vector2.up), 0.6f, GroundTileLayer);
@@ -252,6 +279,9 @@ public class WorldSpawner : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Spawns flying mobs at random positions around the map where there is space
+    /// </summary>
     private void SpawnFlyingMobs()
     {
         GameObject flyingMobParent = new GameObject();
@@ -404,6 +434,7 @@ public class WorldSpawner : MonoBehaviour
 
         if (direction != Direction.ImpossibleMove)
         {
+            //if me the next room we would spawn is outside of the bounds we end room creation
             if (nextRoomPosition.y < 0)
             {
                 reachedExit = true;
@@ -415,6 +446,7 @@ public class WorldSpawner : MonoBehaviour
             }
             else
             {
+                //Creates the room 
                 lastRoomCreated = Instantiate(rooms[roomType], nextRoomPosition, Quaternion.identity);
                 lastRoomCreated.name = "Critical Path Room";
 
@@ -455,10 +487,8 @@ public class WorldSpawner : MonoBehaviour
         Instantiate(rooms[roomType], roomSpawnPoint.transform.position, Quaternion.identity);
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    // Update is called once per frame
+   
+    //Update is called once per frame
     void Update()
     {
 
@@ -466,7 +496,7 @@ public class WorldSpawner : MonoBehaviour
         {
             Vector3 doorLocation =  SpawnDoor(entranceRoom.transform.position, "Entrance Door");
             spawnedEntranceDoor = true;
-            player.transform.position = doorLocation;
+            player.transform.position = new Vector3(doorLocation.x, doorLocation.y, 0f);
             player.transform.rotation = Quaternion.identity;
 
         }

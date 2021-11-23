@@ -17,15 +17,19 @@ public class SpawnLadder : MonoBehaviour
         ladder.name = "Ladder";
         ladder.layer = 12; //sets layer to ladder
         ladder.transform.parent = transform; 
+
         int rand = Random.Range(0, ladderObjects.Length); //select a random ladder prefab.
         for (int y = 0; y < ladderLength; y++)
         {
             Vector3 ladderSpawnPosition = transform.position;
             ladderSpawnPosition.y -= y;
-            GameObject instance = Instantiate(ladderObjects[rand], ladderSpawnPosition, Quaternion.identity);
+            //renders behind player
+            ladderSpawnPosition.z = 10;
+            GameObject instance = Instantiate(ladderObjects[rand], ladderSpawnPosition , Quaternion.identity);
             instance.transform.parent = transform.parent;
-            Destroy(gameObject);
             instance.layer = 12; //sets layer to ladder
+            Destroy(gameObject);
+            
         }
 
 

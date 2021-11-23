@@ -7,6 +7,8 @@ public class SpawnTile : MonoBehaviour
     // Start is called before the first frame update
     public GameObject[] tileObjects;
     public GameObject[] oreObjects;
+
+    public PhysicsMaterial2D noFriction;
     public int orePencentage;
 
     void Start()
@@ -24,6 +26,9 @@ public class SpawnTile : MonoBehaviour
             instance.layer = 9;
             instance.AddComponent<BoxCollider2D>();
             instance.AddComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
+            instance.GetComponent<Rigidbody2D>().sharedMaterial = noFriction;
+            instance.GetComponent<BoxCollider2D>().sharedMaterial = noFriction;
+
         }
         else
         {
@@ -35,7 +40,12 @@ public class SpawnTile : MonoBehaviour
             instance.layer = 9;
             instance.AddComponent<BoxCollider2D>();
             instance.AddComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
+            instance.GetComponent<Rigidbody2D>().sharedMaterial = noFriction;
+            instance.GetComponent<BoxCollider2D>().sharedMaterial = noFriction;
+
         }
+
+
     }
 
     // Update is called once per frame

@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class TemplateChooser : MonoBehaviour
 {
-    // Start is called before the first frame update
+   
     public GameObject[] roomTemplates;
+    // Start is called before the first frame update
     void Start()
     {
+        //selects a random room type to spawn
         int rand = Random.Range(0, roomTemplates.Length);
         GameObject instance = Instantiate(roomTemplates[rand], transform.position, Quaternion.identity);
         instance.transform.parent = transform;
