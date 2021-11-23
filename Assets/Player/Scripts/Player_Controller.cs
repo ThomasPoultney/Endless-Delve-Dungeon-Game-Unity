@@ -31,7 +31,7 @@ public class Player_Controller : MonoBehaviour
     private float timeSinceLastJump;
     private bool canSpawnRope;
     private bool canJumpAgain;
-    private bool facingLeft;
+    public bool facingLeft;
 
     [SerializeField] private float maxRopeSpawnLength = 5;
     [SerializeField] private float timeBetweenRopeSpawns = 5;
@@ -151,6 +151,17 @@ public class Player_Controller : MonoBehaviour
     public void FixedUpdate()
     {
 
+        if(horizontalInput > 0.01)
+        {
+            transform.localScale = new Vector3(playerSizeConstant, playerSizeConstant, 1);
+
+        } else if(horizontalInput < -0.01)
+        {
+            transform.localScale = new Vector3(-playerSizeConstant, playerSizeConstant, 1);
+
+        }
+
+
         if (charecterAttacking && Time.time - lastAttackTime > animator.GetCurrentAnimatorStateInfo(0).length)
         {
             charecterAttacking = false;
@@ -253,7 +264,6 @@ public class Player_Controller : MonoBehaviour
             Debug.Log("crouch Walking");
             ChangeAnimationState("Player_Crouch_Walk");
             currentAnimationState = "Player_Crouch_Walk";
-            transform.localScale = new Vector3(playerSizeConstant, playerSizeConstant, 1);
             crouching = true;
         }
         else if (horizontalInput < -0.01 && crouchingInput)
@@ -261,65 +271,55 @@ public class Player_Controller : MonoBehaviour
             Debug.Log("crouch Walking");
             ChangeAnimationState("Player_Crouch_Walk");
             currentAnimationState = "Player_Crouch_Walk";
-            transform.localScale = new Vector3(-playerSizeConstant, playerSizeConstant, 1);
             crouching = true;
         }
         else if (crouchingInput)
         {
             ChangeAnimationState("Player_Crouch");
             currentAnimationState = "Player_Crouch";
-            transform.localScale = new Vector3(playerSizeConstant, playerSizeConstant, 1);
             crouching = true;
         }
         else if (verticalInput <= -0.01f && playerBody.velocity.x > slideThreshold) //SLIDING should check for momentum not input
         {
             ChangeAnimationState("Player_Ground_Slide");
             currentAnimationState = "Player_Ground_Slide";
-            transform.localScale = new Vector3(playerSizeConstant, playerSizeConstant, 1);
             crouching = true;
         }
         else if (verticalInput <= -0.01f && playerBody.velocity.x < -slideThreshold) //SLIDING should check for momentum not input
         {
             ChangeAnimationState("Player_Ground_Slide");
             currentAnimationState = "Player_Ground_Slide";
-            transform.localScale = new Vector3(-playerSizeConstant, playerSizeConstant, 1);
             crouching = true;
         } else if (horizontalInput > 0.01f && walkingInput)
         {
             ChangeAnimationState("Player_Walk");
             currentAnimationState = "Player_Walk";
-            transform.localScale = new Vector3(playerSizeConstant, playerSizeConstant, 1);
         }
         else if (horizontalInput < -0.01f && walkingInput)
         {
             ChangeAnimationState("Player_Walk");
             currentAnimationState = "Player_Walk";
-            transform.localScale = new Vector3(-playerSizeConstant, playerSizeConstant, 1);
         }
         else if (horizontalInput > 0.01f && sprintingInput)
         {
             ChangeAnimationState("Player_Run_1");
             currentAnimationState = "Player_Run_1";
-            transform.localScale = new Vector3(playerSizeConstant, playerSizeConstant, 1);
         }
         else if (horizontalInput < -0.01f && sprintingInput)
         {
             ChangeAnimationState("Player_Run_1");
             currentAnimationState = "Player_Run_1";
-            transform.localScale = new Vector3(-playerSizeConstant, playerSizeConstant, 1);
         }
 
         else if (horizontalInput > 0.01f)
         {
             ChangeAnimationState("Player_Run");
             currentAnimationState = "Player_Run";
-            transform.localScale = new Vector3(playerSizeConstant, playerSizeConstant, 1);
         }
         else if (horizontalInput < -0.01f)
         {
             ChangeAnimationState("Player_Run");
             currentAnimationState = "Player_Run";
-            transform.localScale = new Vector3(-playerSizeConstant, playerSizeConstant, 1);
         }
         else if (weaponDrawInput && weaponOut == false)
         {

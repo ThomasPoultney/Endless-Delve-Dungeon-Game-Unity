@@ -13,7 +13,7 @@ public class GhostController : MonoBehaviour
     private float pursuitDistance = 4f;
     public Animator animator; 
     private String currentAnimationState;
-
+    private bool ghostFacingLeft = false;
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
@@ -22,23 +22,27 @@ public class GhostController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+
         if (player != null)
         {
-
-            if (Vector2.Distance(transform.position, player.transform.position) < pursuitDistance)
+            if (player.GetComponent<Player_Controller>().facingLeft == ghostFacingLeft)
             {
-                Hunt();
-                hunting = true;
-            } else
+
+                if (Vector2.Distance(transform.position, player.transform.position) < pursuitDistance)
+                {
+
+                    Hunt();
+                    hunting = true;
+                }
+
+            }
+            else
             {
                 ChangeAnimationState("Ghost_Idle");
-                hunting=false;
+                hunting = false;
             }
-
         }
-
-
-
 
     }
 
@@ -51,10 +55,12 @@ public class GhostController : MonoBehaviour
         
         if (transform.position.x < player.transform.position.x)
         {
+            ghostFacingLeft = true;
             transform.rotation = Quaternion.Euler(0, -180, 0);
         }
         else
         {
+            ghostFacingLeft=false;
             transform.rotation = Quaternion.Euler(0, 0, 0);
         }
         transform.position = Vector2.MoveTowards(transform.position, player.transform.position, speed * Time.deltaTime);

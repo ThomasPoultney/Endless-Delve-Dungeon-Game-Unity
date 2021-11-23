@@ -306,7 +306,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1320483095, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
       propertyPath: runningSpeedConstant
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1320483095, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
       propertyPath: walkingSpeedConstant

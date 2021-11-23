@@ -96,24 +96,27 @@ public class WorldSpawner : MonoBehaviour
         bottomBorder.GetComponent<SpriteRenderer>().size = new Vector2(mapWidth + 2, 1);
         bottomBorder.GetComponent<BoxCollider2D>().size = new Vector2(mapWidth + 2, 1);
         bottomBorder.transform.parent = borders.transform;
+        bottomBorder.layer = 9;
 
         //top Border
         GameObject topBorder = Instantiate(borderBlock, new Vector3((roomWidth * numRoomsHor) / 2, transform.position.y + roomHeight * numRoomsVer + 0.5f, 100), Quaternion.identity);
         topBorder.GetComponent<SpriteRenderer>().size = new Vector2(mapWidth + 2, 1);
         topBorder.GetComponent<BoxCollider2D>().size = new Vector2(mapWidth + 2, 1);
         topBorder.transform.parent = borders.transform;
-
+        topBorder.layer = 9;
         //Right Border
         GameObject rightBorder = Instantiate(borderBlock, new Vector3(transform.position.x - 0.5f, (roomHeight * numRoomsVer) / 2, 100), Quaternion.identity);
         rightBorder.GetComponent<SpriteRenderer>().size = new Vector2(1, mapHeight);
         rightBorder.GetComponent<BoxCollider2D>().size = new Vector2(1, mapHeight);
         rightBorder.transform.parent = borders.transform;
+        rightBorder.layer = 9;
 
         //Left Border
         GameObject leftBorder = Instantiate(borderBlock, new Vector3((roomWidth * numRoomsHor) + 0.5f, (roomHeight * numRoomsVer) / 2, 100), Quaternion.identity);
         leftBorder.GetComponent<SpriteRenderer>().size = new Vector2(1, mapHeight);
         leftBorder.GetComponent<BoxCollider2D>().size = new Vector2(1, mapHeight);
         leftBorder.transform.parent = borders.transform;
+        leftBorder.layer = 9;
     }
 
 
