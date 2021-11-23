@@ -28,7 +28,7 @@ public class GhostController : MonoBehaviour
 
         if (player != null)
         {
-            if (player.GetComponent<Player_Controller>().facingLeft == ghostFacingLeft)
+            if (player.GetComponent<Player_Controller>().facingLeft != ghostFacingLeft)
             {
 
                 if (Vector2.Distance(transform.position, player.transform.position) < pursuitDistance)
