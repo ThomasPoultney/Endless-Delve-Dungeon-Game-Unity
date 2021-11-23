@@ -387,7 +387,7 @@ public class Player_Controller : MonoBehaviour
             meleeAttackCombo = 0;
         }
 
-        if (punchMeleeAttackCombo == 4)
+        if (punchMeleeAttackCombo == 6)
         {
             punchMeleeAttackCombo = 0;
         }
@@ -451,10 +451,22 @@ public class Player_Controller : MonoBehaviour
             else if (punchMeleeAttackCombo == 2)
             {
                 ChangeAnimationState("Player_Punch_2");
-            }else if (punchMeleeAttackCombo == 3)
+            }
+            else if (punchMeleeAttackCombo == 3)
             {
                 ChangeAnimationState("Player_Punch_3");
             }
+            else if (punchMeleeAttackCombo == 4)
+            {
+                ChangeAnimationState("Player_Kick");
+            }
+            else if (punchMeleeAttackCombo == 5)
+            {
+                ChangeAnimationState("Player_Kick_1");
+            }
+          
+
+            
             punchMeleeAttackCombo++;
             timeSinceLastPunchAttack = Time.time;
         }
