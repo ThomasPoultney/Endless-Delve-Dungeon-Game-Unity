@@ -14,6 +14,7 @@ public class Player_Controller : MonoBehaviour
     [SerializeField] private float jumpingConstant = 2f;
     [SerializeField] private float slideThreshold = 4f;
     [SerializeField] private float walkingThreshold = 2f;
+    [SerializeField] private float SprintingThreshold = 2f;
     [SerializeField] private float jumpResetTime = 1f;
 
 
@@ -43,6 +44,11 @@ public class Player_Controller : MonoBehaviour
     private float lastRopeFireTime = 0;
     private float timeSinceWeaponDraw;
     [SerializeField] private float attackDuration = 1f;
+
+    private bool isGrounded;
+    public Transform feetPos;
+    public float checkRadius;
+    public LayerMask whatIsGround;
 
     
 
@@ -95,6 +101,10 @@ public class Player_Controller : MonoBehaviour
         fireRopeInput = Input.GetKey(KeyCode.R);
         walkingInput = Input.GetKey(KeyCode.LeftControl);
 
+        isGrounded = Physics2D.OverlapCircle(feetPos.position, checkRadius, whatIsGround);
+
+
+
 
     }
 
@@ -122,6 +132,7 @@ public class Player_Controller : MonoBehaviour
         if (isJumping && Time.time - timeSinceLastJump > animator.GetCurrentAnimatorStateInfo(0).length)
         {
             canJumpAgain = false;
+
         } else if(canJumpAgain)
         {
             return;
@@ -152,25 +163,6 @@ public class Player_Controller : MonoBehaviour
             punchMeleeAttackCombo = 0;
         }
 
-      
-
-
-        if (crouching && !charecterAttacking)
-        {
-            playerBody.velocity = new Vector2(crouchingSpeedConstant * horizontalInput, playerBody.velocity.y);
-
-        } else if (walkingInput & !charecterAttacking)
-        {
-            playerBody.velocity = new Vector2(walkingSpeedConstant * horizontalInput, playerBody.velocity.y);
-        }
-        else if(!charecterAttacking)
-        {
-            
-            playerBody.velocity = new Vector2(runningSpeedConstant * horizontalInput, playerBody.velocity.y);
-
-        }
-
-
 
         if (!canSpawnRope && Time.time - lastSpawnTime > timeBetweenRopeSpawns)
         {
@@ -191,7 +183,7 @@ public class Player_Controller : MonoBehaviour
         {
             attack();
         }
-        else if (jumpInput > 0 && playerGrounded)
+        else if (jumpInput > 0 && isGrounded)
         {
             Jump();
         }
@@ -300,11 +292,27 @@ public class Player_Controller : MonoBehaviour
             currentAnimationState = "Player_Idle_Sheathed";
         }
 
+        if (crouching && !charecterAttacking)
+        {
+            playerBody.velocity = new Vector2(crouchingSpeedConstant * horizontalInput, playerBody.velocity.y);
+
+        }
+        else if (walkingInput & !charecterAttacking)
+        {
+            playerBody.velocity = new Vector2(walkingSpeedConstant * horizontalInput, playerBody.velocity.y);
+        }
+        else if (!charecterAttacking)
+        {
+            playerBody.velocity = new Vector2(runningSpeedConstant * horizontalInput, playerBody.velocity.y);
+        }
+
         //if you are not already attached to a rope you can fire a new rope
         if (fireRopeInput && !attached && canSpawnRope)
         {
             fireRope();
         }
+
+
     }
 
     private void attack()
@@ -440,7 +448,7 @@ public class Player_Controller : MonoBehaviour
 
     public void Jump()
     {
-        playerBody.velocity = new Vector2(playerBody.velocity.x, playerBody.velocity.y + jumpingConstant);
+        playerBody.velocity = Vector2.up * jumpingConstant;
         ChangeAnimationState("Player_Jump");
         currentAnimationState = "Player_Jump";
         playerGrounded = false;
