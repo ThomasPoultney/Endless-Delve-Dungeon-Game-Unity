@@ -36,6 +36,7 @@ public class Player_Controller : MonoBehaviour
     [SerializeField] private float maxRopeSpawnLength = 5;
     [SerializeField] private float timeBetweenRopeSpawns = 5;
     [SerializeField] private LayerMask ropesCanSpawnOn;
+
     private bool weaponOut = false;
     private bool climbingLadder = false;
     private bool weaponDrawing = false;
@@ -45,13 +46,22 @@ public class Player_Controller : MonoBehaviour
     private float lastAttackTime = 0;
     private float lastRopeFireTime = 0;
     private float timeSinceWeaponDraw;
-    [SerializeField] private float attackDuration = 1f;
+   
 
     private bool isGrounded;
     private bool isWallSliding;
+
+    private bool canClimbLedge;
+    private bool isTouchingLedge = false;
+    private bool ledgeDetected = false;
+
+
     public Transform feetPos;
+    public Transform ledgeCheck;
+
     public float checkRadius;
     public LayerMask whatIsGround;
+
 
     
 
@@ -118,13 +128,19 @@ public class Player_Controller : MonoBehaviour
         {
             facingLeft = false;
         }
-        checkIfWallSliding();
+        
         CheckSurroundings();
+        CheckIfWallSliding();
+        CheckLedgeClimb();
+
+
 
 
     }
 
-    private void checkIfWallSliding()
+ 
+
+    private void CheckIfWallSliding()
     {
         if(isTouchingWall && !isGrounded && playerBody.velocity.y < 0)
         {
@@ -137,13 +153,28 @@ public class Player_Controller : MonoBehaviour
 
     private void CheckSurroundings()
     {
+        RaycastHit2D col = new RaycastHit2D();
+        Vector2 ledgeCheckPos = new Vector2(ledgeCheck.transform.position.x,ledgeCheck.transform.position.y);
         if (facingLeft)
         {
             isTouchingWall = Physics2D.Raycast(wallCheck.position, -transform.right, wallCheckDistance, whatIsGround);
+            col = Physics2D.Raycast(wallCheck.position, -transform.right, wallCheckDistance, whatIsGround);
+            isTouchingLedge = Physics2D.Raycast(ledgeCheckPos, -transform.right, wallCheckDistance, whatIsGround);
         }
         else
         {
             isTouchingWall = Physics2D.Raycast(wallCheck.position, transform.right, wallCheckDistance, whatIsGround);
+            col = Physics2D.Raycast(wallCheck.position, transform.right, wallCheckDistance, whatIsGround);
+            isTouchingLedge = Physics2D.Raycast(ledgeCheckPos, transform.right, wallCheckDistance, whatIsGround);
+        }
+    }
+
+    private void CheckLedgeClimb()
+    {
+        if (isTouchingWall && !isTouchingLedge)
+        {
+            ledgeDetected = true;
+            Debug.Log("Ledge Detected");
         }
 
     }
@@ -360,7 +391,7 @@ public class Player_Controller : MonoBehaviour
             playerBody.velocity = new Vector2(runningSpeedConstant * horizontalInput, playerBody.velocity.y);
         }
 
-        Debug.Log(playerBody.velocity);
+     
 
 
         //if you are not already attached to a rope you can fire a new rope
@@ -551,5 +582,7 @@ public class Player_Controller : MonoBehaviour
     void OnDrawGizmos()
     {
        Gizmos.DrawLine(wallCheck.position, new Vector3(wallCheck.position.x + wallCheckDistance, wallCheck.position.y, wallCheck.position.z));
+       Gizmos.DrawLine(ledgeCheck.position, new Vector3(ledgeCheck.position.x + wallCheckDistance, ledgeCheck.position.y, 0));
+
     }
 }

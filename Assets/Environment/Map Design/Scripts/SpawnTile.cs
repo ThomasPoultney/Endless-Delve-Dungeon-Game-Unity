@@ -27,7 +27,8 @@ public class SpawnTile : MonoBehaviour
             instance.AddComponent<BoxCollider2D>();
             instance.AddComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
             instance.GetComponent<Rigidbody2D>().sharedMaterial = noFriction;
-            
+            instance.GetComponent<BoxCollider2D>().sharedMaterial = noFriction;
+
         }
         else
         {
@@ -40,7 +41,7 @@ public class SpawnTile : MonoBehaviour
             instance.AddComponent<BoxCollider2D>();
             instance.AddComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
             instance.GetComponent<Rigidbody2D>().sharedMaterial = noFriction;
-
+            instance.GetComponent<BoxCollider2D>().sharedMaterial = noFriction;
 
         }
 
