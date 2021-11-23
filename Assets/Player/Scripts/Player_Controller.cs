@@ -8,14 +8,14 @@ public class Player_Controller : MonoBehaviour
     public string currentAnimationState;
     public Animator animator;
 
-    [SerializeField] private float runningSpeedConstant = 4f;
+    [SerializeField] private float sprintingSpeedConstant = 5f;
+    [SerializeField] private float runningSpeedConstant = 3f;
     [SerializeField] private float crouchingSpeedConstant = 2f;
     [SerializeField] private float walkingSpeedConstant = 1f;
     [SerializeField] private float wallSlideSpeedConstant = 2f;
     [SerializeField] private float jumpingConstant = 2f;
     [SerializeField] private float slideThreshold = 4f;
     [SerializeField] private float walkingThreshold = 2f;
-    [SerializeField] private float SprintingThreshold = 2f;
     [SerializeField] private float jumpResetTime = 1f;
 
 
@@ -66,7 +66,7 @@ public class Player_Controller : MonoBehaviour
     private bool weaponDrawInput;
     private bool fireRopeInput;
     private bool walkingInput;
-
+    private bool sprintingInput;
     //used to reset combos after a given time
     private float timeSinceLastMeleeAttack = 0;
     private float timeSinceLastAirMeleeAttack = 0;
@@ -103,7 +103,8 @@ public class Player_Controller : MonoBehaviour
 
         attackInput = Input.GetMouseButton(0);
         jumpInput = Input.GetAxis("Jump");
-        crouchingInput = Input.GetKey(KeyCode.LeftShift);
+        crouchingInput = Input.GetKey(KeyCode.C);
+        sprintingInput = Input.GetKey(KeyCode.LeftShift);
         weaponDrawInput = Input.GetKey(KeyCode.Z);
         fireRopeInput = Input.GetKey(KeyCode.R);
         walkingInput = Input.GetKey(KeyCode.LeftControl);
@@ -295,6 +296,18 @@ public class Player_Controller : MonoBehaviour
             currentAnimationState = "Player_Walk";
             transform.localScale = new Vector3(-playerSizeConstant, playerSizeConstant, 1);
         }
+        else if (horizontalInput > 0.01f && sprintingInput)
+        {
+            ChangeAnimationState("Player_Run_1");
+            currentAnimationState = "Player_Run_1";
+            transform.localScale = new Vector3(playerSizeConstant, playerSizeConstant, 1);
+        }
+        else if (horizontalInput < -0.01f && sprintingInput)
+        {
+            ChangeAnimationState("Player_Run_1");
+            currentAnimationState = "Player_Run_1";
+            transform.localScale = new Vector3(-playerSizeConstant, playerSizeConstant, 1);
+        }
 
         else if (horizontalInput > 0.01f)
         {
@@ -336,6 +349,7 @@ public class Player_Controller : MonoBehaviour
             currentAnimationState = "Player_Idle_Sheathed";
         }
 
+        
         if (crouching && !charecterAttacking)
         {
             playerBody.velocity = new Vector2(crouchingSpeedConstant * horizontalInput, playerBody.velocity.y);
@@ -344,6 +358,10 @@ public class Player_Controller : MonoBehaviour
         else if (walkingInput & !charecterAttacking)
         {
             playerBody.velocity = new Vector2(walkingSpeedConstant * horizontalInput, playerBody.velocity.y);
+        }
+        else if (sprintingInput & !charecterAttacking)
+        {
+            playerBody.velocity = new Vector2(sprintingSpeedConstant * horizontalInput, playerBody.velocity.y);
         }
         else if (!charecterAttacking)
         {
