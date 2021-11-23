@@ -11,6 +11,7 @@ public class Player_Controller : MonoBehaviour
     [SerializeField] private float runningSpeedConstant = 4f;
     [SerializeField] private float crouchingSpeedConstant = 2f;
     [SerializeField] private float walkingSpeedConstant = 1f;
+    [SerializeField] private float wallSlideSpeedConstant = 2f;
     [SerializeField] private float jumpingConstant = 2f;
     [SerializeField] private float slideThreshold = 4f;
     [SerializeField] private float walkingThreshold = 2f;
@@ -20,7 +21,7 @@ public class Player_Controller : MonoBehaviour
 
     private Rigidbody2D playerBody;
     private Animator anim;
-    private bool playerGrounded = true;
+
   
     //limits how many ropes players can spawn
     [SerializeField] private int numberOfRopesPlayerCanSpawn = 3;
@@ -30,6 +31,7 @@ public class Player_Controller : MonoBehaviour
     private float timeSinceLastJump;
     private bool canSpawnRope;
     private bool canJumpAgain;
+    private bool facingLeft;
 
     [SerializeField] private float maxRopeSpawnLength = 5;
     [SerializeField] private float timeBetweenRopeSpawns = 5;
@@ -46,6 +48,7 @@ public class Player_Controller : MonoBehaviour
     [SerializeField] private float attackDuration = 1f;
 
     private bool isGrounded;
+    private bool isWallSliding;
     public Transform feetPos;
     public float checkRadius;
     public LayerMask whatIsGround;
@@ -74,6 +77,10 @@ public class Player_Controller : MonoBehaviour
     private int punchMeleeAttackCombo = 0;
     private int meleeAttackCombo = 0;
     private int airMeleeAttackCombo = 0;
+
+    private bool isTouchingWall;
+    [SerializeField] private Transform wallCheck;
+    [SerializeField] private float wallCheckDistance = 1f;
     
 
 
@@ -103,8 +110,40 @@ public class Player_Controller : MonoBehaviour
 
         isGrounded = Physics2D.OverlapCircle(feetPos.position, checkRadius, whatIsGround);
 
+        if(transform.localScale.x < 0)
+        {
+            facingLeft = true;
+        } else
+        {
+            facingLeft = false;
+        }
+        checkIfWallSliding();
+        CheckSurroundings();
 
 
+    }
+
+    private void checkIfWallSliding()
+    {
+        if(isTouchingWall && !isGrounded && playerBody.velocity.y < 0)
+        {
+            isWallSliding = true;
+        } else
+        {
+            isWallSliding = false;
+        }
+    }
+
+    private void CheckSurroundings()
+    {
+        if (facingLeft)
+        {
+            isTouchingWall = Physics2D.Raycast(wallCheck.position, -transform.right, wallCheckDistance, whatIsGround);
+        }
+        else
+        {
+            isTouchingWall = Physics2D.Raycast(wallCheck.position, transform.right, wallCheckDistance, whatIsGround);
+        }
 
     }
 
@@ -183,6 +222,11 @@ public class Player_Controller : MonoBehaviour
         {
             attack();
         }
+        else if (isWallSliding)//and we are losing momentum up we set animation to jump
+        {
+            ChangeAnimationState("Player_Wall_Slide");
+            currentAnimationState = "Player_Wall_Slide";
+        }
         else if (jumpInput > 0 && isGrounded)
         {
             Jump();
@@ -192,12 +236,12 @@ public class Player_Controller : MonoBehaviour
             ChangeAnimationState("Player_Climb");
             currentAnimationState = "Player_Climb";
         }
-        else if (!playerGrounded && playerBody.velocity.y >= 0)//and we are gaining momentum up we set animation to jump
+        else if (!isGrounded && playerBody.velocity.y >= 0)//and we are gaining momentum up we set animation to jump
         {
             ChangeAnimationState("Player_Jump");
             currentAnimationState = "Player_Jump";
         }
-        else if (!playerGrounded && playerBody.velocity.y <= 0)//and we are losing momentum up we set animation to jump
+        else if (!isGrounded && playerBody.velocity.y <= 0)//and we are losing momentum up we set animation to jump
         {
 
             ChangeAnimationState("Player_Fall");
@@ -337,7 +381,7 @@ public class Player_Controller : MonoBehaviour
 
         if (weaponOut == true)
         {
-            if (playerGrounded)
+            if (isGrounded)
             {
                 if (meleeAttackCombo == 0)
                 {
@@ -355,7 +399,7 @@ public class Player_Controller : MonoBehaviour
                 meleeAttackCombo++;
                 timeSinceLastMeleeAttack = Time.time;
             }
-            else if (!playerGrounded)
+            else if (!isGrounded)
             {
                 if (airMeleeAttackCombo == 0)
                 {
@@ -451,7 +495,7 @@ public class Player_Controller : MonoBehaviour
         playerBody.velocity = Vector2.up * jumpingConstant;
         ChangeAnimationState("Player_Jump");
         currentAnimationState = "Player_Jump";
-        playerGrounded = false;
+        isGrounded = false;
         isJumping = true;
         canJumpAgain = false;
         timeSinceLastJump = Time.time; 
@@ -461,8 +505,7 @@ public class Player_Controller : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         climbingLadder = false;
-        playerGrounded = false;
-        if (collision.gameObject.layer == 9 || collision.gameObject.layer == 16) playerGrounded = true; //9 - basic bloc, 16 - Bedrock
+        if (collision.gameObject.layer == 9 || collision.gameObject.layer == 16) isGrounded = true; //9 - basic bloc, 16 - Bedrock
 
         if (collision.gameObject.layer == 12) climbingLadder = true; //ladder 
     }
@@ -480,4 +523,8 @@ public class Player_Controller : MonoBehaviour
         currentAnimationState = newState;
     }
 
+    void OnDrawGizmos()
+    {
+       Gizmos.DrawLine(wallCheck.position, new Vector3(wallCheck.position.x + wallCheckDistance, wallCheck.position.y, wallCheck.position.z));
+    }
 }
