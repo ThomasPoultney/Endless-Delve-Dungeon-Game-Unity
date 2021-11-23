@@ -11,7 +11,7 @@ public class startgame : MonoBehaviour
        Scene scene = SceneManager.GetActiveScene();
        Destroy(gameObject);
        SceneManager.LoadScene(scene.buildIndex + 1);
-      // SceneManager.MoveGameObjectToScene(Canvas, SceneManager.GetActiveScene());
+      
       
 
    }

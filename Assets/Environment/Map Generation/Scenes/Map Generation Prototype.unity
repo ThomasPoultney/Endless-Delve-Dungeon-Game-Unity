@@ -565,11 +565,6 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-<<<<<<< Updated upstream
-  m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
---- !u!114 &1367081598
-=======
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
@@ -658,22 +653,11 @@ GameObject:
   m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!114 &1908236175
->>>>>>> Stashed changes
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-<<<<<<< Updated upstream
-  m_GameObject: {fileID: 1367081593}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0302c3f91613f044eb4f3c253e5259ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!70 &1367081599
-CapsuleCollider2D:
-=======
   m_GameObject: {fileID: 1908236174}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -689,23 +673,10 @@ CapsuleCollider2D:
   m_ForceModuleActive: 0
 --- !u!114 &1908236176
 MonoBehaviour:
->>>>>>> Stashed changes
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-<<<<<<< Updated upstream
-  m_GameObject: {fileID: 1367081593}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_Size: {x: 0.5, y: 1}
-  m_Direction: 0
-=======
   m_GameObject: {fileID: 1908236174}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -730,4 +701,3 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
->>>>>>> Stashed changes
