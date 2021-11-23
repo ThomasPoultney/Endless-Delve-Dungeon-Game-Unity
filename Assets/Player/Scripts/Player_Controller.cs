@@ -8,10 +8,14 @@ public class Player_Controller : MonoBehaviour
     public string currentAnimationState;
     public Animator animator;
 
-    [SerializeField] private float runningSpeedConstant = 4;
-    [SerializeField] private float crouchingSpeedConstant = 2;
-    [SerializeField] private float jumpingConstant = 2;
-    [SerializeField] private float slideThreshold = 4;
+    [SerializeField] private float runningSpeedConstant = 4f;
+    [SerializeField] private float crouchingSpeedConstant = 2f;
+    [SerializeField] private float jumpingConstant = 2f;
+    [SerializeField] private float slideThreshold = 4f;
+    [SerializeField] private float walkingThreshold = 2f;
+    [SerializeField] private float jumpResetTime = 1f;
+
+
     private Rigidbody2D playerBody;
     private Animator anim;
     private bool playerGrounded = true;
@@ -21,13 +25,17 @@ public class Player_Controller : MonoBehaviour
     private List<GameObject> ropesSpawned = new List<GameObject>();
     [SerializeField] private GameObject ropeSpawner;
     private float lastSpawnTime;
+    private float timeSinceLastJump;
     private bool canSpawnRope;
+    private bool canJumpAgain;
+
     [SerializeField] private float maxRopeSpawnLength = 5;
     [SerializeField] private float timeBetweenRopeSpawns = 5;
     [SerializeField] private LayerMask ropesCanSpawnOn;
     private bool weaponOut = false;
     private bool climbingLadder = false;
     private bool weaponDrawing = false;
+    private bool isJumping = false;
     private bool charecterAttacking = false;
     private bool charecterFiringRope = false;
     private float lastAttackTime = 0;
@@ -35,10 +43,11 @@ public class Player_Controller : MonoBehaviour
     private float timeSinceWeaponDraw;
     [SerializeField] private float attackDuration = 1f;
 
-    private bool running;
-    private bool walking;
+    
+
     private bool crouching;
 
+    //used for checking player Input
     private float horizontalInput;
     private float verticalInput;
     private float jumpInput;
@@ -48,13 +57,13 @@ public class Player_Controller : MonoBehaviour
     private bool fireRopeInput;
 
 
-
+    //used to reset combos after a given time
     private float timeSinceLastMeleeAttack = 0;
     private float timeSinceLastAirMeleeAttack = 0;
     private float timeSinceLastPunchAttack = 0;
     private float comboResetTime = 1;
-
-
+    
+    //tracks combos
     private int punchMeleeAttackCombo = 0;
     private int meleeAttackCombo = 0;
     private int airMeleeAttackCombo = 0;
@@ -108,6 +117,14 @@ public class Player_Controller : MonoBehaviour
             return;
         }
 
+        if (isJumping && Time.time - timeSinceLastJump > animator.GetCurrentAnimatorStateInfo(0).length)
+        {
+            canJumpAgain = false;
+        } else if(canJumpAgain)
+        {
+            return;
+        }
+
 
         if (weaponDrawing && Time.time - timeSinceWeaponDraw > animator.GetCurrentAnimatorStateInfo(0).length)
         {
@@ -133,13 +150,15 @@ public class Player_Controller : MonoBehaviour
             punchMeleeAttackCombo = 0;
         }
 
+      
 
-        if (crouching)
+
+        if (crouching && !charecterAttacking)
         {
             playerBody.velocity = new Vector2(crouchingSpeedConstant * horizontalInput, playerBody.velocity.y);
 
         }
-        else
+        else if(!charecterAttacking)
         {
             playerBody.velocity = new Vector2(runningSpeedConstant * horizontalInput, playerBody.velocity.y);
 
@@ -407,6 +426,10 @@ public class Player_Controller : MonoBehaviour
         ChangeAnimationState("Player_Jump");
         currentAnimationState = "Player_Jump";
         playerGrounded = false;
+        isJumping = true;
+        canJumpAgain = false;
+        timeSinceLastJump = Time.time; 
+        
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
