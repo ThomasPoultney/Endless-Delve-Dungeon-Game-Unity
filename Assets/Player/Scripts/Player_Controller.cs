@@ -10,6 +10,7 @@ public class Player_Controller : MonoBehaviour
 
     [SerializeField] private float runningSpeedConstant = 4f;
     [SerializeField] private float crouchingSpeedConstant = 2f;
+    [SerializeField] private float walkingSpeedConstant = 1f;
     [SerializeField] private float jumpingConstant = 2f;
     [SerializeField] private float slideThreshold = 4f;
     [SerializeField] private float walkingThreshold = 2f;
@@ -55,7 +56,7 @@ public class Player_Controller : MonoBehaviour
     private bool crouchingInput;
     private bool weaponDrawInput;
     private bool fireRopeInput;
-
+    private bool walkingInput;
 
     //used to reset combos after a given time
     private float timeSinceLastMeleeAttack = 0;
@@ -92,6 +93,7 @@ public class Player_Controller : MonoBehaviour
         crouchingInput = Input.GetKey(KeyCode.LeftShift);
         weaponDrawInput = Input.GetKey(KeyCode.Z);
         fireRopeInput = Input.GetKey(KeyCode.R);
+        walkingInput = Input.GetKey(KeyCode.LeftControl);
 
 
     }
@@ -157,9 +159,13 @@ public class Player_Controller : MonoBehaviour
         {
             playerBody.velocity = new Vector2(crouchingSpeedConstant * horizontalInput, playerBody.velocity.y);
 
+        } else if (walkingInput & !charecterAttacking)
+        {
+            playerBody.velocity = new Vector2(walkingSpeedConstant * horizontalInput, playerBody.velocity.y);
         }
         else if(!charecterAttacking)
         {
+            
             playerBody.velocity = new Vector2(runningSpeedConstant * horizontalInput, playerBody.velocity.y);
 
         }
@@ -241,7 +247,19 @@ public class Player_Controller : MonoBehaviour
             currentAnimationState = "Player_Ground_Slide";
             transform.localScale = new Vector3(-playerSizeConstant, playerSizeConstant, 1);
             crouching = true;
+        } else if (horizontalInput > 0.01f && walkingInput)
+        {
+            ChangeAnimationState("Player_Walk");
+            currentAnimationState = "Player_Walk";
+            transform.localScale = new Vector3(playerSizeConstant, playerSizeConstant, 1);
         }
+        else if (horizontalInput < -0.01f && walkingInput)
+        {
+            ChangeAnimationState("Player_Walk");
+            currentAnimationState = "Player_Walk";
+            transform.localScale = new Vector3(-playerSizeConstant, playerSizeConstant, 1);
+        }
+
         else if (horizontalInput > 0.01f)
         {
             ChangeAnimationState("Player_Run");
