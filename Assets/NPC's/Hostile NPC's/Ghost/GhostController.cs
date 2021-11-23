@@ -31,15 +31,19 @@ public class GhostController : MonoBehaviour
 
                 if (Vector2.Distance(transform.position, player.transform.position) < pursuitDistance)
                 {
-
                     Hunt();
                     hunting = true;
+                    transform.GetCompnent(Script).enabled = false;
+
+
                 }
 
             }
             else
             {
                 ChangeAnimationState("Ghost_Idle");
+                transform.GetChild(0).GetComponent<Light>().enabled = false;
+
                 hunting = false;
             }
         }
