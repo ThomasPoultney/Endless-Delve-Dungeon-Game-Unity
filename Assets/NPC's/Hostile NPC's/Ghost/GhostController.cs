@@ -69,7 +69,7 @@ public class GhostController : MonoBehaviour
         }
         else
         {
-            ghostFacingLeft=false;
+            ghostFacingLeft = false;
             transform.rotation = Quaternion.Euler(0, 0, 0);
         }
         transform.position = Vector2.MoveTowards(transform.position, player.transform.position, speed * Time.deltaTime);
