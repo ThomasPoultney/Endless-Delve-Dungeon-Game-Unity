@@ -579,6 +579,7 @@ public class Player_Controller : MonoBehaviour
         isGrounded = false;
         isJumping = true;
         canJumpAgain = false;
+        jumpTimeCounter = jumpResetTime;
         timeSinceLastJump = Time.time; 
         
     }
