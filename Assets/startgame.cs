@@ -9,10 +9,11 @@ public class startgame : MonoBehaviour
    public void playGame(){
 
        Scene scene = SceneManager.GetActiveScene();
-       Destroy(gameObject);
        SceneManager.LoadScene(scene.buildIndex + 1);
-      
-      
+       Debug.Log("Button Clicked");
+       Destroy(gameObject);
 
-   }
+
+
+    }
 }
