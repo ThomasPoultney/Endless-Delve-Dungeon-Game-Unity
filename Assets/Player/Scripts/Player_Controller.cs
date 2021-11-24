@@ -108,6 +108,7 @@ public class Player_Controller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        crouching = false;
         horizontalInput = Input.GetAxis("Horizontal");
         verticalInput = Input.GetAxis("Vertical");
 
@@ -153,18 +154,15 @@ public class Player_Controller : MonoBehaviour
 
     private void CheckSurroundings()
     {
-        RaycastHit2D col = new RaycastHit2D();
         Vector2 ledgeCheckPos = new Vector2(ledgeCheck.transform.position.x,ledgeCheck.transform.position.y);
         if (facingLeft)
         {
             isTouchingWall = Physics2D.Raycast(wallCheck.position, -transform.right, wallCheckDistance, whatIsGround);
-            col = Physics2D.Raycast(wallCheck.position, -transform.right, wallCheckDistance, whatIsGround);
             isTouchingLedge = Physics2D.Raycast(ledgeCheckPos, -transform.right, wallCheckDistance, whatIsGround);
         }
         else
         {
             isTouchingWall = Physics2D.Raycast(wallCheck.position, transform.right, wallCheckDistance, whatIsGround);
-            col = Physics2D.Raycast(wallCheck.position, transform.right, wallCheckDistance, whatIsGround);
             isTouchingLedge = Physics2D.Raycast(ledgeCheckPos, transform.right, wallCheckDistance, whatIsGround);
         }
     }
@@ -248,6 +246,7 @@ public class Player_Controller : MonoBehaviour
         bool attached = transform.GetComponent<PlayerRopeTest>().attached;
 
         //creates a priority list of animations based on certain conditions being met
+     
         if (attached)
         {
             ChangeAnimationState("Player_Wall_Slide");
@@ -391,7 +390,13 @@ public class Player_Controller : MonoBehaviour
             playerBody.velocity = new Vector2(runningSpeedConstant * horizontalInput, playerBody.velocity.y);
         }
 
-     
+        if(isWallSliding)
+        {
+            playerBody.velocity = new Vector2(0, -wallSlideSpeedConstant);
+
+        }
+
+
 
 
         //if you are not already attached to a rope you can fire a new rope

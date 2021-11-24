@@ -20,8 +20,16 @@ public class PlayerRopeTest : MonoBehaviour
     private Transform ropeSegmentAttachedTo;
     private GameObject disregard; //stops player attaching to the same rope again
     public float timeBeforePlayerCanAttachToSameRope = 1f;
-
     private float lastDetachTime;
+
+    private float ropeClimbStartValue;
+    private float ropeClimbEndValue;
+    private float climbTime = 0.3f;
+    private bool climbing = false;
+    private float valueToLerp;
+
+    private float timeElapsed;
+    
 
 
     private void Awake()
@@ -40,6 +48,17 @@ public class PlayerRopeTest : MonoBehaviour
     void Update()
     {
 
+        if (climbing == true && timeElapsed < climbTime)
+        {
+            Debug.Log("Lerping");
+            valueToLerp = Mathf.Lerp(ropeClimbStartValue, ropeClimbEndValue, timeElapsed / climbTime);
+            transform.position = new Vector2(transform.position.x, valueToLerp );
+            timeElapsed += Time.deltaTime;
+        } else if(climbing == true)
+        {
+            climbing = false;
+        }
+     
         CheckKeyBoardInputs();
 
         if (ropeAttachedTo !=null)
@@ -96,12 +115,12 @@ public class PlayerRopeTest : MonoBehaviour
             }
         }
 
-        if(Input.GetKey("w") || Input.GetKey("up") && attached)
+        if((Input.GetKeyDown("w") || Input.GetKeyDown("up")) && attached)
         {
             Slide(1);
         }
 
-        if (Input.GetKey("s") || Input.GetKey("down") && attached)
+        if ((Input.GetKeyDown("s") || Input.GetKeyDown("down")) && attached)
         {
             Slide(-1);
         }
@@ -162,12 +181,39 @@ public class PlayerRopeTest : MonoBehaviour
 
     private void Slide(int amountToSlide)
     {
+        RopeSegment playerConnection = hj.connectedBody.gameObject.GetComponent<RopeSegment>();
+        GameObject newSeg = null;
         if (amountToSlide > 0)
         {
-
-        } else if(amountToSlide < 0)
+            if(playerConnection.connectedAbove != null)
+            {
+                if(playerConnection.connectedAbove.gameObject.GetComponent<RopeSegment>() != null)
+                {
+                    newSeg = playerConnection.connectedAbove;
+                }
+            }
+        } 
+        else 
         {
+            if(playerConnection.connectedBelow != null)
+            {
+                newSeg = playerConnection.connectedBelow;
+            }
+        }
 
+        if(newSeg != null)
+        {
+            //transform.position = newSeg.transform.position;
+
+            ropeClimbStartValue = transform.position.y;
+            ropeClimbEndValue = newSeg.transform.position.y;
+
+            climbing = true;
+            timeElapsed = 0;
+            
+            playerConnection.isPlayerAttached = false;
+            newSeg.GetComponent<RopeSegment>().isPlayerAttached = true;
+            hj.connectedBody = newSeg.GetComponent<Rigidbody2D>();
         }
     }
 }
