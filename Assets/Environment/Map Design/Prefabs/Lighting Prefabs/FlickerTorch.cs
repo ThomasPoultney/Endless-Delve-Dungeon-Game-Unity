@@ -4,12 +4,24 @@ using UnityEngine;
 
 public class FlickerTorch : MonoBehaviour
 {
-    private float lightMinFlicker = 0.4f;
-    private float lightMaxFlicker = 0.4f;
+    public float minIntensity = 0.25f;
+    public float maxIntensity = 0.5f;
+    UnityEngine.Rendering.Universal.Light2D light = null;
+    float random;
+
+    void Start()
+    {
+        light = GetComponent<UnityEngine.Rendering.Universal.Light2D>();
+
+        random = Random.Range(0.0f, 65535.0f);
+    }
 
     void Update()
     {
-        
+        float noise = Mathf.PerlinNoise(random, Time.time);
 
+        light.intensity = Mathf.Lerp(minIntensity, maxIntensity, noise);
     }
+
+
 }
