@@ -46,7 +46,7 @@ public class Player_Controller : MonoBehaviour
     private float lastAttackTime = 0;
     private float lastRopeFireTime = 0;
     private float timeSinceWeaponDraw;
-   
+    [SerializeField] private float jumpTimeCounter = 0.3f;
 
     private bool isGrounded;
     private bool isWallSliding;
@@ -108,6 +108,8 @@ public class Player_Controller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+
         crouching = false;
         horizontalInput = Input.GetAxis("Horizontal");
         verticalInput = Input.GetAxis("Vertical");
@@ -122,7 +124,25 @@ public class Player_Controller : MonoBehaviour
 
         isGrounded = Physics2D.OverlapCircle(feetPos.position, checkRadius, whatIsGround);
 
-        if(transform.localScale.x < 0)
+        if (jumpInput > 0 && isJumping == true)
+        {
+            if (jumpTimeCounter > 0)
+            {
+                playerBody.velocity = Vector2.up * jumpingConstant;
+                jumpTimeCounter -= Time.deltaTime;
+            } else
+            {
+                isJumping = false;
+            }
+        }
+
+        if(Input.GetKeyUp(KeyCode.Space))
+        {
+            isJumping = false;
+        }
+
+
+        if (transform.localScale.x < 0)
         {
             facingLeft = true;
         } else
@@ -210,8 +230,6 @@ public class Player_Controller : MonoBehaviour
         }
 
      
-
-
         if (weaponDrawing && Time.time - timeSinceWeaponDraw > animator.GetCurrentAnimatorStateInfo(0).length)
         {
             weaponDrawing = false;
@@ -220,6 +238,8 @@ public class Player_Controller : MonoBehaviour
         {
             return;
         }
+
+    
 
         if(Time.time - timeSinceLastMeleeAttack >  comboResetTime)
         {
