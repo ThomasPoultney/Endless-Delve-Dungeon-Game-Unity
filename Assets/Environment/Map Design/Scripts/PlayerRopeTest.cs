@@ -6,8 +6,8 @@ using UnityEngine.UI;
 
 public class PlayerRopeTest : MonoBehaviour
 {
-    public Rigidbody2D rb;
-    private HingeJoint2D hj;
+    public Rigidbody2D playerBody; //the players rigidbody
+    private HingeJoint2D playerHinge; //hinge joint connected to player
 
     private Image countdownImage;
 
@@ -22,11 +22,11 @@ public class PlayerRopeTest : MonoBehaviour
     public float timeBeforePlayerCanAttachToSameRope = 1f;
     private float lastDetachTime;
 
-    private float ropeClimbStartValue;
-    private float ropeClimbEndValue;
+    private float ropeClimbStartValue; //current rope segment position used for lerping
+    private float ropeClimbEndValue; //next rope segment position used for lerping
     private float climbTime = 0.3f;
     private bool climbing = false;
-    private float valueToLerp;
+    private float valueToLerp; //stores the current lerping value
 
     private float timeElapsed;
     
@@ -34,8 +34,8 @@ public class PlayerRopeTest : MonoBehaviour
 
     private void Awake()
     {
-        rb = gameObject.GetComponent<Rigidbody2D>();
-        hj = gameObject.GetComponent<HingeJoint2D>();
+        playerBody = gameObject.GetComponent<Rigidbody2D>();
+        playerHinge = gameObject.GetComponent<HingeJoint2D>();
     }
 
     // Start is called before the first frame update
@@ -47,7 +47,7 @@ public class PlayerRopeTest : MonoBehaviour
    
     void Update()
     {
-
+        //lerps player from one rope segment to the next so the animation is smoother.
         if (climbing == true && timeElapsed < climbTime)
         {
             Debug.Log("Lerping");
@@ -70,6 +70,7 @@ public class PlayerRopeTest : MonoBehaviour
             joint.connectedAnchor.Set(offsetX, offsetY);
         }
      
+        //reenables box colliders on ropes after reset timer
         if(disregard != null)
         {
             if (Time.time - lastDetachTime > timeBeforePlayerCanAttachToSameRope)
@@ -89,7 +90,9 @@ public class PlayerRopeTest : MonoBehaviour
 
 
     }
-
+    /// <summary>
+    /// Retrieves any player inputs and fires the relevant functions
+    /// </summary>
     private void CheckKeyBoardInputs()
     {
      
@@ -103,7 +106,7 @@ public class PlayerRopeTest : MonoBehaviour
         {
             if(attached)
             {
-                rb.AddRelativeForce(new Vector3(-1, 0, 0) * pushForce);
+                playerBody.AddRelativeForce(new Vector3(-1, 0, 0) * pushForce);
             }
         }
 
@@ -111,7 +114,7 @@ public class PlayerRopeTest : MonoBehaviour
         {
             if (attached)
             {
-                rb.AddRelativeForce(new Vector3(1, 0, 0) * pushForce);
+                playerBody.AddRelativeForce(new Vector3(1, 0, 0) * pushForce);
             }
         }
 
@@ -128,8 +131,13 @@ public class PlayerRopeTest : MonoBehaviour
       
     }
 
+    /// <summary>
+    /// Checks if player is colliding with a rope segment, if they are we attach to the rope segment.
+    /// </summary>
+    /// <param name="collision"></param>
     private void OnTriggerEnter2D(Collider2D collision)
     {  
+        
         if(!attached) {
             if(collision.gameObject.tag == "Rope")
             {
@@ -148,8 +156,8 @@ public class PlayerRopeTest : MonoBehaviour
         transform.GetComponent<Rigidbody2D>().mass = 0;
         ropeSegment.gameObject.GetComponent<RopeSegment>().isPlayerAttached = true;
         ropeSegmentAttachedTo = ropeSegment.transform.parent;
-        hj.connectedBody = ropeSegment;
-        hj.enabled = true;
+        playerHinge.connectedBody = ropeSegment;
+        playerHinge.enabled = true;
         attached = true;
         ropeAttachedTo = ropeSegment.gameObject.transform.parent;
     }
@@ -158,9 +166,10 @@ public class PlayerRopeTest : MonoBehaviour
     {
 
         transform.GetComponent<Rigidbody2D>().mass = playerMass;
-        hj.connectedBody.gameObject.GetComponent<RopeSegment>().isPlayerAttached = true;
-        disregard = hj.connectedBody.gameObject.GetComponent<RopeSegment>().transform.parent.gameObject;
+        playerHinge.connectedBody.gameObject.GetComponent<RopeSegment>().isPlayerAttached = true;
+        disregard = playerHinge.connectedBody.gameObject.GetComponent<RopeSegment>().transform.parent.gameObject;
 
+        //disables colliders on ropesegments to stop player reattaching to them
         foreach (Transform child in ropeAttachedTo)
         {
             if (child.GetComponent<RopeSegment>() != null)
@@ -171,20 +180,27 @@ public class PlayerRopeTest : MonoBehaviour
         }
         ropeAttachedTo = null;
         attached = false;
-        hj.connectedBody = null;
-        hj.enabled = false;      
+        playerHinge.connectedBody = null;
+        playerHinge.enabled = false;     
+        //timer to stop you attaching back to the same rope
         lastDetachTime = Time.time;
+        //Tells player controller to jump when we detach from rope
         transform.GetComponent<Player_Controller>().Jump();
     }
 
    
-
+    /// <summary>
+    /// Function repsposible for sliding player up or down a rope.
+    /// </summary>
+    /// <param name="amountToSlide"></param>
     private void Slide(int amountToSlide)
     {
-        RopeSegment playerConnection = hj.connectedBody.gameObject.GetComponent<RopeSegment>();
+        //current rope segment the player is attached to
+        RopeSegment playerConnection = playerHinge.connectedBody.gameObject.GetComponent<RopeSegment>();
         GameObject newSeg = null;
         if (amountToSlide > 0)
         {
+            //stops player sliding if there are no segments above to slide to
             if(playerConnection.connectedAbove != null)
             {
                 if(playerConnection.connectedAbove.gameObject.GetComponent<RopeSegment>() != null)
@@ -201,19 +217,21 @@ public class PlayerRopeTest : MonoBehaviour
             }
         }
 
+        //if we can slide
         if(newSeg != null)
         {
-            //transform.position = newSeg.transform.position;
-
+          
+            //stores the position of the current segment and the position of the next segment for lerping
             ropeClimbStartValue = transform.position.y;
             ropeClimbEndValue = newSeg.transform.position.y;
 
             climbing = true;
-            timeElapsed = 0;
+            timeElapsed = 0; //resets climbing timer
             
+            //sets player connected to next segment
             playerConnection.isPlayerAttached = false;
             newSeg.GetComponent<RopeSegment>().isPlayerAttached = true;
-            hj.connectedBody = newSeg.GetComponent<Rigidbody2D>();
+            playerHinge.connectedBody = newSeg.GetComponent<Rigidbody2D>();
         }
     }
 }

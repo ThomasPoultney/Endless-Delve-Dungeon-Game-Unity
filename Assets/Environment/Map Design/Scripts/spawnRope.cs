@@ -24,14 +24,19 @@ public class spawnRope : MonoBehaviour
 
 
     }
-
+    /// <summary>
+    /// resposible for spawning each rope segment of the rope
+    /// </summary>
     private void GenerateRope()
     {
+        //offsets position by 0.5f because pivot point of hinge is set to top
         Vector3 ropeSpawnPosition = transform.position + new Vector3(0,0.5f,0);
         hook.transform.position = ropeSpawnPosition;
         Rigidbody2D prevBod = hook;
+        //chooses random ropePrefab to spawn
         int rand = Random.Range(0, ropeSegments.Length);
 
+        //spawns each rope segment
         for (int i = 0; i < numLinks; i++)
         {
             GameObject newSeg = Instantiate(ropeSegments[rand]);
@@ -40,6 +45,7 @@ public class spawnRope : MonoBehaviour
             HingeJoint2D hj = newSeg.GetComponent<HingeJoint2D>();
             hj.connectedBody = prevBod;
             JointAngleLimits2D joints =  new JointAngleLimits2D();
+            //gradually increase joint angle limits the further we move down rope
             joints.min = -(startLimit + (increasingLimitAmount * i));
             joints.max = startLimit + (increasingLimitAmount * i);
             hj.limits = joints;
