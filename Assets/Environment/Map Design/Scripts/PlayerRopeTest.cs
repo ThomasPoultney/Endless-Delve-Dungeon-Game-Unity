@@ -96,39 +96,38 @@ public class PlayerRopeTest : MonoBehaviour
     private void CheckKeyBoardInputs()
     {
      
-
-        if (Input.GetKeyDown(KeyCode.Space) && attached)
+        if(attached)
         {
-            Detach();
-        }
-
-        if (Input.GetKey("a") || Input.GetKey("left"))
-        {
-            if(attached)
+            if (Input.GetKeyDown(KeyCode.Space))
             {
+                Detach();
+            }
+
+            if (Input.GetKey("a") || Input.GetKey("left"))
+            {
+
                 playerBody.AddRelativeForce(new Vector3(-1, 0, 0) * pushForce);
-            }
-        }
 
-        if (Input.GetKey("d") || Input.GetKey("right"))
-        {
-            if (attached)
+            }
+
+            if (Input.GetKey("d") || Input.GetKey("right"))
             {
+
                 playerBody.AddRelativeForce(new Vector3(1, 0, 0) * pushForce);
+
+            }
+
+            if ((Input.GetKeyDown("w") || Input.GetKeyDown("up")))
+            {
+                Slide(1);
+            }
+
+            if ((Input.GetKeyDown("s") || Input.GetKeyDown("down")))
+            {
+                Slide(-1);
             }
         }
-
-        if((Input.GetKeyDown("w") || Input.GetKeyDown("up")) && attached)
-        {
-            Slide(1);
-        }
-
-        if ((Input.GetKeyDown("s") || Input.GetKeyDown("down")) && attached)
-        {
-            Slide(-1);
-        }
-
-      
+       
     }
 
     /// <summary>
