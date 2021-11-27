@@ -280,6 +280,10 @@ public class Player_Controller : MonoBehaviour
         else if (attackInput && !charecterAttacking) //attacking
         {
             attack();
+            if(isGrounded)
+            {
+                playerBody.velocity = Vector2.zero;
+            }
         }
         else if (isWallSliding && jumpInput > 0)//and we are losing momentum up we set animation to jump
         {
@@ -398,7 +402,6 @@ public class Player_Controller : MonoBehaviour
         if (crouching && !charecterAttacking)
         {
             playerBody.velocity = new Vector2(crouchingSpeedConstant * horizontalInput, playerBody.velocity.y);
-
         }
         else if (walkingInput & !charecterAttacking)
         {

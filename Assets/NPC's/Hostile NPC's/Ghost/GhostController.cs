@@ -24,14 +24,23 @@ public class GhostController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (transform.position.x < player.transform.position.x)
+        {
+            ghostFacingLeft = true;
+            transform.rotation = Quaternion.Euler(0, -180, 0);
+        }
+        else
+        {
+            ghostFacingLeft = false;
+            transform.rotation = Quaternion.Euler(0, 0, 0);
+        }
 
         if (player != null)
         {
             if (player.GetComponent<Player_Controller>().facingLeft != ghostFacingLeft)
             {
 
-                if (Vector2.Distance(transform.position, player.transform.position) < pursuitDistance)
+                if (Mathf.Abs(Vector2.Distance(transform.position, player.transform.position)) < pursuitDistance)
                 {
                     Hunt();
                     hunting = true;
@@ -61,17 +70,6 @@ public class GhostController : MonoBehaviour
     private void Hunt()
     {
         ChangeAnimationState("Ghost_Shriek");
-        
-        if (transform.position.x < player.transform.position.x)
-        {
-            ghostFacingLeft = true;
-            transform.rotation = Quaternion.Euler(0, -180, 0);
-        }
-        else
-        {
-            ghostFacingLeft = false;
-            transform.rotation = Quaternion.Euler(0, 0, 0);
-        }
         transform.position = Vector2.MoveTowards(transform.position, player.transform.position, speed * Time.deltaTime);
     }
 
