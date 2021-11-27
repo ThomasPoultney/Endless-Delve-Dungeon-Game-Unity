@@ -63,7 +63,8 @@ public class Player_Controller : MonoBehaviour
     public LayerMask whatIsGround;
 
 
-    
+    private bool isWallJumping = false;
+    [SerializeField] private float wallJumpTime = 0.2f;
 
     private bool crouching;
 
@@ -128,7 +129,7 @@ public class Player_Controller : MonoBehaviour
         {
             if (jumpTimeCounter > 0)
             {
-                playerBody.velocity = Vector2.up * jumpingConstant;
+                playerBody.velocity = new Vector2(playerBody.velocity.x, jumpingConstant) ;
                 jumpTimeCounter -= Time.deltaTime;
             } else
             {
@@ -199,7 +200,10 @@ public class Player_Controller : MonoBehaviour
 
     public void FixedUpdate()
     {
-
+        if(isWallJumping)
+        {
+            return;
+        }
         if(horizontalInput > 0.01)
         {
             transform.localScale = new Vector3(playerSizeConstant, playerSizeConstant, 1);
@@ -277,6 +281,10 @@ public class Player_Controller : MonoBehaviour
         {
             attack();
         }
+        else if (isWallSliding && jumpInput > 0)//and we are losing momentum up we set animation to jump
+        {
+            Jump();
+        }
         else if (isWallSliding)//and we are losing momentum up we set animation to jump
         {
             ChangeAnimationState("Player_Wall_Slide");
@@ -322,13 +330,7 @@ public class Player_Controller : MonoBehaviour
             currentAnimationState = "Player_Crouch";
             crouching = true;
         }
-        else if (verticalInput <= -0.01f && playerBody.velocity.x > slideThreshold) //SLIDING should check for momentum not input
-        {
-            ChangeAnimationState("Player_Ground_Slide");
-            currentAnimationState = "Player_Ground_Slide";
-            crouching = true;
-        }
-        else if (verticalInput <= -0.01f && playerBody.velocity.x < -slideThreshold) //SLIDING should check for momentum not input
+        else if (verticalInput <= -0.01f && Mathf.Abs(playerBody.velocity.x) > slideThreshold) //SLIDING should check for momentum not input
         {
             ChangeAnimationState("Player_Ground_Slide");
             currentAnimationState = "Player_Ground_Slide";
@@ -392,6 +394,7 @@ public class Player_Controller : MonoBehaviour
             currentAnimationState = "Player_Idle_Sheathed";
         }
 
+      
         if (crouching && !charecterAttacking)
         {
             playerBody.velocity = new Vector2(crouchingSpeedConstant * horizontalInput, playerBody.velocity.y);
@@ -573,15 +576,25 @@ public class Player_Controller : MonoBehaviour
 
     public void Jump()
     {
-        playerBody.velocity = Vector2.up * jumpingConstant;
-        ChangeAnimationState("Player_Jump");
-        currentAnimationState = "Player_Jump";
-        isGrounded = false;
-        isJumping = true;
-        canJumpAgain = false;
-        jumpTimeCounter = jumpResetTime;
-        timeSinceLastJump = Time.time; 
-        
+        if(isWallSliding)
+        {          
+            Debug.Log("Wall Jump");
+        }
+        else
+        {
+            playerBody.velocity = Vector2.up * jumpingConstant;
+            ChangeAnimationState("Player_Jump");
+            currentAnimationState = "Player_Jump";
+            isGrounded = false;
+            isJumping = true;
+            canJumpAgain = false;
+            jumpTimeCounter = jumpResetTime;
+            timeSinceLastJump = Time.time;
+        }
+
+       
+
+
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
