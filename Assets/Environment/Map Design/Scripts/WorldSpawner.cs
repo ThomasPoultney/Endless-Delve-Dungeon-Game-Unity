@@ -13,6 +13,9 @@ public class WorldSpawner : MonoBehaviour
     private int numRoomsHor;
     [SerializeField]
     private int numRoomsVer;
+    [SerializeField]
+    private int preventMobRadius = 5;
+
 
     [SerializeField]
     private int chanceToMoveDown = 10; //percentage chance for critical path to move down
@@ -104,6 +107,7 @@ public class WorldSpawner : MonoBehaviour
         topBorder.GetComponent<BoxCollider2D>().size = new Vector2(mapWidth + 2, 1);
         topBorder.transform.parent = borders.transform;
         topBorder.layer = 9;
+
         //Right Border
         GameObject rightBorder = Instantiate(borderBlock, new Vector3(transform.position.x - 0.5f, (roomHeight * numRoomsVer) / 2, 100), Quaternion.identity);
         rightBorder.GetComponent<SpriteRenderer>().size = new Vector2(1, mapHeight);
@@ -137,8 +141,6 @@ public class WorldSpawner : MonoBehaviour
         entranceRoomObj.name = "Entrance";
         entranceRoom = entranceRoomObj;
         nextRoomPosition = firstRoomSpawnPosition;
-
-       
 
     }
 
@@ -246,6 +248,8 @@ public class WorldSpawner : MonoBehaviour
         groundMobParent.name = "Ground Mobs";
         Vector3 startPosition = new Vector3(0.5f, 0.5f, 0);
         List<Vector3> potentialMobSpawnLocations = new List<Vector3>();
+        float playerX = player.transform.position.x;
+        float playerY = player.transform.position.y;
 
         for (int x = 0; x < roomWidth * numRoomsHor; x++)
         {
@@ -256,7 +260,10 @@ public class WorldSpawner : MonoBehaviour
                 RaycastHit2D checkForAirHit = Physics2D.Raycast(rayCastOrigin, transform.TransformDirection(Vector2.up), 0.4f);
                 RaycastHit2D checkForSolidBlock = Physics2D.Raycast(rayCastOrigin, transform.TransformDirection(-Vector2.up), 0.6f, GroundTileLayer);
 
-                if (checkForAirHit == false && checkForSolidBlock)
+                // Fiddly arithmetic, but it checks if the current region is within the players "spawn box". If true, then we do not add mob spawns here.
+                bool isPlayerRoom = (playerX + preventMobRadius >= x || playerX - preventMobRadius <= x) && (playerY + preventMobRadius <= y || playerY - preventMobRadius >= y) ? false : true;
+
+                if (checkForAirHit == false && checkForSolidBlock && isPlayerRoom == false)
                 {
                     potentialMobSpawnLocations.Add(rayCastOrigin);
                 }
@@ -288,6 +295,8 @@ public class WorldSpawner : MonoBehaviour
         flyingMobParent.name = "Flying Mobs";
         Vector3 startPosition = new Vector3(0.5f, 0.5f, 0);
         List<Vector3> potentialMobSpawnLocations = new List<Vector3>();
+        float playerX = player.transform.position.x;
+        float playerY = player.transform.position.y;
 
         for (int x = 0; x < roomWidth * numRoomsHor; x++)
         {
@@ -295,9 +304,11 @@ public class WorldSpawner : MonoBehaviour
             {
                 Vector3 rayCastOrigin = startPosition + new Vector3(x, y, 0);
                 RaycastHit2D checkForAirHit = Physics2D.Raycast(rayCastOrigin, transform.TransformDirection(Vector2.up), 0.4f);
-               
+                
+                // Fiddly arithmetic, but it checks if the current region is within the players "spawn box". If true, then we do not add mob spawns here.
+                bool isPlayerRoom = (playerX + preventMobRadius >= x || playerX - preventMobRadius <= x) && (playerY + preventMobRadius <= y || playerY - preventMobRadius >= y) ? false : true;
 
-                if (checkForAirHit == false)
+                if (checkForAirHit == false && isPlayerRoom == false)
                 {
                     potentialMobSpawnLocations.Add(rayCastOrigin);
                 }

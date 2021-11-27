@@ -297,6 +297,7 @@ MonoBehaviour:
   roomWidth: 10
   numRoomsHor: 4
   numRoomsVer: 4
+  preventMobRadius: 5
   chanceToMoveDown: 20
   timeBetweenRoomSpawns: 0.05
   rooms:
