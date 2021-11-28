@@ -588,7 +588,6 @@ public class Player_Controller : MonoBehaviour
             playerBody.velocity = Vector2.up * jumpingConstant;
             ChangeAnimationState("Player_Jump");
             currentAnimationState = "Player_Jump";
-            isGrounded = false;
             isJumping = true;
             canJumpAgain = false;
             jumpTimeCounter = jumpResetTime;

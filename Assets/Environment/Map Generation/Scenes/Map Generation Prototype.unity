@@ -169,7 +169,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7704d3c6bc9c10418659fb4e0fc9bae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  insanityLoss: 0.2
+  insanityLoss: 0.1
   minRadius: 0.9
   insanityLossIncrement: 1
 --- !u!114 &154263799
@@ -252,7 +252,7 @@ MonoBehaviour:
     m_Extent: {x: 0.9985302, y: 0.99853027, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
-  m_PointLightInnerRadius: 3
+  m_PointLightInnerRadius: 4
   m_PointLightOuterRadius: 9
   m_ShapeLightParametricSides: 5
   m_ShapeLightParametricAngleOffset: 0
@@ -433,7 +433,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1779924106, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1779924108, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
       propertyPath: m_Enabled

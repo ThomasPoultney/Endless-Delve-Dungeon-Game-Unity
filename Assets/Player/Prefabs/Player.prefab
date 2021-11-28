@@ -478,8 +478,8 @@ GameObject:
   - component: {fileID: 236308664087019655}
   - component: {fileID: 236308664087019654}
   - component: {fileID: 236308664087019648}
-  - component: {fileID: 6722890377543510114}
   - component: {fileID: 1205080225}
+  - component: {fileID: 6722890377543510114}
   - component: {fileID: 1320483095}
   - component: {fileID: 1326767019}
   m_Layer: 14
@@ -628,23 +628,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &6722890377543510114
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 236308664087019659}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24b7a8109baf17f49adf65f0e1dedd4b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rb: {fileID: 236308664087019655}
-  pushForce: 2
-  attached: 0
-  playerMass: 1
-  timeBeforePlayerCanAttachToSameRope: 1.5
 --- !u!233 &1205080225
 HingeJoint2D:
   m_ObjectHideFlags: 0
@@ -669,6 +652,23 @@ HingeJoint2D:
   m_AngleLimits:
     m_LowerAngle: -360
     m_UpperAngle: 360
+--- !u!114 &6722890377543510114
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 236308664087019659}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24b7a8109baf17f49adf65f0e1dedd4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerBody: {fileID: 0}
+  pushForce: 2
+  attached: 0
+  playerMass: 1
+  timeBeforePlayerCanAttachToSameRope: 1.5
 --- !u!114 &1320483095
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -707,6 +707,7 @@ MonoBehaviour:
   whatIsGround:
     serializedVersion: 2
     m_Bits: 640
+  wallJumpTime: 0.2
   wallCheck: {fileID: 88872567}
   wallCheckDistance: 0.3
   playerSizeConstant: 1.2

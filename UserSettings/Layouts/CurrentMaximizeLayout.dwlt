@@ -24,7 +24,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 200}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 15
+  controlID: 64
 --- !u!114 &2
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -141,7 +141,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 200}
   m_MaxSize: {x: 16192, y: 16192}
   vertical: 1
-  controlID: 16
+  controlID: 65
 --- !u!114 &4
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -166,7 +166,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 100}
   m_MaxSize: {x: 16192, y: 8096}
   vertical: 0
-  controlID: 17
+  controlID: 66
 --- !u!114 &5
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -224,23 +224,23 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 627a0000
-      m_LastClickedID: 0
-      m_ExpandedIDs: b2acffff10beffffe8c1ffff12fbffff
+      m_SelectedIDs: 765e0000
+      m_LastClickedID: 24182
+      m_ExpandedIDs: 12fbffff865e0000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
-        m_Name: Map Spawner
-        m_OriginalName: Map Spawner
+        m_Name: 
+        m_OriginalName: 
         m_EditFieldRect:
           serializedVersion: 2
           x: 0
           y: 0
           width: 0
           height: 0
-        m_UserData: -15898
+        m_UserData: 0
         m_IsWaitingForDelay: 0
         m_IsRenaming: 0
-        m_OriginalEventType: 0
+        m_OriginalEventType: 11
         m_IsRenamingFilename: 0
         m_ClientGUIView: {fileID: 5}
       m_SearchString: 
@@ -524,9 +524,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 545.7754, y: 200.98715, z: -1.9213724}
+    m_Target: {x: 6.9591527, y: 2.3138533, z: -0.01163087}
     speed: 2
-    m_Value: {x: 545.7754, y: 200.98715, z: -1.9213724}
+    m_Value: {x: 6.9591527, y: 2.3138533, z: -0.01163087}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -577,9 +577,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 307.91412
+    m_Target: 1.6569784
     speed: 2
-    m_Value: 307.91412
+    m_Value: 1.6569784
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -672,22 +672,22 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Environment/Map Generation/Scenes
+    - Assets
     m_Globs: []
     m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Environment/Map Generation/Scenes
+  - Assets
   m_LastFoldersGridSize: -1
   m_LastProjectPath: D:\Unity\WorkingVersion
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 142}
-    m_SelectedIDs: e8730000
-    m_LastClickedID: 29672
-    m_ExpandedIDs: 00000000de600000e0600000e2600000e4600000e6600000e8600000fa600000206100003a6100003e6100001280000000ca9a3b
+    scrollPos: {x: 0, y: 0}
+    m_SelectedIDs: 3c900000
+    m_LastClickedID: 36924
+    m_ExpandedIDs: 000000002e900000309000003290000034900000369000003e9000003aa5000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -715,7 +715,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000de600000e0600000e2600000e4600000e6600000e8600000
+    m_ExpandedIDs: 000000002e90000030900000329000003490000036900000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -740,8 +740,8 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: 627a0000
-    m_LastClickedInstanceID: 31330
+    m_SelectedInstanceIDs: 765e0000
+    m_LastClickedInstanceID: 24182
     m_HadKeyboardFocusLastEvent: 1
     m_ExpandedInstanceIDs: c6230000
     m_RenameOverlay:
