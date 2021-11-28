@@ -10,6 +10,7 @@ public static class Player_Variables
 
     private static int currentHealth = startHealth;
     private static int currentInsanity = startInsanity;
+    private static int amountOfTreasure = 5000;
 
     private static List<GameObject> itemsInInventory;
     private static int currentNumTorches;
@@ -19,6 +20,11 @@ public static class Player_Variables
     public static void changeHP(int amount)
     {
         currentHealth += amount;
+    }
+
+    public static int getTreasure()
+    {
+        return amountOfTreasure;
     }
 
 

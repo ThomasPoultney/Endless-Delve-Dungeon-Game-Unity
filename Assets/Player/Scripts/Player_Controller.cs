@@ -245,12 +245,12 @@ public class Player_Controller : MonoBehaviour
             return;
         }
 
-        if (horizontalInput > 0.01)
+        if (horizontalInput > 0.01 && !isWallGrabbing)
         {
             transform.localScale = new Vector3(playerSizeConstant, playerSizeConstant, 1);
 
         }
-        else if (horizontalInput < -0.01)
+        else if (horizontalInput < -0.01 && !isWallGrabbing)
         {
             transform.localScale = new Vector3(-playerSizeConstant, playerSizeConstant, 1);
 
@@ -442,7 +442,6 @@ public class Player_Controller : MonoBehaviour
         }
 
 
-
         setVelocity();
 
 
@@ -462,22 +461,26 @@ public class Player_Controller : MonoBehaviour
     {
 
         
-        if (crouching && !charecterAttacking)
-        {
-            playerBody.velocity = new Vector2(crouchingSpeedConstant * horizontalInput, playerBody.velocity.y);
-        }
-        else if (walkingInput & !charecterAttacking)
-        {
-            playerBody.velocity = new Vector2(walkingSpeedConstant * horizontalInput, playerBody.velocity.y);
-        }
-        else if (sprintingInput & !charecterAttacking)
-        {
-            playerBody.velocity = new Vector2(sprintingSpeedConstant * horizontalInput, playerBody.velocity.y);
-        }
-        else if (!charecterAttacking)
-        {
-            playerBody.velocity = new Vector2(runningSpeedConstant * horizontalInput, playerBody.velocity.y);
-        }
+      
+            if (crouching && !charecterAttacking)
+            {
+                playerBody.velocity = new Vector2(crouchingSpeedConstant * horizontalInput, playerBody.velocity.y);
+            }
+            else if (walkingInput & !charecterAttacking)
+            {
+                playerBody.velocity = new Vector2(walkingSpeedConstant * horizontalInput, playerBody.velocity.y);
+            }
+            else if (sprintingInput & !charecterAttacking)
+            {
+                playerBody.velocity = new Vector2(sprintingSpeedConstant * horizontalInput, playerBody.velocity.y);
+            }
+            else if (!charecterAttacking)
+            {
+                playerBody.velocity = new Vector2(runningSpeedConstant * horizontalInput, playerBody.velocity.y);
+            }
+        
+        
+        
 
         if(isWallSliding)
         {
