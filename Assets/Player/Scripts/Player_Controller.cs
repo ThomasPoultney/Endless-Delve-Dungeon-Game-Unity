@@ -69,9 +69,6 @@ public class Player_Controller : MonoBehaviour
 
 
     private bool isWallJumping = false;
-    [SerializeField] private float wallJumpTime = 0.2f;
-   
-
     private bool crouching;
     
     //used for checking player Input
@@ -101,6 +98,10 @@ public class Player_Controller : MonoBehaviour
     [SerializeField] private float wallCheckDistance = 1f;
 
     AnimationController animationController;
+
+    [SerializeField] private float wallJumpResetTimer = 0.2f;
+    private float timeSinceLastWallJump;
+    [SerializeField] private Vector2 wallJumpAmount = new Vector2(4,8);
 
 
     [SerializeField] private float playerSizeConstant;
@@ -137,17 +138,7 @@ public class Player_Controller : MonoBehaviour
 
         isGrounded = Physics2D.OverlapCircle(feetPos.position, checkRadius, whatIsGround);
 
-        if (jumpInput > 0 && isJumping == true)
-        {
-            if (jumpTimeCounter > 0)
-            {
-                playerBody.velocity = new Vector2(playerBody.velocity.x, jumpingConstant) ;
-                jumpTimeCounter -= Time.deltaTime;
-            } else
-            {
-                isJumping = false;
-            }
-        }
+       
 
         if(Input.GetKeyUp(KeyCode.Space))
         {
@@ -164,7 +155,11 @@ public class Player_Controller : MonoBehaviour
         }
         
         CheckSurroundings();
-        CheckIfWallSliding();
+        if(!isWallJumping)
+        {
+            CheckIfWallSliding();
+        }
+       
         CheckLedgeClimb();
 
 
@@ -226,22 +221,51 @@ public class Player_Controller : MonoBehaviour
             return;
         }
 
-        if (isWallJumping)
+      
+
+
+        if (isWallJumping && Time.time - timeSinceLastWallJump > wallJumpResetTimer)
         {
+            isWallJumping = false;
+            Debug.Log("Can Wall Jump Again");
+        }
+        else if (isWallJumping)
+        {
+            if(!facingLeft)
+            {
+                playerBody.velocity = wallJumpAmount * new Vector2(-1, 1);
+            } else
+            {
+                playerBody.velocity = wallJumpAmount;
+            }
             return;
         }
-        if(horizontalInput > 0.01)
+
+        if (horizontalInput > 0.01)
         {
             transform.localScale = new Vector3(playerSizeConstant, playerSizeConstant, 1);
 
-        } else if(horizontalInput < -0.01)
+        }
+        else if (horizontalInput < -0.01)
         {
             transform.localScale = new Vector3(-playerSizeConstant, playerSizeConstant, 1);
 
         }
 
-        
-        
+        if (jumpInput > 0 && isJumping == true)
+        {
+            if (jumpTimeCounter > 0)
+            {
+                playerBody.velocity = new Vector2(playerBody.velocity.x, jumpingConstant);
+                jumpTimeCounter -= Time.deltaTime;
+            }
+            else
+            {
+                isJumping = false;
+            }
+        }
+
+
 
 
         if (charecterAttacking && Time.time - lastAttackTime > animator.GetCurrentAnimatorStateInfo(0).length)
@@ -606,8 +630,10 @@ public class Player_Controller : MonoBehaviour
     public void Jump()
     {
         if(isWallSliding)
-        {          
-            Debug.Log("Wall Jump");
+        {
+            isWallSliding = false;
+            isWallJumping = true;           
+            timeSinceLastWallJump = Time.time;
         }
         else
         {
