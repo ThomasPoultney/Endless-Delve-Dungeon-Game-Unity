@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6700000161088399718}
   - component: {fileID: 6700000161088399719}
   - component: {fileID: 6700000161088399715}
+  - component: {fileID: 5623657080619455038}
   m_Layer: 0
   m_Name: Slime Enemy
   m_TagString: Untagged
@@ -157,3 +158,22 @@ MonoBehaviour:
   layersThatCantBeWalkedThrough:
     serializedVersion: 2
     m_Bits: 8848
+--- !u!114 &5623657080619455038
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6700000161088399720}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: faccce7160844aa42b5166744ce387c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 2
+  canBeDazed: 1
+  canDie: 1
+  isDazed: 0
+  isDieing: 0
+  dazedAnimation: {fileID: 7400000, guid: f562b364c01ef6142ac53fbee4e7cdd7, type: 2}
+  deadAnimation: {fileID: 7400000, guid: 174b77b2a53eeb940896090a6146b757, type: 2}

@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1512971822
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1512971823}
+  m_Layer: 0
+  m_Name: attackPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1512971823
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1512971822}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.428, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6170493210970297544}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6170493210970297549
 GameObject:
   m_ObjectHideFlags: 0
@@ -13,7 +44,9 @@ GameObject:
   - component: {fileID: 6170493210970297550}
   - component: {fileID: 1916113429}
   - component: {fileID: -3481740313077159453}
+  - component: {fileID: 4826841719598453546}
   - component: {fileID: -5559164329581667436}
+  - component: {fileID: 1451210683229784055}
   m_Layer: 0
   m_Name: Skeleton enemy
   m_TagString: Untagged
@@ -32,7 +65,8 @@ Transform:
   m_LocalPosition: {x: 2.339, y: 1.519, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1512971823}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -158,6 +192,29 @@ MonoBehaviour:
   layersThatCantBeWalkedThrough:
     serializedVersion: 2
     m_Bits: 656
+  attackRange: 1.1
+  attackPos: {fileID: 1512971823}
+--- !u!114 &4826841719598453546
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6170493210970297549}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: faccce7160844aa42b5166744ce387c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 5
+  canBeDazed: 1
+  canDie: 1
+  isDazed: 0
+  isDieing: 0
+  dazedAnimation: {fileID: 7400000, guid: 28e5f37960ad2f24aa09cfe79d491dbc, type: 2}
+  deadAnimation: {fileID: 7400000, guid: e7c3dd874abbfa3479512f276d465622, type: 2}
+  takeDamageSound: {fileID: 0}
+  deathSound: {fileID: 0}
 --- !u!50 &-5559164329581667436
 Rigidbody2D:
   serializedVersion: 4
@@ -179,3 +236,17 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &1451210683229784055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6170493210970297549}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8fc4c0cfb23a24449b5d260d5b2569de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentAnimationState: '""'
+  animator: {fileID: 6170493210970297550}

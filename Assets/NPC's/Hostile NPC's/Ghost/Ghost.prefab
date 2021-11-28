@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 8455813235037909213}
   - component: {fileID: 8014729875570390591}
   - component: {fileID: 1390004571}
+  - component: {fileID: 5228249330270384014}
   m_Layer: 0
   m_Name: Ghost
   m_TagString: Untagged
@@ -171,3 +172,22 @@ MonoBehaviour:
   pursuitDistance: 4
   animator: {fileID: 8014729875570390591}
   lightToSpawn: {fileID: 643521441964530614, guid: 73120835ea5936145887b37f8f7e172f, type: 3}
+--- !u!114 &5228249330270384014
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1306337226105307012}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: faccce7160844aa42b5166744ce387c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 0
+  canBeDazed: 0
+  canDie: 0
+  isDazed: 0
+  isDieing: 0
+  dazedAnimation: {fileID: 0}
+  deadAnimation: {fileID: 0}

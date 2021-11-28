@@ -21,6 +21,12 @@ public class SkelentonMobController : MonoBehaviour
     private Vector2 playerCheckDirection;
     private BoxCollider2D boxCollider;
 
+    private bool dazedTime;
+    private bool dazedLength;
+
+    [SerializeField] private float attackRange = 0.2f;
+    [SerializeField] private Transform attackPos;
+
 
     // Start is called before the first frame update
     void Start()
@@ -31,26 +37,37 @@ public class SkelentonMobController : MonoBehaviour
 
     void FixedUpdate()
     {
+
+        bool isDazed = transform.GetComponent<EnemyCollision>().isDazed;
+        bool isDieing = transform.GetComponent<EnemyCollision>().isDieing;
+
+        AnimationController animationController = transform.GetComponent<AnimationController>();
+
         
+        if(isDazed)
+        {
+            return;
+        } 
+
         RaycastHit2D isOnPlatformEdge;
         RaycastHit2D blockInFront;
         Vector3 movingRotation;
 
         //ray to check if player is withing attack range
-        RaycastHit2D playerInMeleeRange = Physics2D.Raycast(transform.position, playerCheckDirection, attackDistance, playerLayer);
+        Collider2D[] playersToDamage = Physics2D.OverlapBoxAll(attackPos.position, new Vector2(attackRange, 1), 0, playerLayer);
+        foreach (Collider2D player in playersToDamage)
+        {         
+            player.GetComponent<Player_Collisions>().takeDamage(-1);
+        }
 
-
-        if (playerInMeleeRange.collider)
+        if (playersToDamage.Length > 0)
         {
-            
-            ChangeAnimationState("Skelenton_Swing");
-            boxCollider.size = new Vector2(2, 1);
+            animationController.ChangeAnimationState("Skelenton_Swing");
             isAttacking = true;
 
         }
         else
         {
-            boxCollider.size = new Vector2(1, 1);
 
             if (movingRight)
             {
@@ -61,7 +78,7 @@ public class SkelentonMobController : MonoBehaviour
                 isOnPlatformEdge = Physics2D.Raycast(transform.position + new Vector3(0.1f, 0, 0), Vector2.down, 1f,layersThatCanBeWalkedOn);
                 //checks if we can move forward
                 blockInFront = Physics2D.Raycast(transform.position + new Vector3(0.1f, 0, 0), playerCheckDirection, 0.2f, layersThatCantBeWalkedThrough);
-                ChangeAnimationState("Skelenton_Walk");
+                animationController.ChangeAnimationState("Skelenton_Walk");
                 playerCheckDirection = Vector2.right;
 
             }
@@ -75,7 +92,7 @@ public class SkelentonMobController : MonoBehaviour
                 //checks if we can move forward
                 blockInFront = Physics2D.Raycast(transform.position + new Vector3(0.1f, 0, 0), playerCheckDirection, 0.2f, layersThatCantBeWalkedThrough);
 
-                ChangeAnimationState("Skelenton_Walk");
+                animationController.ChangeAnimationState("Skelenton_Walk");
                 playerCheckDirection = Vector2.left;
             }
 
@@ -89,16 +106,9 @@ public class SkelentonMobController : MonoBehaviour
     }
 
 
-    /// <summary>
-    /// Changes the animation state of the animator attached to the object
-    /// </summary>
-    /// <param name="newState"></param>
-    private void ChangeAnimationState(string newState)
-    {
-        if (newState == currentAnimationState) return;
-
-        animator.Play(newState);
-
-        currentAnimationState = newState;
+ 
+    void OnDrawGizmos()
+    {     
+        Gizmos.DrawWireCube(attackPos.position, new Vector2(attackRange, 1));
     }
 }

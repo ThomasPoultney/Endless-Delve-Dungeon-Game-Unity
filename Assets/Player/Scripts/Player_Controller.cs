@@ -55,6 +55,11 @@ public class Player_Controller : MonoBehaviour
     private bool isTouchingLedge = false;
     private bool ledgeDetected = false;
 
+    [SerializeField] private Transform attackPos;
+    [SerializeField] private LayerMask mobLayerMask;
+    [SerializeField] private float attackRange = 0.2f;
+    
+
 
     public Transform feetPos;
     public Transform ledgeCheck;
@@ -92,7 +97,8 @@ public class Player_Controller : MonoBehaviour
     private bool isTouchingWall;
     [SerializeField] private Transform wallCheck;
     [SerializeField] private float wallCheckDistance = 1f;
-    
+
+    AnimationController animationController;
 
 
     [SerializeField] private float playerSizeConstant;
@@ -103,6 +109,9 @@ public class Player_Controller : MonoBehaviour
         // Grab references for rigidbody (player object) and animator from respective objects.
         playerBody = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        animationController = transform.GetComponent<AnimationController>();
+
+
     }
 
 
@@ -273,8 +282,7 @@ public class Player_Controller : MonoBehaviour
      
         if (attached)
         {
-            ChangeAnimationState("Player_Wall_Slide");
-            currentAnimationState = "Player_Climb";
+            animationController.ChangeAnimationState("Player_Wall_Slide");
             // Flips player when moving left and right to direction of movement.
         }
         else if (attackInput && !charecterAttacking) //attacking
@@ -291,8 +299,7 @@ public class Player_Controller : MonoBehaviour
         }
         else if (isWallSliding)//and we are losing momentum up we set animation to jump
         {
-            ChangeAnimationState("Player_Wall_Slide");
-            currentAnimationState = "Player_Wall_Slide";
+            animationController.ChangeAnimationState("Player_Wall_Slide");
         }
         else if (jumpInput > 0 && isGrounded)
         {
@@ -300,88 +307,71 @@ public class Player_Controller : MonoBehaviour
         }
         else if (climbingLadder == true) //climbing Ladder
         {
-            ChangeAnimationState("Player_Climb");
-            currentAnimationState = "Player_Climb";
+            animationController.ChangeAnimationState("Player_Climb");
         }
         else if (!isGrounded && playerBody.velocity.y >= 0)//and we are gaining momentum up we set animation to jump
         {
-            ChangeAnimationState("Player_Jump");
-            currentAnimationState = "Player_Jump";
+            animationController.ChangeAnimationState("Player_Jump");
         }
         else if (!isGrounded && playerBody.velocity.y <= 0)//and we are losing momentum up we set animation to jump
         {
 
-            ChangeAnimationState("Player_Fall");
-            currentAnimationState = "Player_Fall";
+            animationController.ChangeAnimationState("Player_Fall");
         }
         else if (horizontalInput > 0.01 && crouchingInput)
         {
-            Debug.Log("crouch Walking");
-            ChangeAnimationState("Player_Crouch_Walk");
-            currentAnimationState = "Player_Crouch_Walk";
+            animationController.ChangeAnimationState("Player_Crouch_Walk");
             crouching = true;
         }
         else if (horizontalInput < -0.01 && crouchingInput)
         {
-            Debug.Log("crouch Walking");
-            ChangeAnimationState("Player_Crouch_Walk");
-            currentAnimationState = "Player_Crouch_Walk";
+            animationController.ChangeAnimationState("Player_Crouch_Walk");
             crouching = true;
         }
         else if (crouchingInput)
         {
-            ChangeAnimationState("Player_Crouch");
-            currentAnimationState = "Player_Crouch";
+            animationController.ChangeAnimationState("Player_Crouch");
             crouching = true;
         }
         else if (verticalInput <= -0.01f && Mathf.Abs(playerBody.velocity.x) > slideThreshold) //SLIDING should check for momentum not input
         {
-            ChangeAnimationState("Player_Ground_Slide");
-            currentAnimationState = "Player_Ground_Slide";
+            animationController.ChangeAnimationState("Player_Ground_Slide");
             crouching = true;
         } else if (horizontalInput > 0.01f && walkingInput)
         {
-            ChangeAnimationState("Player_Walk");
-            currentAnimationState = "Player_Walk";
+            animationController.ChangeAnimationState("Player_Walk");
         }
         else if (horizontalInput < -0.01f && walkingInput)
         {
-            ChangeAnimationState("Player_Walk");
-            currentAnimationState = "Player_Walk";
+            animationController.ChangeAnimationState("Player_Walk");
         }
         else if (horizontalInput > 0.01f && sprintingInput)
         {
-            ChangeAnimationState("Player_Run_1");
-            currentAnimationState = "Player_Run_1";
+            animationController.ChangeAnimationState("Player_Run_1");
         }
         else if (horizontalInput < -0.01f && sprintingInput)
         {
-            ChangeAnimationState("Player_Run_1");
-            currentAnimationState = "Player_Run_1";
+            animationController.ChangeAnimationState("Player_Run_1");
         }
 
         else if (horizontalInput > 0.01f)
         {
-            ChangeAnimationState("Player_Run");
-            currentAnimationState = "Player_Run";
+            animationController.ChangeAnimationState("Player_Run");
         }
         else if (horizontalInput < -0.01f)
         {
-            ChangeAnimationState("Player_Run");
-            currentAnimationState = "Player_Run";
+            animationController.ChangeAnimationState("Player_Run");
         }
         else if (weaponDrawInput && weaponOut == false)
         {
-            ChangeAnimationState("Player_Sword_Draw");
-            currentAnimationState = "Player_Sword_Draw";
+            animationController.ChangeAnimationState("Player_Sword_Draw");
             weaponOut = true;
             weaponDrawing = true;
             timeSinceWeaponDraw = Time.time;
         }
         else if (weaponDrawInput && weaponOut == true)
         {
-            ChangeAnimationState("Player_Sword_Sheath");
-            currentAnimationState = "Player_Sword_Sheath";
+            animationController.ChangeAnimationState("Player_Sword_Sheath");
             weaponOut = false;
             weaponDrawing = true;
             timeSinceWeaponDraw = Time.time;
@@ -389,12 +379,12 @@ public class Player_Controller : MonoBehaviour
         else if (weaponOut)
         {
 
-            ChangeAnimationState("Player_Idle");
+            animationController.ChangeAnimationState("Player_Idle");
             currentAnimationState = "Player_Idle";
         }
         else
         {
-            ChangeAnimationState("Player_Idle_Sheathed");
+            animationController.ChangeAnimationState("Player_Idle_Sheathed");
             currentAnimationState = "Player_Idle_Sheathed";
         }
 
@@ -436,8 +426,10 @@ public class Player_Controller : MonoBehaviour
 
     private void attack()
     {
-       
-        
+
+        attackRange = 0.2f;
+        int damageAmount = 1;
+
         //resets combo
         if(meleeAttackCombo == 3)
         {
@@ -460,15 +452,15 @@ public class Player_Controller : MonoBehaviour
             {
                 if (meleeAttackCombo == 0)
                 {
-                    ChangeAnimationState("Player_Attack_0");
+                    animationController.ChangeAnimationState("Player_Attack_0");
                 }
                 else if (meleeAttackCombo == 1)
                 {
-                    ChangeAnimationState("Player_Attack_1");
+                    animationController.ChangeAnimationState("Player_Attack_1");
                 }
                 else if (meleeAttackCombo == 2)
                 {
-                    ChangeAnimationState("Player_Attack_2");
+                    animationController.ChangeAnimationState("Player_Attack_2");
                 }
 
                 meleeAttackCombo++;
@@ -478,15 +470,15 @@ public class Player_Controller : MonoBehaviour
             {
                 if (airMeleeAttackCombo == 0)
                 {
-                    ChangeAnimationState("Player_Air_Attack_0");
+                    animationController.ChangeAnimationState("Player_Air_Attack_0");
                 }
                 else if (airMeleeAttackCombo == 1)
                 {
-                    ChangeAnimationState("Player_Air_Attack_1");
+                    animationController.ChangeAnimationState("Player_Air_Attack_1");
                 }
                 else if (airMeleeAttackCombo == 2)
                 {
-                    ChangeAnimationState("Player_Air_Attack_2");
+                    animationController.ChangeAnimationState("Player_Air_Attack_2");
                 }
 
                 airMeleeAttackCombo++;
@@ -499,33 +491,40 @@ public class Player_Controller : MonoBehaviour
         {
             if (punchMeleeAttackCombo == 0)
             {
-                ChangeAnimationState("Player_Punch");
+                animationController.ChangeAnimationState("Player_Punch");
             }
             else if (punchMeleeAttackCombo == 1)
             {
-                ChangeAnimationState("Player_Punch_1");
+                animationController.ChangeAnimationState("Player_Punch_1");
             }
             else if (punchMeleeAttackCombo == 2)
             {
-                ChangeAnimationState("Player_Punch_2");
+                animationController.ChangeAnimationState("Player_Punch_2");
             }
             else if (punchMeleeAttackCombo == 3)
             {
-                ChangeAnimationState("Player_Punch_3");
+                animationController.ChangeAnimationState("Player_Punch_3");
             }
             else if (punchMeleeAttackCombo == 4)
             {
-                ChangeAnimationState("Player_Kick");
+                animationController.ChangeAnimationState("Player_Kick");
             }
             else if (punchMeleeAttackCombo == 5)
             {
-                ChangeAnimationState("Player_Kick_1");
+                animationController.ChangeAnimationState("Player_Kick_1");
             }
           
 
             
             punchMeleeAttackCombo++;
             timeSinceLastPunchAttack = Time.time;
+        }
+
+        Collider2D[] enemiesToDamage = Physics2D.OverlapBoxAll(attackPos.position, new Vector2(attackRange, 1),0,mobLayerMask);
+        foreach(Collider2D enemy in enemiesToDamage)
+        {
+            Debug.Log(enemy);
+            enemy.GetComponent<EnemyCollision>().takeDamage(-1);
         }
         
         charecterAttacking = true;
@@ -556,7 +555,7 @@ public class Player_Controller : MonoBehaviour
         canSpawnRope = false;
         charecterFiringRope = true;
 
-        ChangeAnimationState("Player_Item");
+        animationController.ChangeAnimationState("Player_Item");
 
         if (numLinksToSpawn > 0)
         {
@@ -586,27 +585,16 @@ public class Player_Controller : MonoBehaviour
         else
         {
             playerBody.velocity = Vector2.up * jumpingConstant;
-            ChangeAnimationState("Player_Jump");
-            currentAnimationState = "Player_Jump";
+            animationController.ChangeAnimationState("Player_Jump");
+            
             isJumping = true;
             canJumpAgain = false;
             jumpTimeCounter = jumpResetTime;
             timeSinceLastJump = Time.time;
         }
-
-       
-
-
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        climbingLadder = false;
-        if (collision.gameObject.layer == 9 || collision.gameObject.layer == 16) isGrounded = true; //9 - basic bloc, 16 - Bedrock
-
-        if (collision.gameObject.layer == 12) climbingLadder = true; //ladder 
-    }
-
+ 
     /// <summary>
     /// Changes the animation state of the animator attached to the object
     /// </summary>
@@ -624,6 +612,9 @@ public class Player_Controller : MonoBehaviour
     {
        Gizmos.DrawLine(wallCheck.position, new Vector3(wallCheck.position.x + wallCheckDistance, wallCheck.position.y, wallCheck.position.z));
        Gizmos.DrawLine(ledgeCheck.position, new Vector3(ledgeCheck.position.x + wallCheckDistance, ledgeCheck.position.y, 0));
-
+       Gizmos.color = Color.blue;
+        Gizmos.DrawWireCube(attackPos.position, new Vector2(attackRange,1));
     }
+
+
 }
