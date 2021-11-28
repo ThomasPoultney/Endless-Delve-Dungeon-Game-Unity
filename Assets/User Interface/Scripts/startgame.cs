@@ -8,6 +8,7 @@ public class startgame : MonoBehaviour
 {
    public void playGame(){
 
+       Time.timeScale = 1;
        Scene scene = SceneManager.GetActiveScene();
        SceneManager.LoadScene(scene.buildIndex + 1);
        Debug.Log("Button Clicked");

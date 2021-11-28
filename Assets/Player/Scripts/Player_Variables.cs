@@ -12,6 +12,8 @@ public static class Player_Variables
     private static int currentInsanity = startInsanity;
     private static int amountOfTreasure = 5000;
 
+    private static string username = "Anonymous";
+
     private static List<GameObject> itemsInInventory;
     private static int currentNumTorches;
 
@@ -26,6 +28,13 @@ public static class Player_Variables
     {
         return amountOfTreasure;
     }
+
+    public static void setUsername(string usernameInput)
+    {
+        username = usernameInput;
+    }
+
+
 
 
 }
