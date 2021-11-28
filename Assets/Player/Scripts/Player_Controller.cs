@@ -70,9 +70,10 @@ public class Player_Controller : MonoBehaviour
 
     private bool isWallJumping = false;
     [SerializeField] private float wallJumpTime = 0.2f;
+   
 
     private bool crouching;
-
+    
     //used for checking player Input
     private float horizontalInput;
     private float verticalInput;
@@ -83,6 +84,7 @@ public class Player_Controller : MonoBehaviour
     private bool fireRopeInput;
     private bool walkingInput;
     private bool sprintingInput;
+    private bool interactInput;
     //used to reset combos after a given time
     private float timeSinceLastMeleeAttack = 0;
     private float timeSinceLastAirMeleeAttack = 0;
@@ -131,6 +133,7 @@ public class Player_Controller : MonoBehaviour
         weaponDrawInput = Input.GetKey(KeyCode.Z);
         fireRopeInput = Input.GetKey(KeyCode.R);
         walkingInput = Input.GetKey(KeyCode.LeftControl);
+        interactInput = Input.GetKey(KeyCode.E);
 
         isGrounded = Physics2D.OverlapCircle(feetPos.position, checkRadius, whatIsGround);
 
@@ -202,7 +205,6 @@ public class Player_Controller : MonoBehaviour
         if (isTouchingWall && !isTouchingLedge)
         {
             ledgeDetected = true;
-            Debug.Log("Ledge Detected");
         }
 
     }
@@ -213,8 +215,14 @@ public class Player_Controller : MonoBehaviour
         bool isDieing = transform.GetComponent<Player_Collisions>().isDieing;
         bool isKnockedBack = transform.GetComponent<Player_Collisions>().isKnockedBack;
 
-        if(isDazed || isDieing || isKnockedBack)
+        if(isDieing || isKnockedBack)
         {
+            return;
+        }
+
+        if(isDazed)
+        {
+            setVelocity();
             return;
         }
 
@@ -400,7 +408,25 @@ public class Player_Controller : MonoBehaviour
             currentAnimationState = "Player_Idle_Sheathed";
         }
 
-      
+
+
+        setVelocity();
+
+
+
+        //if you are not already attached to a rope you can fire a new rope
+        if (fireRopeInput && !attached && canSpawnRope)
+        {
+            fireRope();
+        }
+
+
+        
+
+    }
+
+    public void setVelocity()
+    {
         if (crouching && !charecterAttacking)
         {
             playerBody.velocity = new Vector2(crouchingSpeedConstant * horizontalInput, playerBody.velocity.y);
@@ -418,22 +444,11 @@ public class Player_Controller : MonoBehaviour
             playerBody.velocity = new Vector2(runningSpeedConstant * horizontalInput, playerBody.velocity.y);
         }
 
-        if(isWallSliding)
+        if (isWallSliding)
         {
             playerBody.velocity = new Vector2(0, -wallSlideSpeedConstant);
 
         }
-
-
-
-
-        //if you are not already attached to a rope you can fire a new rope
-        if (fireRopeInput && !attached && canSpawnRope)
-        {
-            fireRope();
-        }
-
-
     }
 
     private void attack()

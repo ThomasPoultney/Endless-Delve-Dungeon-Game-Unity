@@ -10,9 +10,7 @@ public class SkelentonMobController : MonoBehaviour
     private bool isAttacking = false;
     private bool facingLeft = false;
 
-    private Vector3 rayPosition;
     private bool movingRight = true;
-    private string currentAnimationState = "Skelenton_Idle";
     [SerializeField]
     private LayerMask playerLayer;
     [SerializeField]
@@ -22,12 +20,8 @@ public class SkelentonMobController : MonoBehaviour
     private Vector2 playerCheckDirection;
     private BoxCollider2D boxCollider;
 
-    private bool dazedTime;
-    private bool dazedLength;
-
-    private bool skellyAttacking;
     private float lastAttackTime = 0;
-
+    private bool hasCheckedForHit = false;
     [SerializeField] private float attackRange = 0.2f;
     [SerializeField] private Transform attackPos;
     [SerializeField] private Vector2 knockBackForce = new Vector2(10, 15);
@@ -43,6 +37,7 @@ public class SkelentonMobController : MonoBehaviour
     void FixedUpdate()
     {
 
+        //Checks which direction we are facing
         if (transform.eulerAngles.y > 0)
         {
             facingLeft = true;
@@ -52,17 +47,46 @@ public class SkelentonMobController : MonoBehaviour
             facingLeft = false;
         }
 
+        
+        //retrieves whether we are dazed or dieing from collision script
         bool isDazed = transform.GetComponent<EnemyCollision>().isDazed;
         bool isDieing = transform.GetComponent<EnemyCollision>().isDieing;
-
+       
         AnimationController animationController = transform.GetComponent<AnimationController>();
 
-        
+        //if we are dazed or dieing we want releive control from this script and give it playerCollison
         if(isDazed || isDieing)
         {
             return;
         }
 
+        //Checks if any player are within attack range.
+        Collider2D[] playersToDamage = Physics2D.OverlapBoxAll(attackPos.position, new Vector2(attackRange, 1), 0, playerLayer);
+
+
+        //applied the damage 1/3 of the way into the animation to give the player chance to dodge
+        if (isAttacking && !hasCheckedForHit && Time.time - lastAttackTime > (animator.GetCurrentAnimatorStateInfo(0).length / 3))
+        {
+
+            hasCheckedForHit = true;
+            foreach (Collider2D player in playersToDamage)
+            {
+                Vector2 knockbackDirection;
+                if (facingLeft)
+                {
+                    knockbackDirection = Vector2.left;
+                }
+                else
+                {
+                    knockbackDirection = Vector2.right;
+                }
+
+                player.GetComponent<Player_Collisions>().takeDamage(-1, true, knockbackDirection, knockBackForce);
+            }
+        } 
+
+
+        //resets attack cooldown
         if (isAttacking && Time.time - lastAttackTime > animator.GetCurrentAnimatorStateInfo(0).length)
         {
             isAttacking = false;
@@ -72,29 +96,9 @@ public class SkelentonMobController : MonoBehaviour
             return;
         }
 
-        RaycastHit2D isOnPlatformEdge;
-        RaycastHit2D blockInFront;
-        Vector3 movingRotation;
-
-        //ray to check if player is withing attack range
-        Collider2D[] playersToDamage = Physics2D.OverlapBoxAll(attackPos.position, new Vector2(attackRange, 1), 0, playerLayer);
-     
         if (playersToDamage.Length > 0 && !isAttacking)
         {
-            foreach (Collider2D player in playersToDamage)
-            {
-                Vector2 knockbackDirection;
-                if (facingLeft)
-                {
-                    knockbackDirection = Vector2.left;
-                } else
-                {
-                    knockbackDirection = Vector2.right;
-                }
-
-                player.GetComponent<Player_Collisions>().takeDamage(-1, true, knockbackDirection, knockBackForce);
-            }
-
+            hasCheckedForHit = false;
             animationController.ChangeAnimationState("Skelenton_Swing");
             isAttacking = true;
             lastAttackTime = Time.time;
@@ -102,6 +106,9 @@ public class SkelentonMobController : MonoBehaviour
         }
         else
         {
+            RaycastHit2D isOnPlatformEdge;
+            RaycastHit2D blockInFront;
+            Vector3 movingRotation;
 
             if (movingRight)
             {

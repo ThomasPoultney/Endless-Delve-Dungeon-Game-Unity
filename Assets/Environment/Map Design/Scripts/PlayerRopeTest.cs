@@ -50,7 +50,6 @@ public class PlayerRopeTest : MonoBehaviour
         //lerps player from one rope segment to the next so the animation is smoother.
         if (climbing == true && timeElapsed < climbTime)
         {
-            Debug.Log("Lerping");
             valueToLerp = Mathf.Lerp(ropeClimbStartValue, ropeClimbEndValue, timeElapsed / climbTime);
             transform.position = new Vector2(transform.position.x, valueToLerp );
             timeElapsed += Time.deltaTime;

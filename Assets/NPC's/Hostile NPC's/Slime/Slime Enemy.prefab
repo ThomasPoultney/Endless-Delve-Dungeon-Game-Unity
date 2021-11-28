@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1113859700
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1113859701}
+  m_Layer: 0
+  m_Name: AttackPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1113859701
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1113859700}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.533, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6700000161088399716}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6700000161088399720
 GameObject:
   m_ObjectHideFlags: 0
@@ -14,6 +45,7 @@ GameObject:
   - component: {fileID: 6700000161088399719}
   - component: {fileID: 6700000161088399715}
   - component: {fileID: 5623657080619455038}
+  - component: {fileID: 5394557799738135930}
   m_Layer: 0
   m_Name: Slime Enemy
   m_TagString: Untagged
@@ -32,7 +64,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1113859701}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -158,6 +191,10 @@ MonoBehaviour:
   layersThatCantBeWalkedThrough:
     serializedVersion: 2
     m_Bits: 8848
+  doesKnockBack: 0
+  attackRange: 0.2
+  attackPos: {fileID: 1113859701}
+  knockBackForce: {x: 1, y: 2}
 --- !u!114 &5623657080619455038
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -170,10 +207,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: faccce7160844aa42b5166744ce387c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 2
+  health: 3
   canBeDazed: 1
   canDie: 1
+  canTakeDamage: 1
   isDazed: 0
   isDieing: 0
   dazedAnimation: {fileID: 7400000, guid: f562b364c01ef6142ac53fbee4e7cdd7, type: 2}
   deadAnimation: {fileID: 7400000, guid: 174b77b2a53eeb940896090a6146b757, type: 2}
+  takeDamageSound: {fileID: 0}
+  deathSound: {fileID: 0}
+--- !u!114 &5394557799738135930
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6700000161088399720}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8fc4c0cfb23a24449b5d260d5b2569de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentAnimationState: 
+  animator: {fileID: 6700000161088399718}

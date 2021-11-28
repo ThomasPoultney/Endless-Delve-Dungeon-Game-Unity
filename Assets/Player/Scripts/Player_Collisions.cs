@@ -16,6 +16,7 @@ public class Player_Collisions : MonoBehaviour
     [HideInInspector]
     public bool isKnockedBack = false;
 
+
     private float timeKnockedBack = 0f;
     private float timeSinceKnockBack = 0f;
 
@@ -26,6 +27,11 @@ public class Player_Collisions : MonoBehaviour
     private float timeSinceDieing = 0f;
     private bool isAlive = true;
 
+
+    [SerializeField] private float iFrameTime = 0.3f;
+    private float timeSinceLastDamage = 0f;
+    private bool invicible = false;
+
     [SerializeField] private AnimationClip dazedAnimation = null;
     [SerializeField] private AnimationClip deadAnimation = null;
     [SerializeField] private AnimationClip knockedBackAnimation = null;
@@ -34,13 +40,14 @@ public class Player_Collisions : MonoBehaviour
 
     public void takeDamage(int amount, bool doesKnockBack, Vector2 knockBacKDirection, Vector2 knockBackForce)
     {
-        if (!canTakeDamage)
+        if (!canTakeDamage || invicible)
         {
             return;
         }
-
-
+        
         health += amount;
+        invicible = true;
+        timeSinceLastDamage = Time.time;
         AnimationController animationController = transform.GetComponent<AnimationController>();
 
 
@@ -59,7 +66,8 @@ public class Player_Collisions : MonoBehaviour
         else if (health > 0 && canBeDazed && !doesKnockBack)
         {
             isDazed = true;
-
+            Rigidbody2D playerBody = transform.GetComponent<Rigidbody2D>();
+            playerBody.velocity = Vector2.zero;
             animationController.ChangeAnimationState(dazedAnimation.name);
             timeDazed = animationController.getCurrentAnimationLength();
             timeSinceDazed = Time.time;
@@ -99,6 +107,10 @@ public class Player_Collisions : MonoBehaviour
             isKnockedBack = false;
         }
 
+        if(Time.time - timeSinceLastDamage > iFrameTime)
+        {
+            invicible = false;
+        }
     }
 
 }
