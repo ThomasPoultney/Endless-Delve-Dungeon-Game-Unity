@@ -50,6 +50,8 @@ public class Player_Controller : MonoBehaviour
 
     private bool isGrounded;
     private bool isWallSliding;
+    private bool isWallGrabbing;
+    private bool canWallGrab;
 
     private bool canClimbLedge;
     private bool isTouchingLedge = false;
@@ -101,7 +103,7 @@ public class Player_Controller : MonoBehaviour
 
     [SerializeField] private float wallJumpResetTimer = 0.2f;
     private float timeSinceLastWallJump;
-    [SerializeField] private Vector2 wallJumpAmount = new Vector2(4,8);
+    [SerializeField] private Vector2 wallJumpAmount = new Vector2(3,5);
 
 
     [SerializeField] private float playerSizeConstant;
@@ -157,7 +159,7 @@ public class Player_Controller : MonoBehaviour
         CheckSurroundings();
         if(!isWallJumping)
         {
-            CheckIfWallSliding();
+            CheckIfWallGrabbing();
         }
        
         CheckLedgeClimb();
@@ -169,14 +171,14 @@ public class Player_Controller : MonoBehaviour
 
  
 
-    private void CheckIfWallSliding()
+    private void CheckIfWallGrabbing()
     {
         if(isTouchingWall && !isGrounded && playerBody.velocity.y < 0)
         {
-            isWallSliding = true;
+            isWallGrabbing = true;
         } else
         {
-            isWallSliding = false;
+            isWallGrabbing = false;
         }
     }
 
@@ -206,9 +208,12 @@ public class Player_Controller : MonoBehaviour
 
     public void FixedUpdate()
     {
+
         bool isDazed = transform.GetComponent<Player_Collisions>().isDazed;
         bool isDieing = transform.GetComponent<Player_Collisions>().isDieing;
         bool isKnockedBack = transform.GetComponent<Player_Collisions>().isKnockedBack;
+
+        isWallSliding = false;
 
         if(isDieing || isKnockedBack)
         {
@@ -221,8 +226,7 @@ public class Player_Controller : MonoBehaviour
             return;
         }
 
-      
-
+     
 
         if (isWallJumping && Time.time - timeSinceLastWallJump > wallJumpResetTimer)
         {
@@ -252,7 +256,7 @@ public class Player_Controller : MonoBehaviour
 
         }
 
-        if (jumpInput > 0 && isJumping == true)
+        if (jumpInput > 0 && isJumping == true && isWallJumping == false)
         {
             if (jumpTimeCounter > 0)
             {
@@ -337,14 +341,19 @@ public class Player_Controller : MonoBehaviour
                 playerBody.velocity = Vector2.zero;
             }
         }
-        else if (isWallSliding && jumpInput > 0)//and we are losing momentum up we set animation to jump
+        else if ((isWallGrabbing || isWallSliding) && jumpInput > 0)//and we are losing momentum up we set animation to jump
         {
             Jump();
         }
-        else if (isWallSliding)//and we are losing momentum up we set animation to jump
+        else if (isWallGrabbing && verticalInput < 0)//and we are losing momentum up we set animation to jump
         {
             animationController.ChangeAnimationState("Player_Wall_Slide");
+            isWallSliding = true;
         }
+        else if (isWallGrabbing)//and we are losing momentum up we set animation to jump
+        {
+            animationController.ChangeAnimationState("Player_Wall_Grab");
+        }      
         else if (jumpInput > 0 && isGrounded)
         {
             Jump();
@@ -451,6 +460,8 @@ public class Player_Controller : MonoBehaviour
 
     public void setVelocity()
     {
+
+        
         if (crouching && !charecterAttacking)
         {
             playerBody.velocity = new Vector2(crouchingSpeedConstant * horizontalInput, playerBody.velocity.y);
@@ -468,10 +479,15 @@ public class Player_Controller : MonoBehaviour
             playerBody.velocity = new Vector2(runningSpeedConstant * horizontalInput, playerBody.velocity.y);
         }
 
-        if (isWallSliding)
+        if(isWallSliding)
         {
             playerBody.velocity = new Vector2(0, -wallSlideSpeedConstant);
-
+        }  
+        else if(isWallGrabbing)
+        {
+            
+            playerBody.velocity = new Vector2(0, 0);
+            
         }
     }
 
@@ -629,17 +645,17 @@ public class Player_Controller : MonoBehaviour
 
     public void Jump()
     {
-        if(isWallSliding)
+        if(isWallGrabbing || isWallSliding)
         {
             isWallSliding = false;
+            isWallGrabbing = false;
             isWallJumping = true;           
             timeSinceLastWallJump = Time.time;
         }
         else
         {
             playerBody.velocity = Vector2.up * jumpingConstant;
-            animationController.ChangeAnimationState("Player_Jump");
-            
+            animationController.ChangeAnimationState("Player_Jump");          
             isJumping = true;
             canJumpAgain = false;
             jumpTimeCounter = jumpResetTime;
