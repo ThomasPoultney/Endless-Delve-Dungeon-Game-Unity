@@ -7,7 +7,7 @@ public class EnemyCollision : MonoBehaviour
     public int health = 2;
     public bool canBeDazed;
     public bool canDie;
-
+    public bool canTakeDamage = true;
     [HideInInspector]
     public bool isDazed = false;
     [HideInInspector]
@@ -16,6 +16,9 @@ public class EnemyCollision : MonoBehaviour
     private float timeDazed = 0f;
     private float timeSinceDazed = 0f;
 
+    private float timeDieing = 0f;
+    private float timeSinceDieing = 0f;
+
     [SerializeField] private AnimationClip dazedAnimation = null;
     [SerializeField] private AnimationClip deadAnimation = null;
     [SerializeField] private AudioSource takeDamageSound = null;
@@ -23,6 +26,12 @@ public class EnemyCollision : MonoBehaviour
 
     public void takeDamage(int amount)
     {
+        if(!canTakeDamage)
+        {
+            return;
+        }
+
+
         health += amount;
         AnimationController animationController = transform.GetComponent<AnimationController>();
 
@@ -31,7 +40,13 @@ public class EnemyCollision : MonoBehaviour
         {
             isDieing = true;
             animationController.ChangeAnimationState(deadAnimation.name);
-           
+            timeDieing = animationController.getCurrentAnimationLength();
+            timeSinceDieing = Time.time;
+            if (takeDamageSound != null)
+            {
+
+            }
+
 
         } else if(health > 0 && canBeDazed)
         {
@@ -55,6 +70,13 @@ public class EnemyCollision : MonoBehaviour
         {
             Debug.Log("Daze Over");
             isDazed = false;          
+        }
+
+        if (isDieing && Time.time - timeSinceDieing > timeDieing)
+        {
+            Debug.Log("Dieing Over");
+            GameObject.Destroy(gameObject);
+            isDieing = false;
         }
 
     }

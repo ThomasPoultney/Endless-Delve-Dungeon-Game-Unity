@@ -8,6 +8,7 @@ public class SkelentonMobController : MonoBehaviour
     private float attackDistance = 0.5f;
     public Animator animator;
     private bool isAttacking = false;
+    private bool facingLeft = false;
 
     private Vector3 rayPosition;
     private bool movingRight = true;
@@ -24,8 +25,12 @@ public class SkelentonMobController : MonoBehaviour
     private bool dazedTime;
     private bool dazedLength;
 
+    private bool skellyAttacking;
+    private float lastAttackTime = 0;
+
     [SerializeField] private float attackRange = 0.2f;
     [SerializeField] private Transform attackPos;
+    [SerializeField] private Vector2 knockBackForce = new Vector2(10, 15);
 
 
     // Start is called before the first frame update
@@ -38,16 +43,34 @@ public class SkelentonMobController : MonoBehaviour
     void FixedUpdate()
     {
 
+        if (transform.eulerAngles.y > 0)
+        {
+            facingLeft = true;
+        }
+        else
+        {
+            facingLeft = false;
+        }
+
         bool isDazed = transform.GetComponent<EnemyCollision>().isDazed;
         bool isDieing = transform.GetComponent<EnemyCollision>().isDieing;
 
         AnimationController animationController = transform.GetComponent<AnimationController>();
 
         
-        if(isDazed)
+        if(isDazed || isDieing)
         {
             return;
-        } 
+        }
+
+        if (isAttacking && Time.time - lastAttackTime > animator.GetCurrentAnimatorStateInfo(0).length)
+        {
+            isAttacking = false;
+        }
+        else if (isAttacking)
+        {
+            return;
+        }
 
         RaycastHit2D isOnPlatformEdge;
         RaycastHit2D blockInFront;
@@ -55,15 +78,26 @@ public class SkelentonMobController : MonoBehaviour
 
         //ray to check if player is withing attack range
         Collider2D[] playersToDamage = Physics2D.OverlapBoxAll(attackPos.position, new Vector2(attackRange, 1), 0, playerLayer);
-        foreach (Collider2D player in playersToDamage)
-        {         
-            player.GetComponent<Player_Collisions>().takeDamage(-1);
-        }
-
-        if (playersToDamage.Length > 0)
+     
+        if (playersToDamage.Length > 0 && !isAttacking)
         {
+            foreach (Collider2D player in playersToDamage)
+            {
+                Vector2 knockbackDirection;
+                if (facingLeft)
+                {
+                    knockbackDirection = Vector2.left;
+                } else
+                {
+                    knockbackDirection = Vector2.right;
+                }
+
+                player.GetComponent<Player_Collisions>().takeDamage(-1, true, knockbackDirection, knockBackForce);
+            }
+
             animationController.ChangeAnimationState("Skelenton_Swing");
             isAttacking = true;
+            lastAttackTime = Time.time;
 
         }
         else

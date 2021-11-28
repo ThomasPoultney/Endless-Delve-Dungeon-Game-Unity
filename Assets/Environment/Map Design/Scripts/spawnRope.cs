@@ -64,8 +64,7 @@ public class spawnRope : MonoBehaviour
             {
                 if(child.GetComponent<RopeSegment>() != null)
                 {
-                    child.GetComponent<RopeSegment>().GetComponent<BoxCollider2D>().enabled = true;
-                    Debug.Log("Reenabled Box Colider");
+                    child.GetComponent<RopeSegment>().GetComponent<BoxCollider2D>().enabled = true;                  
                 }
             }
           enabledRigidBodies = true;

@@ -209,7 +209,16 @@ public class Player_Controller : MonoBehaviour
 
     public void FixedUpdate()
     {
-        if(isWallJumping)
+        bool isDazed = transform.GetComponent<Player_Collisions>().isDazed;
+        bool isDieing = transform.GetComponent<Player_Collisions>().isDieing;
+        bool isKnockedBack = transform.GetComponent<Player_Collisions>().isKnockedBack;
+
+        if(isDazed || isDieing || isKnockedBack)
+        {
+            return;
+        }
+
+        if (isWallJumping)
         {
             return;
         }
@@ -222,6 +231,9 @@ public class Player_Controller : MonoBehaviour
             transform.localScale = new Vector3(-playerSizeConstant, playerSizeConstant, 1);
 
         }
+
+        
+        
 
 
         if (charecterAttacking && Time.time - lastAttackTime > animator.GetCurrentAnimatorStateInfo(0).length)
@@ -594,26 +606,14 @@ public class Player_Controller : MonoBehaviour
         }
     }
 
- 
-    /// <summary>
-    /// Changes the animation state of the animator attached to the object
-    /// </summary>
-    /// <param name="newState"></param>
-    private void ChangeAnimationState(string newState)
-    {
-        if (newState == currentAnimationState) return;
-        
-        animator.Play(newState);
 
-        currentAnimationState = newState;
-    }
 
     void OnDrawGizmos()
     {
        Gizmos.DrawLine(wallCheck.position, new Vector3(wallCheck.position.x + wallCheckDistance, wallCheck.position.y, wallCheck.position.z));
        Gizmos.DrawLine(ledgeCheck.position, new Vector3(ledgeCheck.position.x + wallCheckDistance, ledgeCheck.position.y, 0));
        Gizmos.color = Color.blue;
-        Gizmos.DrawWireCube(attackPos.position, new Vector2(attackRange,1));
+       Gizmos.DrawWireCube(attackPos.position, new Vector2(attackRange,1));
     }
 
 

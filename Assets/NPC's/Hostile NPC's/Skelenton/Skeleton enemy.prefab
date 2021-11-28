@@ -194,6 +194,7 @@ MonoBehaviour:
     m_Bits: 656
   attackRange: 1.1
   attackPos: {fileID: 1512971823}
+  knockBackForce: {x: 4, y: 5}
 --- !u!114 &4826841719598453546
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -209,6 +210,7 @@ MonoBehaviour:
   health: 5
   canBeDazed: 1
   canDie: 1
+  canTakeDamage: 1
   isDazed: 0
   isDieing: 0
   dazedAnimation: {fileID: 7400000, guid: 28e5f37960ad2f24aa09cfe79d491dbc, type: 2}
