@@ -64,7 +64,7 @@ public class Player_Controller : MonoBehaviour
 
 
     public Transform feetPos;
-    public Transform ledgeCheck;
+    public Transform headPosition;
 
     public float checkRadius;
     public LayerMask whatIsGround;
@@ -186,16 +186,16 @@ public class Player_Controller : MonoBehaviour
 
     private void CheckSurroundings()
     {
-        Vector2 ledgeCheckPos = new Vector2(ledgeCheck.transform.position.x,ledgeCheck.transform.position.y);
+        Vector2 headPositionPos = new Vector2(headPosition.transform.position.x, headPosition.transform.position.y);
         if (facingLeft)
         {
             isTouchingWall = Physics2D.Raycast(wallCheck.position, -transform.right, wallCheckDistance, whatIsGround);
-            isTouchingLedge = Physics2D.Raycast(ledgeCheckPos, -transform.right, wallCheckDistance, whatIsGround);
+            isTouchingLedge = Physics2D.Raycast(headPositionPos, -transform.right, wallCheckDistance, whatIsGround);
         }
         else
         {
             isTouchingWall = Physics2D.Raycast(wallCheck.position, transform.right, wallCheckDistance, whatIsGround);
-            isTouchingLedge = Physics2D.Raycast(ledgeCheckPos, transform.right, wallCheckDistance, whatIsGround);
+            isTouchingLedge = Physics2D.Raycast(headPositionPos, transform.right, wallCheckDistance, whatIsGround);
         }
     }
 
@@ -220,20 +220,18 @@ public class Player_Controller : MonoBehaviour
 
         if(isDieing || isKnockedBack || !isAlive)
         {
-            Debug.Log("DYINGINGNGING");
+            
             return;
         }
 
-        if (isDazed)
-        {
-            setVelocity();
-            return;
-        }
+    
+
+
 
         if (canWallGrab == false && Time.time - timeSinceCannotWallGrab > wallGrabResetTimer)
         {
             canWallGrab = true;
-            Debug.Log("Can Wall Grab again.");
+            
         }
 
      
@@ -241,7 +239,7 @@ public class Player_Controller : MonoBehaviour
         if (isWallJumping && Time.time - timeSinceLastWallJump > wallJumpResetTimer)
         {
             isWallJumping = false;
-            Debug.Log("Can Wall Jump Again");
+           
         }
         else if (isWallJumping)
         {
@@ -279,7 +277,17 @@ public class Player_Controller : MonoBehaviour
             }
         }
 
-       
+        if (isDazed)
+        {
+            setVelocity();
+            if (jumpInput > 0 && isGrounded)
+            {
+                Jump();
+            }
+            return;
+        }
+
+
 
 
 
@@ -444,12 +452,12 @@ public class Player_Controller : MonoBehaviour
         {
 
             animationController.ChangeAnimationState("Player_Idle");
-            currentAnimationState = "Player_Idle";
+            
         }
         else
         {
             animationController.ChangeAnimationState("Player_Idle_Sheathed");
-            currentAnimationState = "Player_Idle_Sheathed";
+           
         }
 
 
@@ -462,9 +470,6 @@ public class Player_Controller : MonoBehaviour
         {
             fireRope();
         }
-
-
-        
 
     }
 
@@ -668,8 +673,8 @@ public class Player_Controller : MonoBehaviour
         }
         else
         {
-            playerBody.velocity = Vector2.up * jumpingConstant;
-            animationController.ChangeAnimationState("Player_Jump");          
+            playerBody.velocity = Vector2.up * jumpingConstant;        
+            animationController.ChangeAnimationState("Player_Jump");                
             isJumping = true;
             canJumpAgain = false;
             jumpTimeCounter = jumpResetTime;
@@ -682,7 +687,7 @@ public class Player_Controller : MonoBehaviour
     void OnDrawGizmos()
     {
        Gizmos.DrawLine(wallCheck.position, new Vector3(wallCheck.position.x + wallCheckDistance, wallCheck.position.y, wallCheck.position.z));
-       Gizmos.DrawLine(ledgeCheck.position, new Vector3(ledgeCheck.position.x + wallCheckDistance, ledgeCheck.position.y, 0));
+       Gizmos.DrawLine(headPosition.position, new Vector3(headPosition.position.x + wallCheckDistance, headPosition.position.y, 0));
        Gizmos.color = Color.blue;
        Gizmos.DrawWireCube(attackPos.position, new Vector2(attackRange,1));
     }

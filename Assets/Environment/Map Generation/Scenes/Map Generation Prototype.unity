@@ -123,6 +123,11 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!4 &112257817 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 799574519, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
+  m_PrefabInstance: {fileID: 2038263702}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &549429642
 GameObject:
   m_ObjectHideFlags: 0
@@ -202,6 +207,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &954326814 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1406864615, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
+  m_PrefabInstance: {fileID: 2038263702}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1326767010 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 236308664087019659, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
@@ -281,14 +291,42 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1320483095, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
+      propertyPath: headPosition
+      value: 
+      objectReference: {fileID: 954326814}
     - target: {fileID: 1326767019, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
       propertyPath: m_Material
       value: 
       objectReference: {fileID: 6200000, guid: ca2167a4932ea8a4ab2063a9440cdfda, type: 2}
     - target: {fileID: 1326767028, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
+      propertyPath: feetPos
+      value: 
+      objectReference: {fileID: 112257817}
+    - target: {fileID: 1326767028, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
+      propertyPath: headPos
+      value: 
+      objectReference: {fileID: 954326814}
+    - target: {fileID: 1326767028, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
       propertyPath: bloodSplatter
       value: 
       objectReference: {fileID: 5500900295739616542, guid: defc6d642ed717d41a4f5b5d237ff68b, type: 3}
+    - target: {fileID: 1326767028, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
+      propertyPath: interactRadius
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1326767028, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
+      propertyPath: interactionLayer
+      value: -33
+      objectReference: {fileID: 0}
+    - target: {fileID: 1326767028, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
+      propertyPath: interactionLayer.m_Bits
+      value: 14464
+      objectReference: {fileID: 0}
+    - target: {fileID: 1406864614, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
+      propertyPath: m_Name
+      value: headPos
+      objectReference: {fileID: 0}
     - target: {fileID: 236308664087019653, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
       propertyPath: m_RootOrder
       value: 1

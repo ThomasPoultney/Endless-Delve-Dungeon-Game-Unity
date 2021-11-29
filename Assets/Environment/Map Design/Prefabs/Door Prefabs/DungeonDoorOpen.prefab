@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5609896762348533585}
   - component: {fileID: 3256736467017883693}
   - component: {fileID: -1314030734175856960}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: DungeonDoorOpen
   m_TagString: Untagged
   m_Icon: {fileID: 0}

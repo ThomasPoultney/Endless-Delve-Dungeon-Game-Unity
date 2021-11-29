@@ -28,6 +28,8 @@ public class Player_Collisions : MonoBehaviour
     private float timeSinceDieing = 0f;
     public bool isAlive = true;
 
+    [SerializeField] private float interactRadius = 0.4f;
+
 
     [SerializeField] private float iFrameTime = 0.3f;
     private float timeSinceLastDamage = 0f;
@@ -40,6 +42,13 @@ public class Player_Collisions : MonoBehaviour
     [SerializeField] private AudioSource deathSound = null;
 
     [SerializeField] private GameObject bloodSplatter = null;
+
+    [SerializeField] private LayerMask interactionLayer;
+
+    [SerializeField] private Transform headPos;
+    [SerializeField] private Transform feetPos;
+
+
 
     public void takeDamage(int amount, bool doesKnockBack, Vector2 knockBacKDirection, float knockBackForce)
     {
@@ -92,7 +101,7 @@ public class Player_Collisions : MonoBehaviour
             isKnockedBack = true;
             Rigidbody2D playerBody = transform.GetComponent<Rigidbody2D>();
             playerBody.velocity = knockBacKDirection * knockBackForce;
-            Debug.Log(knockBacKDirection);
+            
             animationController.ChangeAnimationState(knockedBackAnimation.name);
             timeKnockedBack = animationController.getCurrentAnimationLength();
             timeSinceKnockBack = Time.time;
@@ -140,6 +149,48 @@ public class Player_Collisions : MonoBehaviour
         {
             invicible = false;
         }
+
+
+        Vector2 overlapPointOne = new Vector2(headPos.position.x + interactRadius, headPos.position.y);
+        Vector2 overlapPointTwo = new Vector2(feetPos.position.x - interactRadius, feetPos.position.y);
+        Collider2D[] objectsInRange = Physics2D.OverlapCircleAll(feetPos.position, interactRadius,interactionLayer);
+
+        if(objectsInRange.Length > 0) 
+        {
+            foreach(Collider2D obj in objectsInRange)
+            {
+                if (obj.gameObject.layer == 11) //loot
+                {
+                    Destroy(obj.gameObject);
+                }
+
+                if (obj.gameObject.layer == 12) //ladder
+                {
+                    bool touchingLadder = true;
+                    Debug.Log("Touching Ladder");
+                }
+
+                if (obj.gameObject.layer == 7) //spikes
+                {
+
+                    takeDamage(-1, false, Vector2.zero, 0);
+                }
+
+                if (obj.gameObject.layer == 13) //lava
+                {
+                    setPlayerDead();                   
+                }
+
+
+            }
+        }
+
+    }
+
+
+    void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(feetPos.position, interactRadius);
     }
 
 }
