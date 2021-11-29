@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -67,16 +68,9 @@ public class Player_Collisions : MonoBehaviour
 
         if (health <= 0 && canDie)
         {
-            isDieing = true;
-            isAlive = false;
-            animationController.ChangeAnimationState(deadAnimation.name);
-            timeDieing = animationController.getCurrentAnimationLength();
-            Debug.Log("Dead");
-            timeSinceDieing = Time.time;
-            if (deathSound != null)
-            {
 
-            }
+            setPlayerDead();
+            
         }
         else if (health > 0 && canBeDazed && !doesKnockBack)
         {
@@ -106,6 +100,20 @@ public class Player_Collisions : MonoBehaviour
 
     }
 
+    private void setPlayerDead()
+    {
+        isDieing = true;
+        isAlive = false;
+        AnimationController animationController = transform.GetComponent<AnimationController>();
+        animationController.ChangeAnimationState(deadAnimation.name);
+        timeDieing = animationController.getCurrentAnimationLength();
+        Debug.Log("Dead");
+        timeSinceDieing = Time.time;
+        if (deathSound != null)
+        {
+
+        }
+    }
 
     public void Update()
     {
