@@ -32,7 +32,7 @@ public class SkullController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {       
-        if (player != null)
+        if (player != null && player.GetComponent<Player_Collisions>().isAlive)
         {
             //if we are close enough to explode
             if (Vector2.Distance(transform.position, player.transform.position) < explodeAtDistance)

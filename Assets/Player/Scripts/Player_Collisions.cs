@@ -25,7 +25,7 @@ public class Player_Collisions : MonoBehaviour
 
     private float timeDieing = 0f;
     private float timeSinceDieing = 0f;
-    private bool isAlive = true;
+    public bool isAlive = true;
 
 
     [SerializeField] private float iFrameTime = 0.3f;
@@ -40,7 +40,7 @@ public class Player_Collisions : MonoBehaviour
 
     public void takeDamage(int amount, bool doesKnockBack, Vector2 knockBacKDirection, float knockBackForce)
     {
-        if (!canTakeDamage || invicible)
+        if (!canTakeDamage || invicible || !isAlive)
         {
             return;
         }
@@ -65,14 +65,15 @@ public class Player_Collisions : MonoBehaviour
         AnimationController animationController = transform.GetComponent<AnimationController>();
 
 
-        if (health <= 0 && canDie && isAlive)
+        if (health <= 0 && canDie)
         {
             isDieing = true;
             isAlive = false;
             animationController.ChangeAnimationState(deadAnimation.name);
             timeDieing = animationController.getCurrentAnimationLength();
+            Debug.Log("Dead");
             timeSinceDieing = Time.time;
-            if (takeDamageSound != null)
+            if (deathSound != null)
             {
 
             }

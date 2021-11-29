@@ -15,7 +15,6 @@ public class Player_Controller : MonoBehaviour
     [SerializeField] private float wallSlideSpeedConstant = 2f;
     [SerializeField] private float jumpingConstant = 2f;
     [SerializeField] private float slideThreshold = 4f;
-    [SerializeField] private float walkingThreshold = 2f;
     [SerializeField] private float jumpResetTime = 1f;
 
 
@@ -214,22 +213,24 @@ public class Player_Controller : MonoBehaviour
 
         bool isDazed = transform.GetComponent<Player_Collisions>().isDazed;
         bool isDieing = transform.GetComponent<Player_Collisions>().isDieing;
+        bool isAlive = transform.GetComponent<Player_Collisions>().isAlive;
         bool isKnockedBack = transform.GetComponent<Player_Collisions>().isKnockedBack;
 
         isWallSliding = false;
 
-        if(isDieing || isKnockedBack)
+        if(isDieing || isKnockedBack || !isAlive)
         {
+            Debug.Log("DYINGINGNGING");
             return;
         }
 
-        if(isDazed)
+        if (isDazed)
         {
             setVelocity();
             return;
         }
 
-        if(canWallGrab == false && Time.time - timeSinceCannotWallGrab > wallGrabResetTimer)
+        if (canWallGrab == false && Time.time - timeSinceCannotWallGrab > wallGrabResetTimer)
         {
             canWallGrab = true;
             Debug.Log("Can Wall Grab again.");
@@ -278,6 +279,7 @@ public class Player_Controller : MonoBehaviour
             }
         }
 
+       
 
 
 

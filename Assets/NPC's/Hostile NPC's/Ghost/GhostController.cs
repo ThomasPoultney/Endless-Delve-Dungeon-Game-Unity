@@ -46,7 +46,7 @@ public class GhostController : MonoBehaviour
             transform.rotation = Quaternion.Euler(0, 0, 0);
         }
 
-        if (player != null)
+        if (player != null && player.GetComponent<Player_Collisions>().isAlive)
         {
             if (player.GetComponent<Player_Controller>().facingLeft != ghostFacingLeft)
             {
@@ -98,4 +98,9 @@ public class GhostController : MonoBehaviour
         currentAnimationState = newState;
     }
 
+
+    void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(transform.position, damageRadius);
+    }
 }

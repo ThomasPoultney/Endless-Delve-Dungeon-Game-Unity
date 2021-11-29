@@ -281,26 +281,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1320483095, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
-      propertyPath: wallJumpAmount.x
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 1320483095, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
-      propertyPath: wallJumpAmount.y
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 1320483095, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
-      propertyPath: wallJumpResetTimer
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1326767028, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
-      propertyPath: bloodSplat
-      value: 
-      objectReference: {fileID: 5500900295739616542, guid: defc6d642ed717d41a4f5b5d237ff68b, type: 3}
-    - target: {fileID: 1326767028, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
-      propertyPath: iFrameTime
-      value: 0.4
-      objectReference: {fileID: 0}
     - target: {fileID: 236308664087019653, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
       propertyPath: m_RootOrder
       value: 1

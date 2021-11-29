@@ -62,7 +62,14 @@ public class SkelentonMobController : MonoBehaviour
 
         //Checks if any player are within attack range.
         Collider2D[] playersToDamage = Physics2D.OverlapBoxAll(attackPos.position, new Vector2(attackRange, 1), 0, playerLayer);
-
+        bool playerAliveinRange = false;
+        for (int i = 0; i < playersToDamage.Length; i++)
+        {
+            if(playersToDamage[i].GetComponent<Player_Collisions>().isAlive)
+            {
+                playerAliveinRange = true;
+            }
+        }
 
         //applied the damage 1/3 of the way into the animation to give the player chance to dodge
         if (isAttacking && !hasCheckedForHit && Time.time - lastAttackTime > (animator.GetCurrentAnimatorStateInfo(0).length / 3))
@@ -96,7 +103,7 @@ public class SkelentonMobController : MonoBehaviour
             return;
         }
 
-        if (playersToDamage.Length > 0 && !isAttacking)
+        if (playersToDamage.Length > 0 && !isAttacking && playerAliveinRange)
         {
             hasCheckedForHit = false;
             animationController.ChangeAnimationState("Skelenton_Swing");

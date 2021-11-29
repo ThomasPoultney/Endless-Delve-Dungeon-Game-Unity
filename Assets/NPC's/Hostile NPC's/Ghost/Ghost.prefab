@@ -172,7 +172,7 @@ MonoBehaviour:
   pursuitDistance: 4
   animator: {fileID: 8014729875570390591}
   lightToSpawn: {fileID: 643521441964530614, guid: 73120835ea5936145887b37f8f7e172f, type: 3}
-  damageRadius: 1
+  damageRadius: 0.4
   playerLayer:
     serializedVersion: 2
     m_Bits: 16384
