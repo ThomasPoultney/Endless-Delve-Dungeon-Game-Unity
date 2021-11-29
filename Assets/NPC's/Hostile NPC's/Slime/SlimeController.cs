@@ -26,7 +26,7 @@ public class SlimeController : MonoBehaviour
     [SerializeField] private bool doesKnockBack = false;
     [SerializeField] private float attackRange = 0.2f;
     [SerializeField] private Transform attackPos;
-    [SerializeField] private Vector2 knockBackForce = new Vector2(10, 15);
+    [SerializeField] private float knockBackForce = 5;
 
 
     // Start is called before the first frame update
@@ -64,6 +64,15 @@ public class SlimeController : MonoBehaviour
 
         //Checks if any player are within attack range.
         Collider2D[] playersToDamage = Physics2D.OverlapBoxAll(attackPos.position, new Vector2(attackRange, 1), 0, playerLayer);
+        //removes dead players from considerations
+        bool playerAliveinRange = false;
+        for (int i = 0; i < playersToDamage.Length; i++)
+        {
+            if (playersToDamage[i].GetComponent<Player_Collisions>().isAlive)
+            {
+                playerAliveinRange = true;
+            }
+        }
 
 
         //applied the damage 1/3 of the way into the animation to give the player chance to dodge
@@ -98,7 +107,7 @@ public class SlimeController : MonoBehaviour
             return;
         }
 
-        if (playersToDamage.Length > 0 && !isAttacking)
+        if (playersToDamage.Length > 0 && !isAttacking && playerAliveinRange)
         {
             hasCheckedForHit = false;
             animationController.ChangeAnimationState("Slime_Attack");

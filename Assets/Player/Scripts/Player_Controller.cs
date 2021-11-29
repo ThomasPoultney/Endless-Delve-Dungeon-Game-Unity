@@ -15,7 +15,6 @@ public class Player_Controller : MonoBehaviour
     [SerializeField] private float wallSlideSpeedConstant = 2f;
     [SerializeField] private float jumpingConstant = 2f;
     [SerializeField] private float slideThreshold = 4f;
-    [SerializeField] private float walkingThreshold = 2f;
     [SerializeField] private float jumpResetTime = 1f;
 
 
@@ -49,11 +48,12 @@ public class Player_Controller : MonoBehaviour
     [SerializeField] private float jumpTimeCounter = 0.3f;
 
     private bool isGrounded;
-    private bool isWallSliding;
-    private bool isWallGrabbing;
-    private bool canWallGrab;
+    public bool isWallSliding;
+    public bool isWallGrabbing;
+    public bool canWallGrab = true;
+    public float timeSinceCannotWallGrab = 0;
+    public float wallGrabResetTimer = 0.1f;
 
-    private bool canClimbLedge;
     private bool isTouchingLedge = false;
     private bool ledgeDetected = false;
 
@@ -64,7 +64,7 @@ public class Player_Controller : MonoBehaviour
 
 
     public Transform feetPos;
-    public Transform ledgeCheck;
+    public Transform headPosition;
 
     public float checkRadius;
     public LayerMask whatIsGround;
@@ -84,6 +84,8 @@ public class Player_Controller : MonoBehaviour
     private bool walkingInput;
     private bool sprintingInput;
     private bool interactInput;
+    private bool torchInput;
+
     //used to reset combos after a given time
     private float timeSinceLastMeleeAttack = 0;
     private float timeSinceLastAirMeleeAttack = 0;
@@ -107,6 +109,10 @@ public class Player_Controller : MonoBehaviour
 
 
     [SerializeField] private float playerSizeConstant;
+
+    [SerializeField] private GameObject torch;
+    [SerializeField] private LayerMask torchLayer;
+
 
     // Start is called before the first frame update
     void Start()
@@ -137,6 +143,7 @@ public class Player_Controller : MonoBehaviour
         fireRopeInput = Input.GetKey(KeyCode.R);
         walkingInput = Input.GetKey(KeyCode.LeftControl);
         interactInput = Input.GetKey(KeyCode.E);
+        torchInput = Input.GetKey(KeyCode.F);
 
         isGrounded = Physics2D.OverlapCircle(feetPos.position, checkRadius, whatIsGround);
 
@@ -173,7 +180,7 @@ public class Player_Controller : MonoBehaviour
 
     private void CheckIfWallGrabbing()
     {
-        if(isTouchingWall && !isGrounded && playerBody.velocity.y < 0)
+        if(isTouchingWall && !isGrounded && playerBody.velocity.y < 0 && canWallGrab)
         {
             isWallGrabbing = true;
         } else
@@ -184,16 +191,16 @@ public class Player_Controller : MonoBehaviour
 
     private void CheckSurroundings()
     {
-        Vector2 ledgeCheckPos = new Vector2(ledgeCheck.transform.position.x,ledgeCheck.transform.position.y);
+        Vector2 headPositionPos = new Vector2(headPosition.transform.position.x, headPosition.transform.position.y);
         if (facingLeft)
         {
             isTouchingWall = Physics2D.Raycast(wallCheck.position, -transform.right, wallCheckDistance, whatIsGround);
-            isTouchingLedge = Physics2D.Raycast(ledgeCheckPos, -transform.right, wallCheckDistance, whatIsGround);
+            isTouchingLedge = Physics2D.Raycast(headPositionPos, -transform.right, wallCheckDistance, whatIsGround);
         }
         else
         {
             isTouchingWall = Physics2D.Raycast(wallCheck.position, transform.right, wallCheckDistance, whatIsGround);
-            isTouchingLedge = Physics2D.Raycast(ledgeCheckPos, transform.right, wallCheckDistance, whatIsGround);
+            isTouchingLedge = Physics2D.Raycast(headPositionPos, transform.right, wallCheckDistance, whatIsGround);
         }
     }
 
@@ -211,19 +218,32 @@ public class Player_Controller : MonoBehaviour
 
         bool isDazed = transform.GetComponent<Player_Collisions>().isDazed;
         bool isDieing = transform.GetComponent<Player_Collisions>().isDieing;
+        bool isAlive = transform.GetComponent<Player_Collisions>().isAlive;
         bool isKnockedBack = transform.GetComponent<Player_Collisions>().isKnockedBack;
 
         isWallSliding = false;
 
-        if(isDieing || isKnockedBack)
+        if(isDieing || isKnockedBack || !isAlive)
         {
+            
             return;
         }
 
-        if(isDazed)
+        
+        Collider2D[] torches = Physics2D.OverlapCircleAll(transform.position,2f,torchLayer);
+        Debug.Log(torches);
+        if (torchInput == true && torches.Length == 0 && Player_Variables.getNumberOfTorches() >= 1)
         {
-            setVelocity();
-            return;
+            Instantiate(torch, transform.position, Quaternion.identity);
+            Player_Variables.removeTorch();
+        }
+
+
+
+        if (canWallGrab == false && Time.time - timeSinceCannotWallGrab > wallGrabResetTimer)
+        {
+            canWallGrab = true;
+            
         }
 
      
@@ -231,7 +251,7 @@ public class Player_Controller : MonoBehaviour
         if (isWallJumping && Time.time - timeSinceLastWallJump > wallJumpResetTimer)
         {
             isWallJumping = false;
-            Debug.Log("Can Wall Jump Again");
+           
         }
         else if (isWallJumping)
         {
@@ -268,6 +288,17 @@ public class Player_Controller : MonoBehaviour
                 isJumping = false;
             }
         }
+
+        if (isDazed)
+        {
+            setVelocity();
+            if (jumpInput > 0 && isGrounded)
+            {
+                Jump();
+            }
+            return;
+        }
+
 
 
 
@@ -324,7 +355,7 @@ public class Player_Controller : MonoBehaviour
         }
 
 
-        bool attached = transform.GetComponent<PlayerRopeTest>().attached;
+        bool attached = transform.GetComponent<PlayerRopeController>().attached;
 
         //creates a priority list of animations based on certain conditions being met
      
@@ -433,12 +464,12 @@ public class Player_Controller : MonoBehaviour
         {
 
             animationController.ChangeAnimationState("Player_Idle");
-            currentAnimationState = "Player_Idle";
+            
         }
         else
         {
             animationController.ChangeAnimationState("Player_Idle_Sheathed");
-            currentAnimationState = "Player_Idle_Sheathed";
+           
         }
 
 
@@ -451,9 +482,6 @@ public class Player_Controller : MonoBehaviour
         {
             fireRope();
         }
-
-
-        
 
     }
 
@@ -657,8 +685,8 @@ public class Player_Controller : MonoBehaviour
         }
         else
         {
-            playerBody.velocity = Vector2.up * jumpingConstant;
-            animationController.ChangeAnimationState("Player_Jump");          
+            playerBody.velocity = Vector2.up * jumpingConstant;        
+            animationController.ChangeAnimationState("Player_Jump");                
             isJumping = true;
             canJumpAgain = false;
             jumpTimeCounter = jumpResetTime;
@@ -671,9 +699,10 @@ public class Player_Controller : MonoBehaviour
     void OnDrawGizmos()
     {
        Gizmos.DrawLine(wallCheck.position, new Vector3(wallCheck.position.x + wallCheckDistance, wallCheck.position.y, wallCheck.position.z));
-       Gizmos.DrawLine(ledgeCheck.position, new Vector3(ledgeCheck.position.x + wallCheckDistance, ledgeCheck.position.y, 0));
+       Gizmos.DrawLine(headPosition.position, new Vector3(headPosition.position.x + wallCheckDistance, headPosition.position.y, 0));
        Gizmos.color = Color.blue;
        Gizmos.DrawWireCube(attackPos.position, new Vector2(attackRange,1));
+       Gizmos.DrawWireSphere(transform.position,2);
     }
 
 
