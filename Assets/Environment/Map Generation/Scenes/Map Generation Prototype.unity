@@ -291,10 +291,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 154263796, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1320483095, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
+      propertyPath: torch
+      value: 
+      objectReference: {fileID: 9030302787743496147, guid: 18711cc45d8a1df44a90f377288d8dbe, type: 3}
     - target: {fileID: 1320483095, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
       propertyPath: headPosition
       value: 
       objectReference: {fileID: 954326814}
+    - target: {fileID: 1320483095, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
+      propertyPath: torchLayer.m_Bits
+      value: 262144
+      objectReference: {fileID: 0}
     - target: {fileID: 1326767019, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
       propertyPath: m_Material
       value: 
@@ -326,6 +338,10 @@ PrefabInstance:
     - target: {fileID: 1406864614, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
       propertyPath: m_Name
       value: headPos
+      objectReference: {fileID: 0}
+    - target: {fileID: 1779924106, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 236308664087019653, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
       propertyPath: m_RootOrder

@@ -17,7 +17,7 @@ public static class Player_Variables
     private static string username = "Anonymous";
 
     private static List<GameObject> itemsInInventory;
-    private static int currentNumTorches;
+    private static int currentNumTorches = startNumTorches;
 
 
 
