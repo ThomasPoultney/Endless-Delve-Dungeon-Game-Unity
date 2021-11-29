@@ -52,6 +52,13 @@ public class Player_Collisions : MonoBehaviour
             transform.GetComponent<PlayerRopeController>().Detach(true);
         }
 
+        Player_Controller.isWallGrabbing = false;
+        Player_Controller.isWallSliding = false;
+        Player_Controller.canWallGrab = false;
+        Player_Controller.wallGrabResetTimer = 0.4f;
+        Player_Controller.timeSinceCannotWallGrab = Time.time;
+
+
         health += amount;
         invicible = true;
         timeSinceLastDamage = Time.time;

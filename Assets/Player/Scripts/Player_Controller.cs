@@ -51,7 +51,9 @@ public class Player_Controller : MonoBehaviour
     private bool isGrounded;
     public bool isWallSliding;
     public bool isWallGrabbing;
-    private bool canWallGrab;
+    public bool canWallGrab = true;
+    public float timeSinceCannotWallGrab = 0;
+    public float wallGrabResetTimer = 0.1f;
 
     private bool isTouchingLedge = false;
     private bool ledgeDetected = false;
@@ -106,6 +108,8 @@ public class Player_Controller : MonoBehaviour
 
 
     [SerializeField] private float playerSizeConstant;
+
+    
 
     // Start is called before the first frame update
     void Start()
@@ -172,7 +176,7 @@ public class Player_Controller : MonoBehaviour
 
     private void CheckIfWallGrabbing()
     {
-        if(isTouchingWall && !isGrounded && playerBody.velocity.y < 0)
+        if(isTouchingWall && !isGrounded && playerBody.velocity.y < 0 && canWallGrab)
         {
             isWallGrabbing = true;
         } else
@@ -223,6 +227,12 @@ public class Player_Controller : MonoBehaviour
         {
             setVelocity();
             return;
+        }
+
+        if(canWallGrab == false && Time.time - timeSinceCannotWallGrab > wallGrabResetTimer)
+        {
+            canWallGrab = true;
+            Debug.Log("Can Wall Grab again.");
         }
 
      
