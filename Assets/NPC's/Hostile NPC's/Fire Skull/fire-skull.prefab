@@ -173,6 +173,11 @@ MonoBehaviour:
   pursuitDistance: 4
   explodeAtDistance: 1
   explosion: {fileID: 5621311102472054045, guid: fdb2bc0a7ae564e4da633633bde61d2f, type: 3}
+  explosionRadius: 2
+  explosionKnockBackForce: 20
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 16384
 --- !u!114 &-5439911701326335879
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -185,13 +190,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: faccce7160844aa42b5166744ce387c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 2
+  health: 1
   canBeDazed: 0
   canDie: 0
+  canTakeDamage: 0
   isDazed: 0
   isDieing: 0
   dazedAnimation: {fileID: 0}
   deadAnimation: {fileID: 0}
+  takeDamageSound: {fileID: 0}
+  deathSound: {fileID: 0}
 --- !u!1 &7920131155536086589
 GameObject:
   m_ObjectHideFlags: 0

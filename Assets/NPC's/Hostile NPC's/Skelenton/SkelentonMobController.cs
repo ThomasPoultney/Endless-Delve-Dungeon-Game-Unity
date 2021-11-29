@@ -24,7 +24,7 @@ public class SkelentonMobController : MonoBehaviour
     private bool hasCheckedForHit = false;
     [SerializeField] private float attackRange = 0.2f;
     [SerializeField] private Transform attackPos;
-    [SerializeField] private Vector2 knockBackForce = new Vector2(10, 15);
+    [SerializeField] private float knockBackForce = 15f;
 
 
     // Start is called before the first frame update

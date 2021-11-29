@@ -15,6 +15,13 @@ public class SkullController : MonoBehaviour
     private float explodeAtDistance = 2f; //distance from player that we explode at
     [SerializeField]
     private GameObject explosion; //The explosion to spawn
+    [SerializeField]
+    private float explosionRadius;
+    [SerializeField]
+    private float explosionKnockBackForce;
+    [SerializeField]
+    private LayerMask playerLayer;
+
 
     void Start()
     {
@@ -57,6 +64,16 @@ public class SkullController : MonoBehaviour
         GameObject Explosion = Instantiate(explosion, transform.position, Quaternion.identity);
         //reduces size of explosion
         explosion.transform.localScale = new Vector3(0.5f,0.5f,1);
+        Vector2 knockBackDirection = new Vector2(player.transform.position.x - transform.position.x, player.transform.position.y - transform.position.y);
+
+       
+        Collider2D[] playersToDamage = Physics2D.OverlapCircleAll(transform.position, explosionRadius, playerLayer);
+       
+        foreach (Collider2D player in playersToDamage)
+        {
+            
+            player.GetComponent<Player_Collisions>().takeDamage(-2, true, knockBackDirection, explosionKnockBackForce);
+        }
         //removes skull
         Destroy(gameObject);
     }

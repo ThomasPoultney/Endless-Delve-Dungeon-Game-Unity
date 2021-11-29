@@ -26,7 +26,7 @@ public class SlimeController : MonoBehaviour
     [SerializeField] private bool doesKnockBack = false;
     [SerializeField] private float attackRange = 0.2f;
     [SerializeField] private Transform attackPos;
-    [SerializeField] private Vector2 knockBackForce = new Vector2(10, 15);
+    [SerializeField] private float knockBackForce = 5;
 
 
     // Start is called before the first frame update

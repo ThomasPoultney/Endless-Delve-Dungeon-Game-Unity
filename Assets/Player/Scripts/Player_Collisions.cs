@@ -38,13 +38,20 @@ public class Player_Collisions : MonoBehaviour
     [SerializeField] private AudioSource takeDamageSound = null;
     [SerializeField] private AudioSource deathSound = null;
 
-    public void takeDamage(int amount, bool doesKnockBack, Vector2 knockBacKDirection, Vector2 knockBackForce)
+    public void takeDamage(int amount, bool doesKnockBack, Vector2 knockBacKDirection, float knockBackForce)
     {
         if (!canTakeDamage || invicible)
         {
             return;
         }
+
+        Player_Controller Player_Controller = transform.GetComponent<Player_Controller>();
         
+        if (transform.GetComponent<PlayerRopeController>().attached == true)
+        {
+            transform.GetComponent<PlayerRopeController>().Detach(true);
+        }
+
         health += amount;
         invicible = true;
         timeSinceLastDamage = Time.time;
@@ -86,6 +93,9 @@ public class Player_Collisions : MonoBehaviour
             timeKnockedBack = animationController.getCurrentAnimationLength();
             timeSinceKnockBack = Time.time;
         }
+
+      
+
     }
 
 

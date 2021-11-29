@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerRopeTest : MonoBehaviour
+public class PlayerRopeController : MonoBehaviour
 {
     public Rigidbody2D playerBody; //the players rigidbody
     private HingeJoint2D playerHinge; //hinge joint connected to player
@@ -99,7 +99,7 @@ public class PlayerRopeTest : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                Detach();
+                Detach(false);
             }
 
             if (Input.GetKey("a") || Input.GetKey("left"))
@@ -160,7 +160,7 @@ public class PlayerRopeTest : MonoBehaviour
         ropeAttachedTo = ropeSegment.gameObject.transform.parent;
     }
 
-    private void Detach()
+    public void Detach(bool knockedOff)
     {
 
         transform.GetComponent<Rigidbody2D>().mass = playerMass;
@@ -183,7 +183,10 @@ public class PlayerRopeTest : MonoBehaviour
         //timer to stop you attaching back to the same rope
         lastDetachTime = Time.time;
         //Tells player controller to jump when we detach from rope
-        transform.GetComponent<Player_Controller>().Jump();
+        if(!knockedOff)
+        {
+            transform.GetComponent<Player_Controller>().Jump();
+        }
     }
 
    

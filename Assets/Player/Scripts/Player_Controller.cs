@@ -49,11 +49,10 @@ public class Player_Controller : MonoBehaviour
     [SerializeField] private float jumpTimeCounter = 0.3f;
 
     private bool isGrounded;
-    private bool isWallSliding;
-    private bool isWallGrabbing;
+    public bool isWallSliding;
+    public bool isWallGrabbing;
     private bool canWallGrab;
 
-    private bool canClimbLedge;
     private bool isTouchingLedge = false;
     private bool ledgeDetected = false;
 
@@ -324,7 +323,7 @@ public class Player_Controller : MonoBehaviour
         }
 
 
-        bool attached = transform.GetComponent<PlayerRopeTest>().attached;
+        bool attached = transform.GetComponent<PlayerRopeController>().attached;
 
         //creates a priority list of animations based on certain conditions being met
      
