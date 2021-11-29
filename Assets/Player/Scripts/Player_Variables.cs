@@ -52,7 +52,10 @@ public static class Player_Variables
         return currentNumTorches;
     }
 
-
+    public static string getUsername()
+    {
+          return username;
+    }
 
 
 }
