@@ -114,6 +114,7 @@ public class Player_Collisions : MonoBehaviour
 
     private void setPlayerDead()
     {
+        transform.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
         isDieing = true;
         isAlive = false;
         AnimationController animationController = transform.GetComponent<AnimationController>();
@@ -161,6 +162,7 @@ public class Player_Collisions : MonoBehaviour
             {
                 if (obj.gameObject.layer == 11) //loot
                 {
+                    Player_Variables.addTreasure(obj.GetComponent<TreasureValue>().getTreasureValue());              
                     Destroy(obj.gameObject);
                 }
 
