@@ -16,6 +16,8 @@ public class GhostController : MonoBehaviour
     private bool ghostFacingLeft = false;
     [SerializeField] private GameObject lightToSpawn;
     private GameObject spawn;
+    [SerializeField] private float damageRadius = 1.0f;
+    [SerializeField] private LayerMask playerLayer;
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
@@ -24,6 +26,15 @@ public class GhostController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        Collider2D[] playersToDamage = Physics2D.OverlapCircleAll(transform.position, damageRadius, playerLayer);
+
+        foreach (Collider2D player in playersToDamage)
+        {
+            player.GetComponent<Player_Collisions>().takeDamage(-1, false, new Vector2(0,0), 0);
+        }
+
+
         if (transform.position.x < player.transform.position.x)
         {
             ghostFacingLeft = true;
