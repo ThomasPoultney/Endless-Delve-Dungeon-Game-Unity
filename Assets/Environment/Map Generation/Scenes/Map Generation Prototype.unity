@@ -313,7 +313,7 @@ PrefabInstance:
       objectReference: {fileID: 5500900295739616542, guid: defc6d642ed717d41a4f5b5d237ff68b, type: 3}
     - target: {fileID: 1326767028, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
       propertyPath: interactRadius
-      value: 0.1
+      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: 1326767028, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
       propertyPath: interactionLayer

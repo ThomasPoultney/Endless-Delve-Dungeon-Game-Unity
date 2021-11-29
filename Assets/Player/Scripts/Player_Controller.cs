@@ -84,6 +84,8 @@ public class Player_Controller : MonoBehaviour
     private bool walkingInput;
     private bool sprintingInput;
     private bool interactInput;
+    private bool torchInput;
+
     //used to reset combos after a given time
     private float timeSinceLastMeleeAttack = 0;
     private float timeSinceLastAirMeleeAttack = 0;
@@ -108,7 +110,9 @@ public class Player_Controller : MonoBehaviour
 
     [SerializeField] private float playerSizeConstant;
 
-    
+    [SerializeField] private GameObject torch;
+    [SerializeField] private LayerMask torchLayer;
+
 
     // Start is called before the first frame update
     void Start()
@@ -139,6 +143,7 @@ public class Player_Controller : MonoBehaviour
         fireRopeInput = Input.GetKey(KeyCode.R);
         walkingInput = Input.GetKey(KeyCode.LeftControl);
         interactInput = Input.GetKey(KeyCode.E);
+        torchInput = Input.GetKey(KeyCode.F);
 
         isGrounded = Physics2D.OverlapCircle(feetPos.position, checkRadius, whatIsGround);
 
@@ -224,7 +229,14 @@ public class Player_Controller : MonoBehaviour
             return;
         }
 
-    
+        
+        Collider2D[] torches = Physics2D.OverlapCircleAll(transform.position,2f,torchLayer);
+        Debug.Log(torches);
+        if (torchInput == true && torches.Length == 0 && Player_Variables.getNumberOfTorches() >= 1)
+        {
+            Instantiate(torch, transform.position, Quaternion.identity);
+            Player_Variables.removeTorch();
+        }
 
 
 
@@ -690,6 +702,7 @@ public class Player_Controller : MonoBehaviour
        Gizmos.DrawLine(headPosition.position, new Vector3(headPosition.position.x + wallCheckDistance, headPosition.position.y, 0));
        Gizmos.color = Color.blue;
        Gizmos.DrawWireCube(attackPos.position, new Vector2(attackRange,1));
+       Gizmos.DrawWireSphere(transform.position,2);
     }
 
 

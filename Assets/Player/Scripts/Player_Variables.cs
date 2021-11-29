@@ -11,6 +11,8 @@ public static class Player_Variables
     private static int currentHealth = startHealth;
     private static int currentInsanity = startInsanity;
     private static int amountOfTreasure = 0;
+   
+
 
     private static string username = "Anonymous";
 
@@ -38,6 +40,16 @@ public static class Player_Variables
     public static void setUsername(string usernameInput)
     {
         username = usernameInput;
+    }
+
+    public static void removeTorch()
+    {
+        currentNumTorches--;
+    }
+
+    public static int getNumberOfTorches()
+    {
+        return currentNumTorches;
     }
 
 
