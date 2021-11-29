@@ -39,6 +39,8 @@ public class Player_Collisions : MonoBehaviour
     [SerializeField] private AudioSource takeDamageSound = null;
     [SerializeField] private AudioSource deathSound = null;
 
+    [SerializeField] private GameObject bloodSplatter = null;
+
     public void takeDamage(int amount, bool doesKnockBack, Vector2 knockBacKDirection, float knockBackForce)
     {
         if (!canTakeDamage || invicible || !isAlive)
@@ -97,7 +99,8 @@ public class Player_Collisions : MonoBehaviour
         }
 
       
-
+        Instantiate(bloodSplatter,transform);
+        
     }
 
     private void setPlayerDead()

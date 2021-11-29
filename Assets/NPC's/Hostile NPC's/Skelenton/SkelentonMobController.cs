@@ -62,6 +62,7 @@ public class SkelentonMobController : MonoBehaviour
 
         //Checks if any player are within attack range.
         Collider2D[] playersToDamage = Physics2D.OverlapBoxAll(attackPos.position, new Vector2(attackRange, 1), 0, playerLayer);
+        //removes dead players from considerations
         bool playerAliveinRange = false;
         for (int i = 0; i < playersToDamage.Length; i++)
         {

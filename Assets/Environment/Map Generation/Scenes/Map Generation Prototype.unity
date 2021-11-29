@@ -281,6 +281,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1326767019, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 6200000, guid: ca2167a4932ea8a4ab2063a9440cdfda, type: 2}
+    - target: {fileID: 1326767028, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
+      propertyPath: bloodSplatter
+      value: 
+      objectReference: {fileID: 5500900295739616542, guid: defc6d642ed717d41a4f5b5d237ff68b, type: 3}
     - target: {fileID: 236308664087019653, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -325,6 +333,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 236308664087019654, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 6200000, guid: ca2167a4932ea8a4ab2063a9440cdfda, type: 2}
+    - target: {fileID: 236308664087019655, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 6200000, guid: ca2167a4932ea8a4ab2063a9440cdfda, type: 2}
     - target: {fileID: 236308664087019659, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
       propertyPath: m_Name
       value: Player
