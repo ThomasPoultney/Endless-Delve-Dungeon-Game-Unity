@@ -10,12 +10,14 @@ public static class Player_Variables
 
     private static int currentHealth = startHealth;
     private static int currentInsanity = startInsanity;
-    private static int amountOfTreasure = 5000;
+    private static int amountOfTreasure = 0;
+   
+
 
     private static string username = "Anonymous";
 
     private static List<GameObject> itemsInInventory;
-    private static int currentNumTorches;
+    private static int currentNumTorches = startNumTorches;
 
 
 
@@ -29,9 +31,25 @@ public static class Player_Variables
         return amountOfTreasure;
     }
 
+    public static void addTreasure(int treasureValue)
+    {
+        amountOfTreasure += treasureValue;
+        Debug.Log(amountOfTreasure);
+    }
+
     public static void setUsername(string usernameInput)
     {
         username = usernameInput;
+    }
+
+    public static void removeTorch()
+    {
+        currentNumTorches--;
+    }
+
+    public static int getNumberOfTorches()
+    {
+        return currentNumTorches;
     }
 
 

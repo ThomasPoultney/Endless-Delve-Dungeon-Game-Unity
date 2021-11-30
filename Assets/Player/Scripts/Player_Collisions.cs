@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -25,7 +26,9 @@ public class Player_Collisions : MonoBehaviour
 
     private float timeDieing = 0f;
     private float timeSinceDieing = 0f;
-    private bool isAlive = true;
+    public bool isAlive = true;
+
+    [SerializeField] private float interactRadius = 0.4f;
 
 
     [SerializeField] private float iFrameTime = 0.3f;
@@ -38,30 +41,47 @@ public class Player_Collisions : MonoBehaviour
     [SerializeField] private AudioSource takeDamageSound = null;
     [SerializeField] private AudioSource deathSound = null;
 
-    public void takeDamage(int amount, bool doesKnockBack, Vector2 knockBacKDirection, Vector2 knockBackForce)
+    [SerializeField] private GameObject bloodSplatter = null;
+
+    [SerializeField] private LayerMask interactionLayer;
+
+    [SerializeField] private Transform headPos;
+    [SerializeField] private Transform feetPos;
+
+
+
+    public void takeDamage(int amount, bool doesKnockBack, Vector2 knockBacKDirection, float knockBackForce)
     {
-        if (!canTakeDamage || invicible)
+        if (!canTakeDamage || invicible || !isAlive)
         {
             return;
         }
+
+        Player_Controller Player_Controller = transform.GetComponent<Player_Controller>();
         
+        if (transform.GetComponent<PlayerRopeController>().attached == true)
+        {
+            transform.GetComponent<PlayerRopeController>().Detach(true);
+        }
+
+        Player_Controller.isWallGrabbing = false;
+        Player_Controller.isWallSliding = false;
+        Player_Controller.canWallGrab = false;
+        Player_Controller.wallGrabResetTimer = 0.4f;
+        Player_Controller.timeSinceCannotWallGrab = Time.time;
+
+
         health += amount;
         invicible = true;
         timeSinceLastDamage = Time.time;
         AnimationController animationController = transform.GetComponent<AnimationController>();
 
 
-        if (health <= 0 && canDie && isAlive)
+        if (health <= 0 && canDie)
         {
-            isDieing = true;
-            isAlive = false;
-            animationController.ChangeAnimationState(deadAnimation.name);
-            timeDieing = animationController.getCurrentAnimationLength();
-            timeSinceDieing = Time.time;
-            if (takeDamageSound != null)
-            {
 
-            }
+            setPlayerDead();
+            
         }
         else if (health > 0 && canBeDazed && !doesKnockBack)
         {
@@ -81,13 +101,32 @@ public class Player_Collisions : MonoBehaviour
             isKnockedBack = true;
             Rigidbody2D playerBody = transform.GetComponent<Rigidbody2D>();
             playerBody.velocity = knockBacKDirection * knockBackForce;
-            Debug.Log(knockBacKDirection);
+            
             animationController.ChangeAnimationState(knockedBackAnimation.name);
             timeKnockedBack = animationController.getCurrentAnimationLength();
             timeSinceKnockBack = Time.time;
         }
+
+      
+        Instantiate(bloodSplatter,transform);
+        
     }
 
+    private void setPlayerDead()
+    {
+        transform.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+        isDieing = true;
+        isAlive = false;
+        AnimationController animationController = transform.GetComponent<AnimationController>();
+        animationController.ChangeAnimationState(deadAnimation.name);
+        timeDieing = animationController.getCurrentAnimationLength();
+        Debug.Log("Dead");
+        timeSinceDieing = Time.time;
+        if (deathSound != null)
+        {
+
+        }
+    }
 
     public void Update()
     {
@@ -111,6 +150,49 @@ public class Player_Collisions : MonoBehaviour
         {
             invicible = false;
         }
+
+
+        Vector2 overlapPointOne = new Vector2(headPos.position.x + interactRadius, headPos.position.y);
+        Vector2 overlapPointTwo = new Vector2(feetPos.position.x - interactRadius, feetPos.position.y);
+        Collider2D[] objectsInRange = Physics2D.OverlapCircleAll(feetPos.position, interactRadius,interactionLayer);
+
+        if(objectsInRange.Length > 0) 
+        {
+            foreach(Collider2D obj in objectsInRange)
+            {
+                if (obj.gameObject.layer == 11) //loot
+                {
+                    Player_Variables.addTreasure(obj.GetComponent<TreasureValue>().getTreasureValue());              
+                    Destroy(obj.gameObject);
+                }
+
+                if (obj.gameObject.layer == 12) //ladder
+                {
+                    bool touchingLadder = true;
+                    Debug.Log("Touching Ladder");
+                }
+
+                if (obj.gameObject.layer == 7) //spikes
+                {
+
+                    takeDamage(-1, false, Vector2.zero, 0);
+                }
+
+                if (obj.gameObject.layer == 13) //lava
+                {
+                    setPlayerDead();                   
+                }
+
+
+            }
+        }
+
+    }
+
+
+    void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(feetPos.position, interactRadius);
     }
 
 }

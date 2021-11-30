@@ -194,7 +194,7 @@ MonoBehaviour:
     m_Bits: 656
   attackRange: 1.1
   attackPos: {fileID: 1512971823}
-  knockBackForce: {x: 4, y: 5}
+  knockBackForce: 5
 --- !u!114 &4826841719598453546
 MonoBehaviour:
   m_ObjectHideFlags: 0
