@@ -11,6 +11,8 @@ public static class Player_Variables
     private static int currentHealth = startHealth;
     private static int currentInsanity = startInsanity;
     private static int amountOfTreasure = 0;
+    private static int score = 0;
+    private static int highscore = 0;
    
 
 
@@ -57,5 +59,24 @@ public static class Player_Variables
           return username;
     }
 
+    public static void setScore(int scoreInput)
+    {
+        score = scoreInput;
+    }
+
+    public static int getScore()
+    {
+          return score;
+    }
+
+    public static void setHighscore(int highScore)
+    {
+        highscore = highScore;
+    }
+
+    public static int getHighscore()
+    {
+          return highscore;
+    }
 
 }
