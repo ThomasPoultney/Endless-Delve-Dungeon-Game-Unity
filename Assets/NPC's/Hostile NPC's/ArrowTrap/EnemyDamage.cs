@@ -5,13 +5,19 @@ public class EnemyDamage : MonoBehaviour
     
     [SerializeField] protected float damage;
 
+
+    /// <summary>
+    /// When the arrow enters a 2D collidable object, this method is called.
+    /// If the object has tag "Player", then the player has been hit.
+    /// Knockback is applied, and one health is taken away.
+    /// </summary>
     protected void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag == "Player")
         {
-            GameObject bla = GameObject.Find("Player");
-            Player_Collisions other = (Player_Collisions)bla.GetComponent(typeof(Player_Collisions));
-            other.takeDamage(1, true, new Vector2(1, 0), 1);
+            GameObject playerObject = GameObject.Find("Player");
+            Player_Collisions playerScript = (Player_Collisions)playerObject.GetComponent(typeof(Player_Collisions));
+            playerScript.takeDamage(1, true, new Vector2(1, 0), 1);
         }
         gameObject.SetActive(false);
         // Reduces player health, but this is not implemented yet. 

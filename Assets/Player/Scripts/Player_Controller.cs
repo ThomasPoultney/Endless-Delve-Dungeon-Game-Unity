@@ -176,9 +176,7 @@ public class Player_Controller : MonoBehaviour
 
     }
 
- 
-
-    private void CheckIfWallGrabbing()
+     private void CheckIfWallGrabbing()
     {
         if(isTouchingWall && !isGrounded && playerBody.velocity.y < 0 && canWallGrab)
         {
