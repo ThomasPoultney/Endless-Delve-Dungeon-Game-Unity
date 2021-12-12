@@ -7,7 +7,7 @@ public class spawnSwingingTrap : MonoBehaviour
 {
     public Rigidbody2D hook;
     public GameObject[] ropeSegments;
-    public int numLinks = 3;
+    public int numLinks;
     [SerializeField]
     private int startLimit = 15;
     [SerializeField]
@@ -31,7 +31,11 @@ public class spawnSwingingTrap : MonoBehaviour
         hook.transform.position = ropeSpawnPosition;
         Rigidbody2D prevBod = hook;
 
-        //spawns each rope segment
+        // Randomise length of rope.
+
+        numLinks = Random.Range(3, 6);
+
+        // Spawns each rope segment
         for (int i = 0; i < numLinks; i++)
         {
             GameObject newSeg = Instantiate(ropeSegments[0]);
