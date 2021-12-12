@@ -27,7 +27,8 @@ public class spawnSwingingTrap : MonoBehaviour
     /// </summary>
     private void GenerateRope()
     {
-        Vector3 ropeSpawnPosition = transform.position + new Vector3(0,0.25f,0);
+        // Move the spawn position up.
+        Vector3 ropeSpawnPosition = transform.position + new Vector3(0,0.55f,0);
         hook.transform.position = ropeSpawnPosition;
         Rigidbody2D prevBod = hook;
 
