@@ -13,11 +13,15 @@ public class startgame : MonoBehaviour
    private string scoreInput;
    public Button scoreBtn;
    public Button enterAgainBtn;
+   public Button playerControls;
+   public Button backButton;
 
    private void Start(){
        btn.onClick.AddListener(startGameOnButtonClick);
        scoreBtn.onClick.AddListener(submitScoreOnButtonClick);
        enterAgainBtn.onClick.AddListener(enterScoreAgain);
+       playerControls.onClick.AddListener(showPlayerControls);
+       backButton.onClick.AddListener(showStartScreen);
    } 
 
 
@@ -36,8 +40,8 @@ public class startgame : MonoBehaviour
             Debug.Log("Getting name: >>>>> "+Player_Variables.getUsername());
        }
        Scene scene = SceneManager.GetActiveScene();
-       SceneManager.LoadScene(scene.buildIndex + 1);
-       Debug.Log("Button Clicked");
+       SceneManager.LoadScene(scene.buildIndex + 2);
+       Debug.Log("Play Game Button Clicked");
        Destroy(gameObject);
     }
 
@@ -102,6 +106,25 @@ public class startgame : MonoBehaviour
        Debug.Log("Enter Again Button Clicked");
        Destroy(gameObject);
     }
+
+    public void showPlayerControls(){
+
+       Time.timeScale = 1;
+       Scene scene = SceneManager.GetActiveScene();
+       SceneManager.LoadScene(scene.buildIndex + 1);
+       Debug.Log("Player Controls Button Clicked");
+       Destroy(gameObject);
+    }
+
+    public void showStartScreen(){
+
+       Time.timeScale = 1;
+       Scene scene = SceneManager.GetActiveScene();
+       SceneManager.LoadScene(scene.buildIndex - 1);
+       Debug.Log("Back Button Clicked");
+       Destroy(gameObject);
+    }
+
 
 
     
