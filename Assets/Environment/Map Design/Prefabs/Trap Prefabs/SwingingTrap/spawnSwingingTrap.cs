@@ -52,7 +52,7 @@ public class spawnSwingingTrap : MonoBehaviour
     void Update()
     {
         //reenables box colider of rope segments on after a delay to avoid physics breaking them before they have chance to spread out
-        if (enabledRigidBodies != true && Time.time - finishedSpawningAt >= 5)
+        if (enabledRigidBodies != true && Time.time - finishedSpawningAt >= 2)
         {
             foreach(Transform child in transform)
             {
