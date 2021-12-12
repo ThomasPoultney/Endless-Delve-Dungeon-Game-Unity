@@ -21,7 +21,7 @@ public class Player_Controller : MonoBehaviour
     private Rigidbody2D playerBody;
     private Animator anim;
 
-  
+
     //limits how many ropes players can spawn
     [SerializeField] private int numberOfRopesPlayerCanSpawn = 3;
     private List<GameObject> ropesSpawned = new List<GameObject>();
@@ -60,7 +60,7 @@ public class Player_Controller : MonoBehaviour
     [SerializeField] private Transform attackPos;
     [SerializeField] private LayerMask mobLayerMask;
     [SerializeField] private float attackRange = 0.2f;
-    
+
 
 
     public Transform feetPos;
@@ -68,11 +68,11 @@ public class Player_Controller : MonoBehaviour
 
     public float checkRadius;
     public LayerMask whatIsGround;
-
+    public LayerMask whatIsWall;
 
     private bool isWallJumping = false;
     private bool crouching;
-    
+
     //used for checking player Input
     private float horizontalInput;
     private float verticalInput;
@@ -91,7 +91,7 @@ public class Player_Controller : MonoBehaviour
     private float timeSinceLastAirMeleeAttack = 0;
     private float timeSinceLastPunchAttack = 0;
     private float comboResetTime = 1;
-    
+
     //tracks combos
     private int punchMeleeAttackCombo = 0;
     private int meleeAttackCombo = 0;
@@ -105,13 +105,14 @@ public class Player_Controller : MonoBehaviour
 
     [SerializeField] private float wallJumpResetTimer = 0.2f;
     private float timeSinceLastWallJump;
-    [SerializeField] private Vector2 wallJumpAmount = new Vector2(3,5);
+    [SerializeField] private Vector2 wallJumpAmount = new Vector2(3, 5);
 
 
     [SerializeField] private float playerSizeConstant;
 
     [SerializeField] private GameObject torch;
     [SerializeField] private LayerMask torchLayer;
+
 
 
     // Start is called before the first frame update
@@ -147,9 +148,9 @@ public class Player_Controller : MonoBehaviour
 
         isGrounded = Physics2D.OverlapCircle(feetPos.position, checkRadius, whatIsGround);
 
-       
 
-        if(Input.GetKeyUp(KeyCode.Space))
+
+        if (Input.GetKeyUp(KeyCode.Space))
         {
             isJumping = false;
         }
@@ -158,17 +159,18 @@ public class Player_Controller : MonoBehaviour
         if (transform.localScale.x < 0)
         {
             facingLeft = true;
-        } else
+        }
+        else
         {
             facingLeft = false;
         }
-        
+
         CheckSurroundings();
-        if(!isWallJumping)
+        if (!isWallJumping)
         {
             CheckIfWallGrabbing();
         }
-       
+
         CheckLedgeClimb();
 
 
@@ -176,14 +178,15 @@ public class Player_Controller : MonoBehaviour
 
     }
 
- 
+
 
     private void CheckIfWallGrabbing()
     {
-        if(isTouchingWall && !isGrounded && playerBody.velocity.y < 0 && canWallGrab)
+        if (isTouchingWall && !isGrounded && playerBody.velocity.y < 0 && canWallGrab)
         {
             isWallGrabbing = true;
-        } else
+        }
+        else
         {
             isWallGrabbing = false;
         }
@@ -194,13 +197,13 @@ public class Player_Controller : MonoBehaviour
         Vector2 headPositionPos = new Vector2(headPosition.transform.position.x, headPosition.transform.position.y);
         if (facingLeft)
         {
-            isTouchingWall = Physics2D.Raycast(wallCheck.position, -transform.right, wallCheckDistance, whatIsGround);
-            isTouchingLedge = Physics2D.Raycast(headPositionPos, -transform.right, wallCheckDistance, whatIsGround);
+            isTouchingWall = Physics2D.Raycast(wallCheck.position, -transform.right, wallCheckDistance, whatIsWall);
+            isTouchingLedge = Physics2D.Raycast(headPositionPos, -transform.right, wallCheckDistance, whatIsWall);
         }
         else
         {
-            isTouchingWall = Physics2D.Raycast(wallCheck.position, transform.right, wallCheckDistance, whatIsGround);
-            isTouchingLedge = Physics2D.Raycast(headPositionPos, transform.right, wallCheckDistance, whatIsGround);
+            isTouchingWall = Physics2D.Raycast(wallCheck.position, transform.right, wallCheckDistance, whatIsWall);
+            isTouchingLedge = Physics2D.Raycast(headPositionPos, transform.right, wallCheckDistance, whatIsWall);
         }
     }
 
@@ -223,14 +226,14 @@ public class Player_Controller : MonoBehaviour
 
         isWallSliding = false;
 
-        if(isDieing || isKnockedBack || !isAlive)
+        if (isDieing || isKnockedBack || !isAlive)
         {
-            
+
             return;
         }
 
-        
-        Collider2D[] torches = Physics2D.OverlapCircleAll(transform.position,2f,torchLayer);
+
+        Collider2D[] torches = Physics2D.OverlapCircleAll(transform.position, 2f, torchLayer);
         Debug.Log(torches);
         if (torchInput == true && torches.Length == 0 && Player_Variables.getNumberOfTorches() >= 1)
         {
@@ -243,22 +246,23 @@ public class Player_Controller : MonoBehaviour
         if (canWallGrab == false && Time.time - timeSinceCannotWallGrab > wallGrabResetTimer)
         {
             canWallGrab = true;
-            
+
         }
 
-     
+
 
         if (isWallJumping && Time.time - timeSinceLastWallJump > wallJumpResetTimer)
         {
             isWallJumping = false;
-           
+
         }
         else if (isWallJumping)
         {
-            if(!facingLeft)
+            if (!facingLeft)
             {
                 playerBody.velocity = wallJumpAmount * new Vector2(-1, 1);
-            } else
+            }
+            else
             {
                 playerBody.velocity = wallJumpAmount;
             }
@@ -321,7 +325,7 @@ public class Player_Controller : MonoBehaviour
             return;
         }
 
-     
+
         if (weaponDrawing && Time.time - timeSinceWeaponDraw > animator.GetCurrentAnimatorStateInfo(0).length)
         {
             weaponDrawing = false;
@@ -331,9 +335,9 @@ public class Player_Controller : MonoBehaviour
             return;
         }
 
-    
 
-        if(Time.time - timeSinceLastMeleeAttack >  comboResetTime)
+
+        if (Time.time - timeSinceLastMeleeAttack > comboResetTime)
         {
             meleeAttackCombo = 0;
         }
@@ -358,7 +362,7 @@ public class Player_Controller : MonoBehaviour
         bool attached = transform.GetComponent<PlayerRopeController>().attached;
 
         //creates a priority list of animations based on certain conditions being met
-     
+
         if (attached)
         {
             animationController.ChangeAnimationState("Player_Wall_Slide");
@@ -367,7 +371,7 @@ public class Player_Controller : MonoBehaviour
         else if (attackInput && !charecterAttacking) //attacking
         {
             attack();
-            if(isGrounded)
+            if (isGrounded)
             {
                 playerBody.velocity = Vector2.zero;
             }
@@ -384,7 +388,7 @@ public class Player_Controller : MonoBehaviour
         else if (isWallGrabbing)//and we are losing momentum up we set animation to jump
         {
             animationController.ChangeAnimationState("Player_Wall_Grab");
-        }      
+        }
         else if (jumpInput > 0 && isGrounded)
         {
             Jump();
@@ -421,7 +425,8 @@ public class Player_Controller : MonoBehaviour
         {
             animationController.ChangeAnimationState("Player_Ground_Slide");
             crouching = true;
-        } else if (horizontalInput > 0.01f && walkingInput)
+        }
+        else if (horizontalInput > 0.01f && walkingInput)
         {
             animationController.ChangeAnimationState("Player_Walk");
         }
@@ -464,12 +469,12 @@ public class Player_Controller : MonoBehaviour
         {
 
             animationController.ChangeAnimationState("Player_Idle");
-            
+
         }
         else
         {
             animationController.ChangeAnimationState("Player_Idle_Sheathed");
-           
+
         }
 
 
@@ -488,37 +493,37 @@ public class Player_Controller : MonoBehaviour
     public void setVelocity()
     {
 
-        
-      
-            if (crouching && !charecterAttacking)
-            {
-                playerBody.velocity = new Vector2(crouchingSpeedConstant * horizontalInput, playerBody.velocity.y);
-            }
-            else if (walkingInput & !charecterAttacking)
-            {
-                playerBody.velocity = new Vector2(walkingSpeedConstant * horizontalInput, playerBody.velocity.y);
-            }
-            else if (sprintingInput & !charecterAttacking)
-            {
-                playerBody.velocity = new Vector2(sprintingSpeedConstant * horizontalInput, playerBody.velocity.y);
-            }
-            else if (!charecterAttacking)
-            {
-                playerBody.velocity = new Vector2(runningSpeedConstant * horizontalInput, playerBody.velocity.y);
-            }
-        
-        
-        
 
-        if(isWallSliding)
+
+        if (crouching && !charecterAttacking)
+        {
+            playerBody.velocity = new Vector2(crouchingSpeedConstant * horizontalInput, playerBody.velocity.y);
+        }
+        else if (walkingInput & !charecterAttacking)
+        {
+            playerBody.velocity = new Vector2(walkingSpeedConstant * horizontalInput, playerBody.velocity.y);
+        }
+        else if (sprintingInput & !charecterAttacking)
+        {
+            playerBody.velocity = new Vector2(sprintingSpeedConstant * horizontalInput, playerBody.velocity.y);
+        }
+        else if (!charecterAttacking)
+        {
+            playerBody.velocity = new Vector2(runningSpeedConstant * horizontalInput, playerBody.velocity.y);
+        }
+
+
+
+
+        if (isWallSliding)
         {
             playerBody.velocity = new Vector2(0, -wallSlideSpeedConstant);
-        }  
-        else if(isWallGrabbing)
+        }
+        else if (isWallGrabbing)
         {
-            
+
             playerBody.velocity = new Vector2(0, 0);
-            
+
         }
     }
 
@@ -529,7 +534,7 @@ public class Player_Controller : MonoBehaviour
         int damageAmount = 1;
 
         //resets combo
-        if(meleeAttackCombo == 3)
+        if (meleeAttackCombo == 3)
         {
             meleeAttackCombo = 0;
         }
@@ -583,7 +588,7 @@ public class Player_Controller : MonoBehaviour
                 timeSinceLastAirMeleeAttack = Time.time;
             }
 
-            
+
         }
         else
         {
@@ -611,20 +616,20 @@ public class Player_Controller : MonoBehaviour
             {
                 animationController.ChangeAnimationState("Player_Kick_1");
             }
-          
 
-            
+
+
             punchMeleeAttackCombo++;
             timeSinceLastPunchAttack = Time.time;
         }
 
-        Collider2D[] enemiesToDamage = Physics2D.OverlapBoxAll(attackPos.position, new Vector2(attackRange, 1),0,mobLayerMask);
-        foreach(Collider2D enemy in enemiesToDamage)
+        Collider2D[] enemiesToDamage = Physics2D.OverlapBoxAll(attackPos.position, new Vector2(attackRange, 1), 0, mobLayerMask);
+        foreach (Collider2D enemy in enemiesToDamage)
         {
             Debug.Log(enemy);
             enemy.GetComponent<EnemyCollision>().takeDamage(-1);
         }
-        
+
         charecterAttacking = true;
         lastAttackTime = Time.time;
     }
@@ -636,17 +641,17 @@ public class Player_Controller : MonoBehaviour
     private void fireRope()
     {
         //checks for a solid block above player
-        RaycastHit2D ropeSpawnCheck = Physics2D.Raycast(transform.position, Vector2.up, maxRopeSpawnLength,ropesCanSpawnOn);
+        RaycastHit2D ropeSpawnCheck = Physics2D.Raycast(transform.position, Vector2.up, maxRopeSpawnLength, ropesCanSpawnOn);
 
         int numLinksToSpawn = 0;
-        Vector3 ropeSpawnPosition = new Vector3(0,0,0);
+        Vector3 ropeSpawnPosition = new Vector3(0, 0, 0);
         if (ropeSpawnCheck.collider != null)
         {
             Vector3 blockPosition = ropeSpawnCheck.collider.transform.position;
             ropeSpawnPosition = new Vector3(blockPosition.x, blockPosition.y - 1, 0);
             numLinksToSpawn = (int)Math.Floor(ropeSpawnCheck.distance);
         }
-        
+
 
         lastSpawnTime = Time.time;
         lastRopeFireTime = Time.time;
@@ -676,17 +681,17 @@ public class Player_Controller : MonoBehaviour
 
     public void Jump()
     {
-        if(isWallGrabbing || isWallSliding)
+        if (isWallGrabbing || isWallSliding)
         {
             isWallSliding = false;
             isWallGrabbing = false;
-            isWallJumping = true;           
+            isWallJumping = true;
             timeSinceLastWallJump = Time.time;
         }
         else
         {
-            playerBody.velocity = Vector2.up * jumpingConstant;        
-            animationController.ChangeAnimationState("Player_Jump");                
+            playerBody.velocity = Vector2.up * jumpingConstant;
+            animationController.ChangeAnimationState("Player_Jump");
             isJumping = true;
             canJumpAgain = false;
             jumpTimeCounter = jumpResetTime;
@@ -698,11 +703,11 @@ public class Player_Controller : MonoBehaviour
 
     void OnDrawGizmos()
     {
-       Gizmos.DrawLine(wallCheck.position, new Vector3(wallCheck.position.x + wallCheckDistance, wallCheck.position.y, wallCheck.position.z));
-       Gizmos.DrawLine(headPosition.position, new Vector3(headPosition.position.x + wallCheckDistance, headPosition.position.y, 0));
-       Gizmos.color = Color.blue;
-       Gizmos.DrawWireCube(attackPos.position, new Vector2(attackRange,1));
-       Gizmos.DrawWireSphere(transform.position,2);
+        Gizmos.DrawLine(wallCheck.position, new Vector3(wallCheck.position.x + wallCheckDistance, wallCheck.position.y, wallCheck.position.z));
+        Gizmos.DrawLine(headPosition.position, new Vector3(headPosition.position.x + wallCheckDistance, headPosition.position.y, 0));
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireCube(attackPos.position, new Vector2(attackRange, 1));
+        Gizmos.DrawWireSphere(transform.position, 2);
     }
 
 

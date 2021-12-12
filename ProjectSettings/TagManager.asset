@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Destructable
   - Rope
+  - SwingTrap
   layers:
   - Default
   - TransparentFX
@@ -26,7 +27,7 @@ TagManager:
   - Border
   - Door
   - Torch
-  - 
+  - SwingTrap
   - 
   - 
   - 
