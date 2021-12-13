@@ -17,9 +17,8 @@ public class SpawnLava : MonoBehaviour
         instance.transform.parent = transform.parent;
         //sets layer to lava
         instance.layer = 13;
-        instance.AddComponent<BoxCollider2D>();
+      
         //sets it so you can move through lava
-        instance.GetComponent<BoxCollider2D>().isTrigger = true;
         Destroy(gameObject);
 
 
