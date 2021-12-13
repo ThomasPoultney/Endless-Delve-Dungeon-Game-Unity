@@ -11,6 +11,7 @@ public class InsanityBar : MonoBehaviour
     public Image fill;
     void Start()
     {
+        
     }
 
     // Update is called once per frame
@@ -22,8 +23,8 @@ public class InsanityBar : MonoBehaviour
     /// <summary>
     /// Sets the value of the attached slider to the health amount passed to function.
     /// </summary>
-    /// <param name="health"></param>
-    public void SetInsanity(int insanity)
+    /// <param name="insanity"></param>
+    public void SetInsanity(float insanity)
     {
         slider.value = insanity;
         fill.color = gradient.Evaluate(slider.normalizedValue);
@@ -32,8 +33,8 @@ public class InsanityBar : MonoBehaviour
     /// <summary>
     /// Sets the max value of the attached slider to the health amount passed to function.
     /// </summary>
-    /// <param name="health"></param>
-    public void SetMaxInsanity(int insanity)
+    /// <param name="insanity"></param>
+    public void SetMaxInsanity(float insanity)
     {
         slider.maxValue = insanity;
         slider.value = insanity;

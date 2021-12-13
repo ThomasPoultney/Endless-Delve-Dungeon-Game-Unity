@@ -50,8 +50,13 @@ public class Player_Collisions : MonoBehaviour
 
 
     public HealthBarScript healthBar;
+    public EnableDeathMenu enableDeathMenu;
+    public UpdateText treasureText;
 
-
+    public void Start()
+    {
+        healthBar.SetMaxHealth(health);
+    }
 
     public void takeDamage(int amount, bool doesKnockBack, Vector2 knockBacKDirection, float knockBackForce)
     {
@@ -112,7 +117,7 @@ public class Player_Collisions : MonoBehaviour
             timeSinceKnockBack = Time.time;
         }
 
-        healthBar.SetHealth(health);
+        healthBar.SetHealth(this.health);
         Instantiate(bloodSplatter,transform);
         
     }
@@ -134,6 +139,8 @@ public class Player_Collisions : MonoBehaviour
 
 
         healthBar.SetHealth(0);
+
+        enableDeathMenu.Setup(Player_Variables.getTreasure());
     }
 
     public void Update()
@@ -170,7 +177,8 @@ public class Player_Collisions : MonoBehaviour
             {
                 if (obj.gameObject.layer == 11) //loot
                 {
-                    Player_Variables.addTreasure(obj.GetComponent<TreasureValue>().getTreasureValue());              
+                    Player_Variables.addTreasure(obj.GetComponent<TreasureValue>().getTreasureValue());
+                    treasureText.updateText(Player_Variables.getTreasure().ToString());
                     Destroy(obj.gameObject);
                 }
 

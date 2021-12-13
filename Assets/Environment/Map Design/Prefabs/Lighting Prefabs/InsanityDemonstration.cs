@@ -12,10 +12,12 @@ public class InsanityDemonstration : MonoBehaviour
 
     public float insanityLossIncrement = 1f;
     UnityEngine.Rendering.Universal.Light2D light = null;
+
+    public InsanityBar insanityBar;
     void Start()
     {
         light = GetComponent<UnityEngine.Rendering.Universal.Light2D>();
-
+        insanityBar.SetMaxInsanity(light.pointLightOuterRadius);
     }
 
     float elapsed = 0f;
@@ -39,10 +41,12 @@ public class InsanityDemonstration : MonoBehaviour
             light.pointLightInnerRadius = light.pointLightInnerRadius - insanityLoss;
         }
        if (light.pointLightOuterRadius > minRadius)
-        {
+       {
             light.pointLightOuterRadius = light.pointLightOuterRadius - insanityLoss;
 
-        }
+       }
+
+        insanityBar.SetInsanity(light.pointLightOuterRadius);
     }
 }
 

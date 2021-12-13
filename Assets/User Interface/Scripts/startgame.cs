@@ -17,12 +17,35 @@ public class startgame : MonoBehaviour
    public Button backButton;
 
    private void Start(){
-       btn.onClick.AddListener(startGameOnButtonClick);
-       scoreBtn.onClick.AddListener(submitScoreOnButtonClick);
-       enterAgainBtn.onClick.AddListener(enterScoreAgain);
-       playerControls.onClick.AddListener(showPlayerControls);
-       backButton.onClick.AddListener(showStartScreen);
-   } 
+
+       if(btn != null)
+       {            
+            btn.onClick.AddListener(startGameOnButtonClick);
+       }
+
+       if(scoreBtn != null)
+       {
+           scoreBtn.onClick.AddListener(submitScoreOnButtonClick);
+       }
+
+       if(enterAgainBtn != null)
+       {
+            enterAgainBtn.onClick.AddListener(enterScoreAgain);
+
+       }
+
+       if(playerControls != null)
+       {
+            playerControls.onClick.AddListener(showPlayerControls);
+
+       }
+
+       if(backButton != null)
+        {
+            backButton.onClick.AddListener(showStartScreen);
+
+        }
+    } 
 
 
     public void startGameOnButtonClick(){
