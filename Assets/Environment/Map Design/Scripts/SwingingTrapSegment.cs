@@ -42,7 +42,7 @@ public class SwingingTrapSegment : MonoBehaviour
     {
         if(collision.gameObject.tag == "Player")
         {
-            playerScript.takeDamage(1, false, new Vector2(0, 0), 0);
+            playerScript.takeDamage(-1, false, new Vector2(0, 0), 0);
         }
     }
 }
