@@ -55,7 +55,7 @@ public class startgame : MonoBehaviour
     }
 
    public void playGame(string s){
-
+       Player_Variables.resetValues();
        Time.timeScale = 1;
        if(s!=""){
             Debug.Log("Name entered: >>>>> "+s);
@@ -127,6 +127,7 @@ public class startgame : MonoBehaviour
        Scene scene = SceneManager.GetActiveScene();
        SceneManager.LoadScene(scene.buildIndex - 1);
        Debug.Log("Enter Again Button Clicked");
+       Player_Variables.resetValues();
        Destroy(gameObject);
     }
 

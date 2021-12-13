@@ -79,4 +79,14 @@ public static class Player_Variables
           return highscore;
     }
 
+
+    public static void resetValues()
+    {
+        amountOfTreasure = 0;
+        currentHealth = startHealth;
+        currentInsanity = startInsanity;
+        currentNumTorches = startNumTorches;
+
+    }
+
 }
