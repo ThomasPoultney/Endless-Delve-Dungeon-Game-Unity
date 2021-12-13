@@ -49,6 +49,9 @@ public class Player_Collisions : MonoBehaviour
     [SerializeField] private Transform feetPos;
 
 
+    public HealthBarScript healthBar;
+
+
 
     public void takeDamage(int amount, bool doesKnockBack, Vector2 knockBacKDirection, float knockBackForce)
     {
@@ -56,6 +59,8 @@ public class Player_Collisions : MonoBehaviour
         {
             return;
         }
+
+
 
         Player_Controller Player_Controller = transform.GetComponent<Player_Controller>();
         
@@ -107,7 +112,7 @@ public class Player_Collisions : MonoBehaviour
             timeSinceKnockBack = Time.time;
         }
 
-      
+        healthBar.SetHealth(health);
         Instantiate(bloodSplatter,transform);
         
     }
@@ -126,6 +131,9 @@ public class Player_Collisions : MonoBehaviour
         {
 
         }
+
+
+        healthBar.SetHealth(0);
     }
 
     public void Update()

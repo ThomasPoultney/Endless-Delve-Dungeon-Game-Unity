@@ -17,7 +17,7 @@ public class EnemyDamage : MonoBehaviour
         {
             GameObject playerObject = GameObject.Find("Player");
             Player_Collisions playerScript = (Player_Collisions)playerObject.GetComponent(typeof(Player_Collisions));
-            playerScript.takeDamage(1, true, new Vector2(1, 0), 1);
+            playerScript.takeDamage(-1, true, new Vector2(1, 0), 1);
         }
         gameObject.SetActive(false);
         // Reduces player health, but this is not implemented yet. 
