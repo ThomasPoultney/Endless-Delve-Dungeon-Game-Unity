@@ -30,6 +30,8 @@ public class DisplayHighscores : MonoBehaviour
             if (rNames[i] != null)
             {
                 rNames[i].text = i + 1 + ". ";
+                Debug.Log(rNames[i].text);
+              
                 if (highscoreList.Length > i)
                 {
                     rScores[i].text = highscoreList[i].score.ToString();
@@ -44,7 +46,7 @@ public class DisplayHighscores : MonoBehaviour
         while(true)
         {
             myScores.DownloadScores();
-            yield return new WaitForSeconds(10);
+            yield return new WaitForSeconds(1f);
         }
     }
 }

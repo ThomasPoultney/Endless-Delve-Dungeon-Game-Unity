@@ -54,6 +54,14 @@ public class startgame : MonoBehaviour
         Debug.Log("Getting name: >>>>> "+Player_Variables.getUsername());
     }
 
+    public void loadMainMenu()
+    {
+        Player_Variables.resetValues();
+        SceneManager.LoadScene("MainMenu");
+        Debug.Log("LOADING MAIN MENU");
+        Destroy(gameObject);
+    }
+
    public void playGame(string s){
        Player_Variables.resetValues();
        Time.timeScale = 1;

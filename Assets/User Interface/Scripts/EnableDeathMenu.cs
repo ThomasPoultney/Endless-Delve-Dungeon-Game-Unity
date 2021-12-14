@@ -8,16 +8,16 @@ public class EnableDeathMenu : MonoBehaviour
 {
 
     public Text treasureText;
-    public HighScores highScore;
     // Start is called before the first frame update
     
     public void Setup(int score)
     {
-        
+       gameObject.SetActive(true);
        treasureText.text = "Treasure Collected: "  + score.ToString();
           
-       //HighScores.UploadScore(Player_Variables.getUsername(), score);
-       gameObject.SetActive(true);
+       Debug.Log("Uploading Score");
+       HighScores.UploadScore(Player_Variables.getUsername(), score);     
+      
     }
     public void MainMenuButton()
     {
