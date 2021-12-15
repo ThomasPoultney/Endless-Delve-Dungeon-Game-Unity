@@ -158,6 +158,17 @@ public class startgame : MonoBehaviour
     }
 
 
+    public void quitButton()
+    {
+
+        #if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+        #endif
+        Application.Quit();
+        Debug.Log("Exit Button Clicked");
+    }
+
+
 
     
 }
