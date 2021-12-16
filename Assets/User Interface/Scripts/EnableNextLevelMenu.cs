@@ -25,10 +25,9 @@ public class EnableNextLevelMenu : MonoBehaviour
     {
 
         //resets player Values
-        Player_Variables.SetHP(Player_Variables.GetStartHP());
-        Player_Variables.SetInsanity(Player_Variables.GetStartInstanity());
-        Player_Variables.SetNumberTourches(Player_Variables.GetNumTorches() + tourchesAddedOnNewLevel);
-        
+        Player_Variables.resetValues();
+        player.GetComponentInChildren<InsanityDemonstration>().resetInsanityLight();
+        Player_Variables.SetNumberTourches(Player_Variables.GetNumTorches() + tourchesAddedOnNewLevel);      
         MapVariables.IncrementDelveLevel();
         MapVariables.calcDifficulty();
        

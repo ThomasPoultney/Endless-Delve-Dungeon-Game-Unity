@@ -330,9 +330,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7704d3c6bc9c10418659fb4e0fc9bae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  insanityLoss: 0.1
+  insanityLoss: 0.05
   minRadius: 0
-  insanityLossIncrement: 1
+  insanityLossIncrement: 0.5
   insanityBar: {fileID: 7426434151808260349}
 --- !u!1 &307208432
 GameObject:
@@ -2660,6 +2660,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3973983388935870941, guid: c2b850719d703c3469b8fe60512f1640, type: 3}
       propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4792233663122458595, guid: c2b850719d703c3469b8fe60512f1640, type: 3}
+      propertyPath: m_Value
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4792233663122458595, guid: c2b850719d703c3469b8fe60512f1640, type: 3}
+      propertyPath: m_WholeNumbers
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4983988556237210523, guid: c2b850719d703c3469b8fe60512f1640, type: 3}

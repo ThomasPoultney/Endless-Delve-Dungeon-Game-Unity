@@ -5,11 +5,11 @@ using UnityEngine;
 public static class Player_Variables
 {
     public static int startHealth = 10;
-    public static int startInsanity = 4;
+    public static int startInsanity = 5;
     private static int startNumTorches = 4;
 
     private static int currentHealth = startHealth;
-    private static int currentInsanity = startInsanity;
+    private static float currentInsanity = startInsanity;
     private static int amountOfTreasure = 0;
     private static int score = 0;
     private static int highscore = 0;
@@ -33,9 +33,9 @@ public static class Player_Variables
         currentHealth = amount;
     }
 
-    public static void SetInsanity(int amount)
+    public static void SetInsanity(float amount)
     {
-        currentHealth = amount;
+        currentInsanity = amount;
     }
 
 
@@ -51,7 +51,7 @@ public static class Player_Variables
     }
 
 
-    public static int GetInsanity()
+    public static float GetInsanity()
     {
         return currentInsanity;
     }

@@ -88,6 +88,7 @@ public class WorldSpawner : MonoBehaviour
 
     public void SpawnWorld()
     {
+       
         resetWorldSpawnVariables();
         world = new GameObject("World").transform;
         SpawnEntranceRoom();
@@ -571,6 +572,13 @@ public class WorldSpawner : MonoBehaviour
         spawnedTresure = false;
         spawnedExitDoor = false;
         spawnedEntranceDoor = false;
+
+        float difficulty = MapVariables.calcDifficulty();
+        numGroundMobsToSpawn = (int)(numGroundMobsToSpawn * difficulty);
+        numFlyingMobsToSpawn = (int)(numFlyingMobsToSpawn * difficulty);
+
+    
+
 
     }
 
