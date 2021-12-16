@@ -27,6 +27,7 @@ public class WorldSpawner : MonoBehaviour
     [SerializeField]
     private GameObject borderBlock;
 
+    private Transform world;
 
     private float timeElapsedSinceLastRoom; 
     private int firstRoomPosition;
@@ -80,7 +81,15 @@ public class WorldSpawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-      
+        
+        SpawnWorld();
+    }
+
+
+    public void SpawnWorld()
+    {
+        resetWorldSpawnVariables();
+        world = new GameObject("World").transform;
         SpawnEntranceRoom();
         GenerateBorders();
     }
@@ -92,6 +101,7 @@ public class WorldSpawner : MonoBehaviour
         float mapWidth = roomWidth * numRoomsHor;
         float mapHeight = roomHeight * numRoomsVer;
         GameObject borders = new GameObject();
+        borders.transform.parent = world;
         borders.name = "Borders of Map";
 
         //bottom Border
@@ -141,6 +151,7 @@ public class WorldSpawner : MonoBehaviour
         entranceRoomObj.name = "Entrance";
         entranceRoom = entranceRoomObj;
         nextRoomPosition = firstRoomSpawnPosition;
+        entranceRoomObj.transform.parent = world;
 
     }
 
@@ -185,7 +196,7 @@ public class WorldSpawner : MonoBehaviour
 
         //sets name to name given to function
         doorObj.name = objectName;
-
+        doorObj.transform.parent = world;
         return potentialDoorSpawnLocations[randDoor];
 
     }
@@ -230,6 +241,7 @@ public class WorldSpawner : MonoBehaviour
             int randSpawnPoint = Random.Range(0, potentialTreasureSpawnLocations.Count);
             GameObject treasure = Instantiate(treasurePrefabs[randPrefab], potentialTreasureSpawnLocations[randSpawnPoint], Quaternion.identity);
             treasure.transform.parent = TreasureParent.transform;
+            TreasureParent.transform.parent = world;
             treasure.layer = 11; //sets layer to Loot
             //remove this spawn location so we dont get multiple treasure in same spot
             potentialTreasureSpawnLocations.RemoveAt(randSpawnPoint);
@@ -279,6 +291,7 @@ public class WorldSpawner : MonoBehaviour
             GameObject mob = Instantiate(groundMobPrefabs[randPrefab], potentialMobSpawnLocations[randSpawnPoint], Quaternion.identity);
             mob.transform.parent = groundMobParent.transform;
             mob.layer = 15;
+            groundMobParent.transform.parent = world;
             
             potentialMobSpawnLocations.RemoveAt(randSpawnPoint);
         }
@@ -323,6 +336,7 @@ public class WorldSpawner : MonoBehaviour
             int randSpawnPoint = Random.Range(0, potentialMobSpawnLocations.Count);
             GameObject mob = Instantiate(flyingMobPrefabs[randPrefab], potentialMobSpawnLocations[randSpawnPoint], Quaternion.identity);
             mob.transform.parent = flyingMobParent.transform;
+            flyingMobParent.transform.parent = world;
             mob.layer = 15;
             potentialMobSpawnLocations.RemoveAt(randSpawnPoint);
         }
@@ -425,11 +439,13 @@ public class WorldSpawner : MonoBehaviour
                         {
                             GameObject roomCreated = Instantiate(rooms[0], nextRoomPosition, Quaternion.identity);
                             roomCreated.name = "Critical Path Room";
+                            roomCreated.transform.parent = world;
                         }
                         else
                         {
                             GameObject roomCreated = Instantiate(rooms[1], nextRoomPosition, Quaternion.identity);
                             roomCreated.name = "Critical Path Room";
+                            roomCreated.transform.parent = world;
                         }
 
                     }
@@ -461,15 +477,16 @@ public class WorldSpawner : MonoBehaviour
                 lastRoomCreated = Instantiate(rooms[roomType], nextRoomPosition, Quaternion.identity);
                 lastRoomCreated.name = "Critical Path Room";
 
+                lastRoomCreated.transform.parent = world;
+
             }
         }
 
 
     }
     /// <summary>
-    /// Loops Over every room position and spawns a room if its empty
+    /// Loops Over every room spawn position and spawns a room if its empty
     /// </summary>
-
     private void generateNonCriticalRooms()
     {
         for (int x = 0; x < numRoomsHor; x++)
@@ -483,6 +500,7 @@ public class WorldSpawner : MonoBehaviour
                 {
                     GameObject fillerRoom = Instantiate(rooms[randomRoom], checkRoomPostion, Quaternion.identity);
                     fillerRoom.name = "Padding Room";
+                    fillerRoom.transform.parent = world;
                 }
             }
         }
@@ -496,6 +514,7 @@ public class WorldSpawner : MonoBehaviour
     private void SpawnRoom(GameObject roomSpawnPoint, int roomType = 0)
     {
         Instantiate(rooms[roomType], roomSpawnPoint.transform.position, Quaternion.identity);
+
     }
 
    
@@ -542,6 +561,17 @@ public class WorldSpawner : MonoBehaviour
         {
             timeElapsedSinceLastRoom -= Time.deltaTime;
         }
+    }
+
+
+    public void resetWorldSpawnVariables()
+    {
+        reachedExit = false;
+        spawnedMobs = false;
+        spawnedTresure = false;
+        spawnedExitDoor = false;
+        spawnedEntranceDoor = false;
+
     }
 
 

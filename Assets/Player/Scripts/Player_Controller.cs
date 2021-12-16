@@ -234,7 +234,7 @@ public class Player_Controller : MonoBehaviour
 
 
         Collider2D[] torches = Physics2D.OverlapCircleAll(transform.position, 2f, torchLayer);
-        Debug.Log(torches);
+        
         if (torchInput == true && torches.Length == 0 && Player_Variables.getNumberOfTorches() >= 1)
         {
             Instantiate(torch, transform.position, Quaternion.identity);

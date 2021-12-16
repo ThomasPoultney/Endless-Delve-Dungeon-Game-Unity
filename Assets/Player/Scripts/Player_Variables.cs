@@ -4,7 +4,7 @@ using UnityEngine;
 
 public static class Player_Variables
 {
-    public static int startHealth = 4;
+    public static int startHealth = 10;
     public static int startInsanity = 4;
     private static int startNumTorches = 4;
 
@@ -26,6 +26,50 @@ public static class Player_Variables
     public static void changeHP(int amount)
     {
         currentHealth += amount;
+    }
+
+    public static void SetHP(int amount)
+    {
+        currentHealth = amount;
+    }
+
+    public static void SetInsanity(int amount)
+    {
+        currentHealth = amount;
+    }
+
+
+    public static int GetHP()
+    {
+        return currentHealth;
+    }
+
+
+    public static int GetStartHP()
+    {
+        return startHealth;
+    }
+
+
+    public static int GetInsanity()
+    {
+        return currentInsanity;
+    }
+
+
+    public static int GetStartInstanity()
+    {
+        return startInsanity;
+    }
+
+    public static int GetNumTorches()
+    {
+        return currentNumTorches;
+    }
+
+    public static void SetNumberTourches(int amount)
+    {
+        currentNumTorches = amount;
     }
 
     public static int getTreasure()

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Player_Collisions : MonoBehaviour
 {
-    public int health = 2;
+    
     public bool canBeDazed;
     public bool canDie;
     public bool canBeKnockedDown;
@@ -49,13 +49,17 @@ public class Player_Collisions : MonoBehaviour
     [SerializeField] private Transform feetPos;
 
 
-    public HealthBarScript healthBar;
-    public EnableDeathMenu enableDeathMenu;
-    public UpdateText treasureText;
+    [SerializeField] private HealthBarScript healthBar;
+    [SerializeField] private EnableDeathMenu enableDeathMenu;
+    [SerializeField] private EnableNextLevelMenu enableNextLevelMenu;
+    [SerializeField] private UpdateText treasureText;
+
+    [SerializeField] private AnimationClip DoorOpenAnimation;
+    
 
     public void Start()
     {
-        healthBar.SetMaxHealth(health);
+        healthBar.SetMaxHealth(Player_Variables.GetHP());
     }
 
     public void takeDamage(int amount, bool doesKnockBack, Vector2 knockBacKDirection, float knockBackForce)
@@ -80,8 +84,9 @@ public class Player_Collisions : MonoBehaviour
         Player_Controller.wallGrabResetTimer = 0.4f;
         Player_Controller.timeSinceCannotWallGrab = Time.time;
 
-
-        health += amount;
+        
+        Player_Variables.SetHP(Player_Variables.GetHP() + amount);
+        int health = Player_Variables.GetHP();
         invicible = true;
         timeSinceLastDamage = Time.time;
         AnimationController animationController = transform.GetComponent<AnimationController>();
@@ -117,7 +122,7 @@ public class Player_Collisions : MonoBehaviour
             timeSinceKnockBack = Time.time;
         }
 
-        healthBar.SetHealth(this.health);
+        healthBar.SetHealth(Player_Variables.GetHP());
         Instantiate(bloodSplatter,transform);
         
     }
@@ -197,6 +202,16 @@ public class Player_Collisions : MonoBehaviour
                 if (obj.gameObject.layer == 13) //lava
                 {
                     setPlayerDead();                   
+                }
+
+                if(obj.gameObject.layer == 17 && Input.GetKey(KeyCode.E) && obj.gameObject.name == "Exit Door")//Door
+                {
+                   
+                    obj.gameObject.GetComponent<AnimationController>().ChangeAnimationState(DoorOpenAnimation.name);
+                    transform.GetComponent<Player_Collisions>().enabled = false;
+                    transform.GetComponent<Player_Controller>().enabled = false;
+                    enableNextLevelMenu.Setup();
+
                 }
 
 

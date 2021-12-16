@@ -16,7 +16,7 @@ public class spawnArrowtrap : MonoBehaviour
     void Start()
     {
         int blockChance = Random.Range(0, 101);
-        print(blockChance + " and trap chance is " + trapChance);
+        //print(blockChance + " and trap chance is " + trapChance);
         // If bigger than trap chance, then make it a normal block tile.
         if (blockChance > trapChance)
         {

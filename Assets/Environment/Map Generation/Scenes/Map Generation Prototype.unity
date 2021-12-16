@@ -158,7 +158,7 @@ MonoBehaviour:
   numRoomsVer: 4
   preventMobRadius: 5
   chanceToMoveDown: 20
-  timeBetweenRoomSpawns: 0.05
+  timeBetweenRoomSpawns: 0
   rooms:
   - {fileID: 495642869254566747, guid: 67bc7d7ddb6f620428f3998a7fde11c8, type: 3}
   - {fileID: 5369455839420057082, guid: 4d0254131b40a8341beb729a165061f1, type: 3}
@@ -281,6 +281,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 661787166, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
+      propertyPath: worldSpawner
+      value: 
+      objectReference: {fileID: 549429642}
     - target: {fileID: 236308664087019653, guid: 6b45cead3a83fac478bb4029c1b498aa, type: 3}
       propertyPath: m_RootOrder
       value: 1
