@@ -332,6 +332,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   insanityLoss: 0.05
   minRadius: 0
+  startOuterRadius: 9
+  startInnerRadius: 4
   insanityLossIncrement: 0.5
   insanityBar: {fileID: 7426434151808260349}
 --- !u!1 &307208432

@@ -442,7 +442,15 @@ public class Player_Controller : MonoBehaviour
         {
             animationController.ChangeAnimationState("Player_Run_1");
         }
+        else if (horizontalInput > 0.01f && weaponOut == true)
+        {
+            animationController.ChangeAnimationState("Player_Run_With_Sword");
+        }
+        else if (horizontalInput < -0.01f && weaponOut == true)
+        {
+            animationController.ChangeAnimationState("Player_Run_With_Sword");
 
+        }
         else if (horizontalInput > 0.01f)
         {
             animationController.ChangeAnimationState("Player_Run");
