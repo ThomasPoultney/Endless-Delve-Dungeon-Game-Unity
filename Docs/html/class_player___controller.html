@@ -108,8 +108,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a720e71a2dd5012cc14482ec0681739e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Monobehaviour that is called at a fixed timestamp, In this behaviour we control which animation the player should be executing based on inputs and player states.  <a href="class_player___controller.html#a720e71a2dd5012cc14482ec0681739e5">More...</a><br /></td></tr>
 <tr class="separator:a720e71a2dd5012cc14482ec0681739e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2f43f59add2771a2d04fbb0f74990915"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_player___controller.html#a2f43f59add2771a2d04fbb0f74990915">setVelocity</a> ()</td></tr>
+<tr class="memdesc:a2f43f59add2771a2d04fbb0f74990915"><td class="mdescLeft">&#160;</td><td class="mdescRight">updates the velocity of the player based on user inputs and the current state of the player.  <a href="class_player___controller.html#a2f43f59add2771a2d04fbb0f74990915">More...</a><br /></td></tr>
 <tr class="separator:a2f43f59add2771a2d04fbb0f74990915"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4cfa5bd5e5d0a855ebe619fe2a695228"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_player___controller.html#a4cfa5bd5e5d0a855ebe619fe2a695228">Jump</a> ()</td></tr>
+<tr class="memdesc:a4cfa5bd5e5d0a855ebe619fe2a695228"><td class="mdescLeft">&#160;</td><td class="mdescRight">sets the player to jump or wall jump if the player is on the wall and changes animation state to jumping.  <a href="class_player___controller.html#a4cfa5bd5e5d0a855ebe619fe2a695228">More...</a><br /></td></tr>
 <tr class="separator:a4cfa5bd5e5d0a855ebe619fe2a695228"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
@@ -171,11 +173,13 @@ Private Member Functions</h2></td></tr>
 <tr class="memdesc:a5488c3b2ef79f6245286a5056ed21b92"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the player is able to perform a ledge climb  <a href="class_player___controller.html#a5488c3b2ef79f6245286a5056ed21b92">More...</a><br /></td></tr>
 <tr class="separator:a5488c3b2ef79f6245286a5056ed21b92"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1cff3675f0416c2a71b79b01511ddcd0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_player___controller.html#a1cff3675f0416c2a71b79b01511ddcd0">attack</a> ()</td></tr>
+<tr class="memdesc:a1cff3675f0416c2a71b79b01511ddcd0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the player to attack, sets attack animations and tracks attack combos.  <a href="class_player___controller.html#a1cff3675f0416c2a71b79b01511ddcd0">More...</a><br /></td></tr>
 <tr class="separator:a1cff3675f0416c2a71b79b01511ddcd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3865bcf0d0e7eb0d5e3577e8c5a82c45"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_player___controller.html#a3865bcf0d0e7eb0d5e3577e8c5a82c45">fireRope</a> ()</td></tr>
 <tr class="memdesc:a3865bcf0d0e7eb0d5e3577e8c5a82c45"><td class="mdescLeft">&#160;</td><td class="mdescRight">Spawns a rope into the world, removes existing ropes if they exceed the limit.  <a href="class_player___controller.html#a3865bcf0d0e7eb0d5e3577e8c5a82c45">More...</a><br /></td></tr>
 <tr class="separator:a3865bcf0d0e7eb0d5e3577e8c5a82c45"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3cc8a3f76ec467f66dc3b17fdb27be53"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_player___controller.html#a3cc8a3f76ec467f66dc3b17fdb27be53">OnDrawGizmos</a> ()</td></tr>
+<tr class="memdesc:a3cc8a3f76ec467f66dc3b17fdb27be53"><td class="mdescLeft">&#160;</td><td class="mdescRight">Debugging gizmos for player colliders that are included in the scene view.  <a href="class_player___controller.html#a3cc8a3f76ec467f66dc3b17fdb27be53">More...</a><br /></td></tr>
 <tr class="separator:a3cc8a3f76ec467f66dc3b17fdb27be53"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
@@ -397,6 +401,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Sets the player to attack, sets attack animations and tracks attack combos. </p>
+
 </div>
 </div>
 <a id="a91b2bb9dabecc0af9a5171698a964118" name="a91b2bb9dabecc0af9a5171698a964118"></a>
@@ -541,6 +547,8 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>sets the player to jump or wall jump if the player is on the wall and changes animation state to jumping. </p>
+
 </div>
 </div>
 <a id="a3cc8a3f76ec467f66dc3b17fdb27be53" name="a3cc8a3f76ec467f66dc3b17fdb27be53"></a>
@@ -566,6 +574,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Debugging gizmos for player colliders that are included in the scene view. </p>
+
 </div>
 </div>
 <a id="a2f43f59add2771a2d04fbb0f74990915" name="a2f43f59add2771a2d04fbb0f74990915"></a>
@@ -582,6 +592,8 @@ Private Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>updates the velocity of the player based on user inputs and the current state of the player. </p>
 
 </div>
 </div>
@@ -2364,7 +2376,7 @@ Private Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_player___controller.html">Player_Controller</a></li>
-    <li class="footer">Generated on Sun Dec 19 2021 03:50:16 for EndlessDelve by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.2 </li>
+    <li class="footer">Generated on Sun Dec 19 2021 04:11:27 for EndlessDelve by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.2 </li>
   </ul>
 </div>
 </body>
