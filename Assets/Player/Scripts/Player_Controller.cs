@@ -596,6 +596,9 @@ public class Player_Controller : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// updates the velocity of the player based on user inputs and the current state of the player.
+    /// </summary>
     public void setVelocity()
     {
 
@@ -633,6 +636,9 @@ public class Player_Controller : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Sets the player to attack, sets attack animations and tracks attack combos.
+    /// </summary>
     private void attack()
     {
 
@@ -785,6 +791,9 @@ public class Player_Controller : MonoBehaviour
 
 
 
+    /// <summary>
+    /// sets the player to jump or wall jump if the player is on the wall and changes animation state to jumping.
+    /// </summary>
     public void Jump()
     {
         if (isWallGrabbing || isWallSliding)
@@ -805,6 +814,9 @@ public class Player_Controller : MonoBehaviour
 
 
 
+    /// <summary>
+    /// Debugging gizmos for player colliders that are included in the scene view.
+    /// </summary>
     void OnDrawGizmos()
     {
         Gizmos.DrawLine(wallCheck.position, new Vector3(wallCheck.position.x + wallCheckDistance, wallCheck.position.y, wallCheck.position.z));
