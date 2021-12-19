@@ -2,7 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// Class responsible for handling the behaviour of the ghost mob.
+/// </summary>
 public class GhostController : MonoBehaviour
 {
     [SerializeField]

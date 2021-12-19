@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Class responsible for controlling the flaming skull mob.
+/// </summary>
 public class SkullController : MonoBehaviour
 {
     [SerializeField]

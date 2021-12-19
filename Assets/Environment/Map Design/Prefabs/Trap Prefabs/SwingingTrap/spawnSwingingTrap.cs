@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// A script responsible for spawning a length of spike ball traps and setting its physics constraints.
+/// </summary>
 public class spawnSwingingTrap : MonoBehaviour
 {
     public Rigidbody2D hook;

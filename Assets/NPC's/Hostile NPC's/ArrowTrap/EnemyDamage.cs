@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// class responsible for applying damage to the player when they are hit by an arrow
+/// </summary>
 public class EnemyDamage : MonoBehaviour
 {
     

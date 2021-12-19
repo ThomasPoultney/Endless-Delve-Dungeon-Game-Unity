@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Spawns a given number of random rope prefabs and sets up their physics constraints, 
+/// </summary>
 public class spawnRope : MonoBehaviour
 {
     public Rigidbody2D hook;

@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// Spawns a random mob from a given list of mob prefabs.
+/// </summary>
 public class SpawnMob : MonoBehaviour
 {
     //array of mob prefabs

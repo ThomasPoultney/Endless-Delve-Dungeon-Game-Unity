@@ -2,6 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
+/// <summary>
+/// Spawns a random block or ore prefab.
+/// </summary>
 public class SpawnTile : MonoBehaviour
 {
     // Start is called before the first frame update

@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// A script which is attached to a room to specify its type.
+/// </summary>
 public class RoomType : MonoBehaviour
 {
     public enum RoomEntrances { LRTB, LRB, LR, LRT };

@@ -2,76 +2,111 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// A Script that is responsible for generating the world and spawning its contents based upon the current difficulty.
+/// </summary>
 public class WorldSpawner : MonoBehaviour
 {
-
+    ///The height of each room
     [SerializeField]
     private float roomHeight;
+
+    ///The width of each room
     [SerializeField]
     private float roomWidth;
+    ///The number of rooms spawned horizontally
     [SerializeField]
     private int numRoomsHor;
+    ///The number of rooms spawned vertically
     [SerializeField]
     private int numRoomsVer;
+    ///The miniumum offset that mobs can spawn from entrance
     [SerializeField]
     private int preventMobRadius = 5;
 
-
+    ///percentage chance for critical path to move down at a given step
     [SerializeField]
-    private int chanceToMoveDown = 10; //percentage chance for critical path to move down
+    private int chanceToMoveDown = 10;
+    ///The time between each room spawning in the map, used for visualizing the algorithm
     [SerializeField]
     private float timeBetweenRoomSpawns = 2.0f;
 
+    ///The room templates for each room type LR,LRB,LRT,LRTB.
     [SerializeField]
-    private GameObject[] rooms; //room templates for each room type
+    private GameObject[] rooms; 
+    /// The border prefab to be spawned
     [SerializeField]
     private GameObject borderBlock;
 
+    ///An empty game object that the map will be spawned as a child of.
     private Transform world;
 
+    ///The time since the last room was spawned.
     private float timeElapsedSinceLastRoom; 
+    ///The bottom left position of the entrance room.
     private int firstRoomPosition;
+    ///Whether the critical path has finished generating.
     private bool reachedExit = false;
+    ///The position to spawn the next room at.
     private Vector2 nextRoomPosition;
 
+    ///Whether the critical path spawning algorithm can make a right move
     private bool canMoveRight = true;
+    ///Whether the critical path spawning algorithm can make a left move
     private bool canMoveLeft = true;
+    ///Whether the last room that was spawned has a bottom entrance.
     private bool lastRoomWasBottom = false;
+
+    ///The cardinal directions the room spawning algorithm can move.
     private enum Direction { Down, Left, Right, ImpossibleMove };
 
+    ///The layer of the room
     [SerializeField]
     private LayerMask Room;
+    ///The layer of the basic building blocks that make up the world.
     [SerializeField]
     private LayerMask GroundTileLayer;
 
+    ///The last room that the room spawning algorithm created.
     private GameObject lastRoomCreated;
+    ///The Door prefab to be spawned at the entrance and exit.
     [SerializeField]
     private GameObject door; //the door prefab
 
+    ///The room containing the entrance door.
     private GameObject entranceRoom;
+    ///The room containing the exit door.
     private GameObject exitRoom;
 
-    //variables to check what has been spawned
+    ///checks if the entrance door has already been spawned
     private bool spawnedEntranceDoor = false;
+    ///checks if the exit door has already been spawned
     private bool spawnedExitDoor = false;
+    ///checks if the mobs has already been spawned
     private bool spawnedMobs = false;
-    private bool spawnedDoor;
+    ///checks if treasure has already been spawned
     private bool spawnedTresure = false;
 
-
+    ///All the treasure objects to be randomly spawned
     [SerializeField]
     private GameObject[] treasurePrefabs;
+    ///All the ground mobs to be randomly spawned
     [SerializeField]
     private GameObject[] groundMobPrefabs;
+    ///All the flying mobs to be randomly spawned
     [SerializeField]
     private GameObject[] flyingMobPrefabs;
 
+    ///The player gameobject that needs to be moved to the entranceway.
     public GameObject player;
 
+    ///The number of treasure objects to spawn
     [SerializeField]
     private int numTreasureToSpawn = 0;
+    ///The number of ground mobs to spawn
     [SerializeField]
     private int numGroundMobsToSpawn = 0;
+    ///The number of flying mobs to spawn
     [SerializeField]
     private int numFlyingMobsToSpawn = 0;
 
@@ -80,12 +115,13 @@ public class WorldSpawner : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
-    {
-        
+    {     
         SpawnWorld();
     }
 
-
+    /// <summary>
+    /// updates the world variables and then spawns a new world based upon their new values..
+    /// </summary>
     public void SpawnWorld()
     {
        
@@ -160,8 +196,10 @@ public class WorldSpawner : MonoBehaviour
     /// <summary>
     /// Spawns Door in room at the given position and changes its name in inspector
     /// </summary>
-    /// <param name="roomPosition">The bottom left position of the room to spawn door</param>
-    /// <param name="objectName"> Name to set object in inspector</param>
+    /// <param name="roomPosition"></param>
+    /// The bottom left position of the room to spawn door
+    /// <param name="objectName"> </param>
+    /// Name to set object in inspector
     /// <returns> The spawn location of the door</returns>
 
     private Vector3 SpawnDoor(Vector3 roomPosition, string objectName)
@@ -565,6 +603,9 @@ public class WorldSpawner : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// Resets what has already been spawned and recalculated the number of mobs to spawn based upon the new difficulty
+    /// </summary>
     public void resetWorldSpawnVariables()
     {
         reachedExit = false;

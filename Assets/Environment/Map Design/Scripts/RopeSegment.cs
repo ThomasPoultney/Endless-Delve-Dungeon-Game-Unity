@@ -2,6 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// A class which stores information about the attached rope segment. 
+/// 
+/// It stores the rope segment that is placed above and below the attached one.
+/// </summary>
 public class RopeSegment : MonoBehaviour
 {
 

@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Spawns a random lava object and sets its layer, and adds a particle system.
+/// </summary>
 public class SpawnLava : MonoBehaviour
 {
     // Start is called before the first frame update

@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Controls the archer mob, currently half implemented; 
+/// </summary>
 public class ArcherController : MonoBehaviour
 {
     [SerializeField]

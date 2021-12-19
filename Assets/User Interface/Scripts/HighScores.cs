@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// a class responsible for downloading the leader board values from our database.
+/// </summary>
 public class HighScores : MonoBehaviour
 {
     const string privateCode = "6QWf-bA0k0uZaXVjf9KsLQkwHmTnQRB06IuM6dZ7OBUw";  //Key to Upload New Info
@@ -94,6 +97,9 @@ public class HighScores : MonoBehaviour
     }
 }
 
+/// <summary>
+/// A struct to store the leaderboard variables, it includes the name and score of each player
+/// </summary>
 public struct PlayerScore //Creates place to store the variables for the name and score of each player
 {
     public string username;

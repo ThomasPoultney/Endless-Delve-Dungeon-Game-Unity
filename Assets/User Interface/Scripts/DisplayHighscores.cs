@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Displays all highscores in the leaderboard menu.
+/// </summary>
 public class DisplayHighscores : MonoBehaviour 
 {
     public TMPro.TextMeshProUGUI[] rNames = null;
@@ -23,6 +26,8 @@ public class DisplayHighscores : MonoBehaviour
         myScores = GetComponent<HighScores>();
         StartCoroutine("RefreshHighscores");
     }
+
+
     public void SetScoresToMenu(PlayerScore[] highscoreList) //Assigns proper name and score for each text value
     {
         for (int i = 0; i < rNames.Length;i ++)

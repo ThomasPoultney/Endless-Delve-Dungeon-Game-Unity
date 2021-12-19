@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Spawns a random spike prefabs and sets up it layers. 
+/// </summary>
 public class SpawnSpike : MonoBehaviour
 {
     // Start is called before the first frame update

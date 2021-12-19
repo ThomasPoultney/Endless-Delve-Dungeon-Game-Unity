@@ -3,27 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// A class responsible for controlling the insanity bar HUD element.
+/// </summary>
 public class InsanityBar : MonoBehaviour
 {
-    // Start is called before the first frame update
+    ///The slider of the insanity bar to be updated.
     public Slider slider;
+    ///A gradient of colors that is used to determine the color of the insanity bar
     public Gradient gradient;
+    ///The image of the insanity bar to be updated.
     public Image fill;
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 
     /// <summary>
-    /// Sets the value of the attached slider to the health amount passed to function.
+    /// Sets the value of the attached slider to the insanity amount passed to function.
     /// </summary>
     /// <param name="insanity"></param>
+    /// The insanity value to set the insanity UI element to.
     public void SetInsanity(float insanity)
     {
         slider.value = insanity;
@@ -31,9 +28,10 @@ public class InsanityBar : MonoBehaviour
     }
 
     /// <summary>
-    /// Sets the max value of the attached slider to the health amount passed to function.
+    /// Sets the max value of the attached slider to the insanity amount passed to function.
     /// </summary>
     /// <param name="insanity"></param>
+    /// The max insanity value to set the insanity slider ui element to.
     public void SetMaxInsanity(float insanity)
     {
         slider.maxValue = insanity;

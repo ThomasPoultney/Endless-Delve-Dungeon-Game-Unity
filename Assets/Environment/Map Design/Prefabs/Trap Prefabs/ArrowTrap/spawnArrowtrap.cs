@@ -2,14 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// spawns an arrow trap or a basic building block according to a random chance.
+/// </summary>
 public class spawnArrowtrap : MonoBehaviour
 {
-    // Start is called before the first frame update
+    ///A list of blocks that could be spawned
     public GameObject[] tileObjects;
+    ///A list of traps that could be spawned
     public GameObject[] trapObjects;
 
+    ///The physics material that will be attached to blocks
     public PhysicsMaterial2D noFriction;
 
+    ///The percentage chance to spawn a trap instead of a basic block
     [SerializeField]
     public int trapChance;
 

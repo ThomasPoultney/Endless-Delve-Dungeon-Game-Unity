@@ -1,5 +1,7 @@
 using UnityEngine;
-
+/// <summary>
+/// Class responsible for handling the behaviour of the slime mob.
+/// </summary>
 public class SlimeController : MonoBehaviour
 {
     [SerializeField]

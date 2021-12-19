@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/// <summary>
+/// A class that is resposible for selecting a random room to spawn from a list.
+/// </summary>
 public class TemplateChooser : MonoBehaviour
 {
    

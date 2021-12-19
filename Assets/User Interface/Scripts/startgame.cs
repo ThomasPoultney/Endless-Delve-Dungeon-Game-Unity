@@ -4,6 +4,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// a class responsible for controlling the UI of the main menu and loading the scene of the main game.
+/// 
+/// </summary>
 public class startgame : MonoBehaviour
 {
    public InputField name; 

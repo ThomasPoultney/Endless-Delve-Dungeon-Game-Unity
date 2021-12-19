@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// A class which spawns a set length of a Swinging spike trap
+/// </summary>
 public class SwingingTrapSegment : MonoBehaviour
 {
 

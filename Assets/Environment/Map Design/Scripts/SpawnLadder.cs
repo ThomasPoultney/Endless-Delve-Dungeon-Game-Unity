@@ -2,10 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Responsible for spawning a set amount of a random ladder prefab.
+/// 
+/// </summary>
 public class SpawnLadder : MonoBehaviour
 {
-    //list of ladder prefabs to that can be spawned
+    ///list of ladder prefabs to that can be spawned
     public GameObject[] ladderObjects;
+    ///The number of ladder objects to be spawned.
     public int ladderLength;
 
 

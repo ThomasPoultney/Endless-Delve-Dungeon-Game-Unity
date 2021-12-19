@@ -3,131 +3,215 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// This class controls the movement, animations and combat for the player charecter.
+/// 
+/// This class handles all the animations for the player gameobject. 
+/// </summary>
 public class Player_Controller : MonoBehaviour
 {
+    ///The Current Animation playing
     public string currentAnimationState;
+    ///The animator that is attached to the player object
     public Animator animator;
 
+    ///The speed the player travels at whilst sprinting
     [SerializeField] private float sprintingSpeedConstant = 5f;
+    ///The speed the player travels at whilst running
     [SerializeField] private float runningSpeedConstant = 3f;
+    ///The speed the player travels at whilst crouching
     [SerializeField] private float crouchingSpeedConstant = 2f;
+    ///The speed the player travels at whilst walking
     [SerializeField] private float walkingSpeedConstant = 1f;
+    ///The speed the player travels at whilst sliding down wall.
     [SerializeField] private float wallSlideSpeedConstant = 2f;
+    ///The force the player jumps with.
     [SerializeField] private float jumpingConstant = 2f;
+    ///The speed the player travels along the ground whilst sliding
     [SerializeField] private float slideThreshold = 4f;
+    ///The minimum time between jumps
     [SerializeField] private float jumpResetTime = 1f;
 
 
+    ///The rigid body of the player, Used for controlling its physics
     private Rigidbody2D playerBody;
-    private Animator anim;
 
 
-    //limits how many ropes players can spawn
+    ///limits how many ropes players can spawn
     [SerializeField] private int numberOfRopesPlayerCanSpawn = 3;
+    ///A list of ropes that the player has spawned, Used for deleting previous ropes when player has reached the limit.
     private List<GameObject> ropesSpawned = new List<GameObject>();
+    ///The rope that is spawned
     [SerializeField] private GameObject ropeSpawner;
+    ///Time since spawning last rope.
     private float lastSpawnTime;
-    private float timeSinceLastJump;
+    ///whether the player can spawn a new rope.
     private bool canSpawnRope;
-    private bool canJumpAgain;
+    ///Whether the player is facing left.
     public bool facingLeft;
 
+    ///The maxium length of player spawned ropes.
     [SerializeField] private float maxRopeSpawnLength = 5;
+    ///The cooldown time on ropes.
     [SerializeField] private float timeBetweenRopeSpawns = 5;
+    ///The types of objects a rope can be spawned on.
     [SerializeField] private LayerMask ropesCanSpawnOn;
 
+
+    ///Whether the player has their weapon out
     private bool weaponOut = false;
+    ///Whether the player is climbing a ladder
     private bool climbingLadder = false;
+    ///Whether the player weapon is currently in the process of being drawn
     private bool weaponDrawing = false;
+    ///Whether the player is currently jumping
     private bool isJumping = false;
+    ///Whether the player is currently attacking
     private bool charecterAttacking = false;
+    ///Whether the player is currently spawning a rope
     private bool charecterFiringRope = false;
+    ///Time since last attack
     private float lastAttackTime = 0;
+    ///Time since last rope spawn
     private float lastRopeFireTime = 0;
+    ///Time since the last time the players weapon was drawn
     private float timeSinceWeaponDraw;
+    ///The reset time of the players jump.
     [SerializeField] private float jumpTimeCounter = 0.3f;
 
-    private bool isGrounded;
-    public bool isWallSliding;
-    public bool isWallGrabbing;
-    public bool canWallGrab = true;
-    public float timeSinceCannotWallGrab = 0;
-    public float wallGrabResetTimer = 0.1f;
 
+    ///Whether the player is grounded.
+    private bool isGrounded;
+    ///Whether the player is wall sliding.
+    public bool isWallSliding;
+    ///Whether the player is grabbing onto a wall.
+    public bool isWallGrabbing;
+    ///Whether the player meets the critea to grab onto a wall
+    public bool canWallGrab = true;
+    ///Reset timer for grabbing a wall
+    public float timeSinceCannotWallGrab = 0;
+    ///Reset timer for grabbing a wall
+    public float wallGrabResetTimer = 0.1f;
+    ///Whether the player is touching a ledge
     private bool isTouchingLedge = false;
+    ///Whether the player is touching able to perform a ledge climb
     private bool ledgeDetected = false;
 
+
+    ///The position the player attacks at
     [SerializeField] private Transform attackPos;
+
+    ///The layer of mob objects
     [SerializeField] private LayerMask mobLayerMask;
+    ///The attack range of the player, used in collision detection.
     [SerializeField] private float attackRange = 0.2f;
 
 
-
+    ///An empty game object placed at the players feet.
     public Transform feetPos;
+    ///An empty game object placed at the players head.
     public Transform headPosition;
 
+
     public float checkRadius;
+    ///All the layers the player can walk on.
     public LayerMask whatIsGround;
+    ///All the layers the player can wall grab on.
     public LayerMask whatIsWall;
 
+    ///Whether the player is currently wall jumping
     private bool isWallJumping = false;
+    ///Whether the player is currently crouching
     private bool crouching;
 
-    //used for checking player Input
+    ///stores the current A/D and Left arrow/right arrow input
     private float horizontalInput;
+    ///stores the current W/S and up arrow/down arrow input
     private float verticalInput;
+    ///stores the current jumpInput from the inputManager
     private float jumpInput;
+    ///stores the currente attackInput from the inputManager
     private bool attackInput;
+    ///stores the current crouchInput from the inputManager
     private bool crouchingInput;
+    ///stores the current weapon Drawn input from the inputManager
+
     private bool weaponDrawInput;
+    ///stores the current fire rope input from the inputManager
     private bool fireRopeInput;
+    ///stores the current walking input from the inputManager
+
     private bool walkingInput;
+    ///stores the current sprinting input from the inputManager
     private bool sprintingInput;
+    ///stores the current interaction input from the inputManager
     private bool interactInput;
+    ///stores the current torch input from the inputManager
     private bool torchInput;
 
-    //used to reset combos after a given time
+    ///stores the the time since the last ground melee attack, used for calculating Cooldown time on attacks
     private float timeSinceLastMeleeAttack = 0;
+    ///stores the the time since the last air melee attack, used for calculating Cooldown time on attacks
     private float timeSinceLastAirMeleeAttack = 0;
+    ///stores the the time since the last unarmed melee attack, used for calculating Cooldown time on attacks
     private float timeSinceLastPunchAttack = 0;
+    ///The reset time on combos
     private float comboResetTime = 1;
 
-    //tracks combos
+    ///tracks current unarmed melee combo number
     private int punchMeleeAttackCombo = 0;
+    ///tracks current armed melee combo number
     private int meleeAttackCombo = 0;
+    ///tracks current armed air melee combo number
     private int airMeleeAttackCombo = 0;
 
+    ///whether the player is touching a wall
     private bool isTouchingWall;
+    ///Empty game object placed at the position the player should check for a wall.
     [SerializeField] private Transform wallCheck;
+    ///The distance from the wallCheck object that we should peform a raycast to check for wall.
     [SerializeField] private float wallCheckDistance = 1f;
 
+
+    ///The animation controller attached to the player.
     AnimationController animationController;
 
+
+    ///The length of time before a player can wall jump again
     [SerializeField] private float wallJumpResetTimer = 0.2f;
+    ///The length of time since the player last performed a wall jump.
     private float timeSinceLastWallJump;
+
+    ///A vector containing the player performing a wall jump should have
     [SerializeField] private Vector2 wallJumpAmount = new Vector2(3, 5);
 
-
+    ///The amount we scale player up by.
     [SerializeField] private float playerSizeConstant;
 
+
+    ///The tourch object that the player can spawn
     [SerializeField] private GameObject torch;
+    ///The tourch layer.
     [SerializeField] private LayerMask torchLayer;
 
 
 
-    // Start is called before the first frame update
+    /// <summary>
+    /// Monobehaviour that is called before the first frame, In it we get the rigid body and the animation controller of the object the script is attached too.
+    /// </summary>
     void Start()
     {
         // Grab references for rigidbody (player object) and animator from respective objects.
         playerBody = GetComponent<Rigidbody2D>();
-        anim = GetComponent<Animator>();
         animationController = transform.GetComponent<AnimationController>();
 
 
     }
 
 
-    // Update is called once per frame
+    /// <summary>
+    /// Monobehaviour that is called every frame, In it we check for all user inputs and check what states the player currently.
+    /// </summary>
     void Update()
     {
 
@@ -179,7 +263,9 @@ public class Player_Controller : MonoBehaviour
     }
 
 
-
+    /// <summary>
+    /// Checks if the player is currently grabbing a wall
+    /// </summary>
     private void CheckIfWallGrabbing()
     {
         if (isTouchingWall && !isGrounded && playerBody.velocity.y < 0 && canWallGrab)
@@ -192,6 +278,9 @@ public class Player_Controller : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Checks if the playing is touching a wall or is touching a ledge
+    /// </summary>
     private void CheckSurroundings()
     {
         Vector2 headPositionPos = new Vector2(headPosition.transform.position.x, headPosition.transform.position.y);
@@ -207,6 +296,9 @@ public class Player_Controller : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Checks if the player is able to perform a ledge climb
+    /// </summary>
     private void CheckLedgeClimb()
     {
         if (isTouchingWall && !isTouchingLedge)
@@ -216,6 +308,12 @@ public class Player_Controller : MonoBehaviour
 
     }
 
+
+    /// <summary>
+    /// Monobehaviour that is called at a fixed timestamp, In this behaviour we control which animation the player should be executing
+    /// based on inputs and player states.
+    /// 
+    /// </summary>
     public void FixedUpdate()
     {
 
@@ -701,9 +799,7 @@ public class Player_Controller : MonoBehaviour
             playerBody.velocity = Vector2.up * jumpingConstant;
             animationController.ChangeAnimationState("Player_Jump");
             isJumping = true;
-            canJumpAgain = false;
             jumpTimeCounter = jumpResetTime;
-            timeSinceLastJump = Time.time;
         }
     }
 

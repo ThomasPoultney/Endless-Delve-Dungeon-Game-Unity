@@ -1,5 +1,7 @@
 using UnityEngine;
-
+/// <summary>
+/// Class responsible for handling the behaviour of the skelenton mob.
+/// </summary>
 public class SkelentonMobController : MonoBehaviour
 {
     [SerializeField]
